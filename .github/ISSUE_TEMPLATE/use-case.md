@@ -2,7 +2,7 @@
 name: Use Case
 about: Bare bones use case that can be filled out quickly.
 title: ''
-labels: ''
+labels: core-use-case
 assignees: ''
 
 ---
