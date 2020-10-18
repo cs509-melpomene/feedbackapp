@@ -7,25 +7,55 @@ package edu.wpi.cs.melpomene.feedbackapp.http;
  *  
  */
 public class CreateSnippetResponse {
-	public final String response;
+	
+	public final String snippetID;
+	public final String creatorPassword;
+	public final String viewerPassword;
+	public final String error;
 	public final int httpCode;
 	
-	// 200 means success
-	public CreateSnippetResponse (String id) {
-		this.response = id;
+	/**
+	 * Create success response.
+	 * @param snippetID
+	 * @param creatorPassword
+	 * @param viewerPassword
+	 */
+	public CreateSnippetResponse (
+			String snippetID, 
+			String creatorPassword, 
+			String viewerPassword) {
+		this.snippetID = snippetID;
+		this.creatorPassword = creatorPassword;
+		this.viewerPassword = viewerPassword;
+		this.error = "";
 		this.httpCode = 200;
 	}
 	
-	public CreateSnippetResponse (String errorMessage, int code) {
-		this.response = errorMessage;
-		this.httpCode = code;
+	/**
+	 * Create failure response.
+	 * @param error
+	 */
+	public CreateSnippetResponse (String error) {
+		this.snippetID = "";
+		this.creatorPassword = "";
+		this.viewerPassword = "";
+		this.error = error;
+		this.httpCode = 500;
 	}
 	
-	public String getResponse() {
-		return response;
+	public String getSnippetID() {
+		return snippetID;
+	}
+	
+	public String getCreatorPassword() {
+		return creatorPassword;
+	}
+	
+	public String getViewerPassword() {
+		return viewerPassword;
 	}
 	
 	public String toString() {
-		return "Response(" + response + ")";
+		return "Response(" + snippetID + ")";
 	}
 }

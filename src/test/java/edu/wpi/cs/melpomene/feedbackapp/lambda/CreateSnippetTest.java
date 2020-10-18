@@ -39,6 +39,8 @@ public class CreateSnippetTest {
         Context ctx = createContext();
 
         CreateSnippetResponse response = handler.handleRequest(input, ctx);
-        Assert.assertEquals(16, response.getResponse().length());
+        Assert.assertEquals(16, response.getSnippetID().length());
+        Assert.assertEquals(16, response.getCreatorPassword().length());
+        Assert.assertEquals(16, response.getViewerPassword().length());
     }
 }

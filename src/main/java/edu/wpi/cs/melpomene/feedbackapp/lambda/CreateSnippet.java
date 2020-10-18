@@ -78,11 +78,13 @@ public class CreateSnippet implements RequestHandler<Object, CreateSnippetRespon
            String snippetID = createUniqueID();
            String creatorPassword = createUniqueID();
            String viewerPassword = createUniqueID();
-           context.getLogger().log("snippetID: " + snippetID);
-           response = new CreateSnippetResponse(snippetID);
+           response = new CreateSnippetResponse(
+        		   snippetID,
+        		   creatorPassword,
+        		   viewerPassword);
        } catch (Exception e) {
 	       context.getLogger().log(e.getMessage());
-	       response = new CreateSnippetResponse(e.getMessage(), 500);
+	       response = new CreateSnippetResponse(e.getMessage());
        }
 
        return response;
