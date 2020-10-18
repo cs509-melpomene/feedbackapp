@@ -20,10 +20,7 @@ public class CreateSnippetResponse {
 	 * @param creatorPassword
 	 * @param viewerPassword
 	 */
-	public CreateSnippetResponse (
-			String snippetID, 
-			String creatorPassword, 
-			String viewerPassword) {
+	public CreateSnippetResponse (String snippetID,  String creatorPassword, String viewerPassword) {
 		this.snippetID = snippetID;
 		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;

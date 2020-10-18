@@ -29,7 +29,6 @@ public class CreateSnippet implements RequestHandler<Object, CreateSnippetRespon
        return sb.toString();
     }
 
-
     /**
      * Creates a unique hexadecimal id of length 16.
      * @return
@@ -46,44 +45,15 @@ public class CreateSnippet implements RequestHandler<Object, CreateSnippetRespon
 
     @Override
     public CreateSnippetResponse handleRequest(Object input, Context context) {
-       /*
-
-        *   ID:
-	           description: unique hexadecimal id
-	           type: string
-	           pattern: "([a-fA-F0-9]){16,16}"
-	           example: 123456789abcdef0
-
-        *   CreateSnippetResponse:
-	           type: object
-	           required:
-	           - creatorPassword
-	           - viewerPassword
-	           - snippetID
-	           properties:
-	             creatorPassword:
-	               type: string
-	               example: randomCreatorPassword
-	             viewerPassword:
-	               type: string
-	               example: randomViewerPassword
-	             snippetID:
-	               $ref: '#/definitions/ID'
-
-        */
-        context.getLogger().log("Input Yahel: " + input);
-
         CreateSnippetResponse response = null;
         try {
            String snippetID = createUniqueID();
            String creatorPassword = createUniqueID();
            String viewerPassword = createUniqueID();
-           response = new CreateSnippetResponse(
-        		   snippetID,
-        		   creatorPassword,
-        		   viewerPassword);
+           response = new CreateSnippetResponse(snippetID, creatorPassword, viewerPassword);
+           context.getLogger().log(String.format("CreateSnippetResponse Success: snippetID: %s, creatorPassword: %s, viewerPassword: %s\n", response.getSnippetID(), response.getCreatorPassword(), response.getViewerPassword()));
        } catch (Exception e) {
-	       context.getLogger().log(e.getMessage());
+	       context.getLogger().log(String.format("CreateSnippetResponse Failure: %s", e.getMessage()));
 	       response = new CreateSnippetResponse(e.getMessage());
        }
 
