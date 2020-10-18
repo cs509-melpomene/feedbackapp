@@ -7,6 +7,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.melpomene.feedbackapp.TestContext;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+
 import com.amazonaws.services.lambda.runtime.Context;
 
 /**
@@ -36,7 +38,7 @@ public class CreateSnippetTest {
         CreateSnippet handler = new CreateSnippet();
         Context ctx = createContext();
 
-        String output = handler.handleRequest(input, ctx);
-        Assert.assertEquals("Hello from Yahel!", output);
+        CreateSnippetResponse response = handler.handleRequest(input, ctx);
+        Assert.assertEquals(16, response.getResponse().length());
     }
 }

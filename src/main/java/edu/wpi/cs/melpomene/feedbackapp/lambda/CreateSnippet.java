@@ -5,7 +5,9 @@ import java.util.Random;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-public class CreateSnippet implements RequestHandler<Object, String> {
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+
+public class CreateSnippet implements RequestHandler<Object, CreateSnippetResponse> {
 
     static final int ID_LENGTH = 16;
     static final int HEX_MAX_DECIMAL = 16;
@@ -16,15 +18,15 @@ public class CreateSnippet implements RequestHandler<Object, String> {
      * @return
      */
     public String createID() {
-        StringBuilder sb = new StringBuilder();
+       StringBuilder sb = new StringBuilder();
        Random r = new Random();
-        for(int i = 0; i < ID_LENGTH; i++) {
-               int randomInt = Math.abs(r.nextInt());
-               int hexDecimal = randomInt % HEX_MAX_DECIMAL;
-               String hexChar = String.format("%x", hexDecimal);
-               sb.append(hexChar);
-        }
-        return sb.toString();
+       for(int i = 0; i < ID_LENGTH; i++) {
+	       int randomInt = Math.abs(r.nextInt());
+	       int hexDecimal = randomInt % HEX_MAX_DECIMAL;
+	       String hexChar = String.format("%x", hexDecimal);
+	       sb.append(hexChar);
+       }
+       return sb.toString();
     }
 
 
@@ -35,54 +37,54 @@ public class CreateSnippet implements RequestHandler<Object, String> {
      */
     public String createUniqueID() throws Exception {
        for(int i = 0; i < MAX_UNIQUE_ID_TRIES; i++) {
-               String newID = createID();
-               // TODO: check for uniqueness
-            return newID;
+           String newID = createID();
+           // TODO: check for uniqueness
+           return newID;
        }
        throw new Exception("A unique ID could not be constructed within " + MAX_UNIQUE_ID_TRIES + " tries!");
     }
 
     @Override
-    public String handleRequest(Object input, Context context) {
+    public CreateSnippetResponse handleRequest(Object input, Context context) {
        /*
 
         *   ID:
-                           description: unique hexadecimal id
-                           type: string
-                           pattern: "([a-fA-F0-9]){16,16}"
-                           example: 123456789abcdef0
+	           description: unique hexadecimal id
+	           type: string
+	           pattern: "([a-fA-F0-9]){16,16}"
+	           example: 123456789abcdef0
 
         *   CreateSnippetResponse:
-                           type: object
-                           required:
-                           - creatorPassword
-                           - viewerPassword
-                           - snippetID
-                           properties:
-                             creatorPassword:
-                               type: string
-                               example: randomCreatorPassword
-                             viewerPassword:
-                               type: string
-                               example: randomViewerPassword
-                             snippetID:
-                               $ref: '#/definitions/ID'
+	           type: object
+	           required:
+	           - creatorPassword
+	           - viewerPassword
+	           - snippetID
+	           properties:
+	             creatorPassword:
+	               type: string
+	               example: randomCreatorPassword
+	             viewerPassword:
+	               type: string
+	               example: randomViewerPassword
+	             snippetID:
+	               $ref: '#/definitions/ID'
 
         */
         context.getLogger().log("Input Yahel: " + input);
 
+        CreateSnippetResponse response = null;
         try {
-                       String snippetID = createUniqueID();
-               String creatorPassword = createUniqueID();
-               String viewerPassword = createUniqueID();
-               context.getLogger().log("snippetID: " + snippetID);
-               } catch (Exception e) {
-                       context.getLogger().log(e.getMessage());
-               }
+           String snippetID = createUniqueID();
+           String creatorPassword = createUniqueID();
+           String viewerPassword = createUniqueID();
+           context.getLogger().log("snippetID: " + snippetID);
+           response = new CreateSnippetResponse(snippetID);
+       } catch (Exception e) {
+	       context.getLogger().log(e.getMessage());
+	       response = new CreateSnippetResponse(e.getMessage(), 500);
+       }
 
-
-        // TODO: implement your handler
-        return "Hello from Yahel!";
-    }
-
+       return response;
+   }
 }
