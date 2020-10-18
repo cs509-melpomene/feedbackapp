@@ -1,4 +1,4 @@
-package edu.wpi.cs.melpomene.feedbackapp;
+package edu.wpi.cs.melpomene.feedbackapp.lambda;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class TestCustomLambdaTest {
+public class CreateSnippetTest {
 
     private static Object input;
 
@@ -33,12 +33,10 @@ public class TestCustomLambdaTest {
 
     @Test
     public void testTestCustomLambda() {
-        TestCustomLambda handler = new TestCustomLambda();
+        CreateSnippet handler = new CreateSnippet();
         Context ctx = createContext();
 
         String output = handler.handleRequest(input, ctx);
-
-        // TODO: validate output here if needed.
         Assert.assertEquals("Hello from Yahel!", output);
     }
 }
