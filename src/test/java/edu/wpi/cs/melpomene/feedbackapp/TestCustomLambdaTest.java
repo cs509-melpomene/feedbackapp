@@ -1,4 +1,4 @@
-package com.amazonaws.lambda.demo;
+package edu.wpi.cs.melpomene.feedbackapp;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.wpi.cs.melpomene.feedbackapp.TestContext;
 import com.amazonaws.services.lambda.runtime.Context;
 
 /**
