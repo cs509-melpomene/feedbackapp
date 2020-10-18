@@ -8,20 +8,22 @@ import org.junit.Test;
 
 import edu.wpi.cs.melpomene.feedbackapp.TestContext;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetRequest;
+import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 import com.amazonaws.services.lambda.runtime.Context;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class CreateSnippetTest {
+public class ViewSnippetTest {
 
-    private static Object input;
+    private static ViewSnippetRequest input;
 
     @BeforeClass
     public static void createInput() throws IOException {
-        // TODO: set up your sample input object here.
-        input = null;
+        input = new ViewSnippetRequest("abcdef");
     }
 
     private Context createContext() {
@@ -34,13 +36,12 @@ public class CreateSnippetTest {
     }
 
     @Test
-    public void testCreateSnippetLambda() {
-        CreateSnippet handler = new CreateSnippet();
+    public void testViewSnippetLambda() {
+        ViewSnippet handler = new ViewSnippet();
         Context ctx = createContext();
 
-        CreateSnippetResponse response = handler.handleRequest(input, ctx);
-        Assert.assertEquals(16, response.getSnippetID().length());
-        Assert.assertEquals(16, response.getCreatorPassword().length());
-        Assert.assertEquals(16, response.getViewerPassword().length());
+        ViewSnippetResponse response = handler.handleRequest(input, ctx);
+        Snippet snippet = response.getSnippet();
+        Assert.assertEquals("abcdef", snippet.snippetID);
     }
 }
