@@ -20,6 +20,7 @@ public class ViewSnippet implements RequestHandler<ViewSnippetRequest, ViewSnipp
     	// TODO: failure if snippetID is not a correct format (400)
     	try {
     		// TODO: go to database for this information
+    		this will connect to rds now
         	ArrayList<String> commentIDs = new ArrayList<>();
         	commentIDs.add("456");
         	commentIDs.add("789");
