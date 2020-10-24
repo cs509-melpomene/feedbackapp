@@ -7,6 +7,7 @@ import java.util.Random;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
+import edu.wpi.cs.melpomene.feedbackapp.db.DatabaseUtil;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetRequest;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetResponse;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
@@ -20,7 +21,6 @@ public class ViewSnippet implements RequestHandler<ViewSnippetRequest, ViewSnipp
     	// TODO: failure if snippetID is not a correct format (400)
     	try {
     		// TODO: go to database for this information
-    		this will connect to rds now
         	ArrayList<String> commentIDs = new ArrayList<>();
         	commentIDs.add("456");
         	commentIDs.add("789");
@@ -34,7 +34,7 @@ public class ViewSnippet implements RequestHandler<ViewSnippetRequest, ViewSnipp
         		}
         		
         	}
-            Snippet snippet = new Snippet(input.snippetID, "public", "this is a snippet", "viewer password", "C++", commentIDs, "Tuesday 1pm"); // make sure length 16 confirm that hex
+            Snippet snippet = new Snippet(input.snippetID, "creator password", "viewer password", "public", "this is a snippet", "C++", commentIDs, "Tuesday 1pm");
             response = new ViewSnippetResponse(snippet);
         } catch (Exception e) {
         	// TODO: failure if database connection does not work (500)

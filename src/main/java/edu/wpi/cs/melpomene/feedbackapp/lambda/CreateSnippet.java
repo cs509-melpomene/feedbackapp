@@ -1,11 +1,15 @@
 package edu.wpi.cs.melpomene.feedbackapp.lambda;
 
+import java.sql.Connection;
 import java.util.Random;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
+import edu.wpi.cs.melpomene.feedbackapp.db.ConstantsDAO;
+import edu.wpi.cs.melpomene.feedbackapp.db.DatabaseUtil;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 public class CreateSnippet implements RequestHandler<Object, CreateSnippetResponse> {
 
@@ -50,8 +54,10 @@ public class CreateSnippet implements RequestHandler<Object, CreateSnippetRespon
            String snippetID = createUniqueID();
            String creatorPassword = createUniqueID();
            String viewerPassword = createUniqueID();
+           Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword);
            response = new CreateSnippetResponse(snippetID, creatorPassword, viewerPassword);
            context.getLogger().log(String.format("CreateSnippetResponse Success: snippetID: %s, creatorPassword: %s, viewerPassword: %s\n", response.getSnippetID(), response.getCreatorPassword(), response.getViewerPassword()));
+           DatabaseUtil.createSnippet(snippet);
        } catch (Exception e) {
 	       context.getLogger().log(String.format("CreateSnippetResponse Failure: %s", e.getMessage()));
 	       response = new CreateSnippetResponse(e.getMessage());
