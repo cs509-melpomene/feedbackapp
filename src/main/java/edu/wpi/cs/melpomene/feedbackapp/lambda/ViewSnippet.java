@@ -8,6 +8,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import edu.wpi.cs.melpomene.feedbackapp.db.DatabaseUtil;
+import edu.wpi.cs.melpomene.feedbackapp.db.SnippetsDAO;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetRequest;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetResponse;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
@@ -25,7 +26,7 @@ public class ViewSnippet implements RequestHandler<ViewSnippetRequest, ViewSnipp
         	commentIDs.add("456");
         	commentIDs.add("789");
         	if((input.snippetID.length() != 16)) {
-        		throw new Exception("not 16 characters");
+        		throw new Exception("not 16 characters"); 
         	}
         	for(int i=0;i<input.snippetID.length();i++) {
         		char namethisnowidk = input.snippetID.charAt(i);
@@ -34,7 +35,8 @@ public class ViewSnippet implements RequestHandler<ViewSnippetRequest, ViewSnipp
         		}
         		
         	}
-            Snippet snippet = new Snippet(input.snippetID, "creator password", "viewer password", "public", "this is a snippet", "C++", commentIDs, "Tuesday 1pm");
+    		SnippetsDAO dao = new SnippetsDAO();
+    		Snippet snippet = dao.getSnippet(input.snippetID);
             response = new ViewSnippetResponse(snippet);
         } catch (Exception e) {
         	// TODO: failure if database connection does not work (500)

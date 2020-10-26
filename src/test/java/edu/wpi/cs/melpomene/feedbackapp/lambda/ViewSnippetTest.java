@@ -17,7 +17,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ViewSnippetTest {
+public class ViewSnippetTest extends LambdaTest{
 
     private static ViewSnippetRequest input;
 
@@ -66,13 +66,17 @@ public class ViewSnippetTest {
     
     @Test
     public void testViewSnippetLambdaPositive() {
-    	input = new ViewSnippetRequest("abcdef12345689af");
-    	
-        ViewSnippet handler = new ViewSnippet();
-        Context ctx = createContext();
+    	CreateSnippet csHandler = new CreateSnippet();
+    	Context ctx = createContext();
+    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
+        ViewSnippet handler = new ViewSnippet();
+        input = new ViewSnippetRequest(csResponse.snippetID);
+        
         ViewSnippetResponse response = handler.handleRequest(input, ctx);
         Snippet snippet = response.getSnippet();
-        Assert.assertEquals("abcdef12345689af", snippet.snippetID);
+        Assert.assertEquals(csResponse.snippetID, snippet.snippetID);
+        Assert.assertEquals(csResponse.creatorPassword, snippet.creatorPassword);
+        Assert.assertEquals(csResponse.viewerPassword, snippet.viewerPassword);
     }
 }

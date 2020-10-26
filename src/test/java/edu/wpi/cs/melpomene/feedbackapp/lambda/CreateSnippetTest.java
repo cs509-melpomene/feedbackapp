@@ -7,14 +7,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.melpomene.feedbackapp.TestContext;
+import edu.wpi.cs.melpomene.feedbackapp.db.SnippetsDAO;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 import com.amazonaws.services.lambda.runtime.Context;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class CreateSnippetTest {
+public class CreateSnippetTest extends LambdaTest{
 
     private static Object input;
 
@@ -39,8 +41,22 @@ public class CreateSnippetTest {
         Context ctx = createContext();
 
         CreateSnippetResponse response = handler.handleRequest(input, ctx);
-        Assert.assertEquals(16, response.getSnippetID().length());
-        Assert.assertEquals(16, response.getCreatorPassword().length());
-        Assert.assertEquals(16, response.getViewerPassword().length());
+        
+        Assert.assertEquals(16, response.snippetID.length());
+        Assert.assertEquals(16, response.creatorPassword.length());
+        Assert.assertEquals(16, response.viewerPassword.length());
+        
+        SnippetsDAO dao = new SnippetsDAO();
+        try {
+			Snippet snippetFromDB = dao.getSnippet(response.snippetID);
+			Assert.assertEquals(response.getSnippetID(), snippetFromDB.snippetID);
+			Assert.assertEquals(response.getCreatorPassword(), snippetFromDB.creatorPassword);
+			Assert.assertEquals(response.getViewerPassword(), snippetFromDB.viewerPassword);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail();
+		}
+        
     }
 }
