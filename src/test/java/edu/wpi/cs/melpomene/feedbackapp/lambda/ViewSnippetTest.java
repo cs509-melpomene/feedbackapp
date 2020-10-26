@@ -23,7 +23,7 @@ public class ViewSnippetTest {
 
     @BeforeClass
     public static void createInput() throws IOException {
-        input = new ViewSnippetRequest("abcdef");
+        input = new ViewSnippetRequest("abcdef12345689ag");
     }
 
     private Context createContext() {
@@ -35,13 +35,44 @@ public class ViewSnippetTest {
         return ctx;
     }
 
+    
     @Test
-    public void testViewSnippetLambda() {
+    public void testStringLength() {
+    	input = new ViewSnippetRequest("abcdef12345689");
+        ViewSnippet handler = new ViewSnippet();
+        Context ctx = createContext();
+
+        ViewSnippetResponse response = handler.handleRequest(input, ctx);
+        //Snippet snippet = response.getSnippet();
+        
+        Assert.assertEquals(400, response.httpCode);
+        Assert.assertEquals("not 16 characters", response.error);
+    }
+    
+    
+    @Test
+    public void testViewSnippetLambdaNegative() {
+    	input = new ViewSnippetRequest("abcdef12345689ag");
+        ViewSnippet handler = new ViewSnippet();
+        Context ctx = createContext();
+
+        ViewSnippetResponse response = handler.handleRequest(input, ctx);
+        //Snippet snippet = response.getSnippet();
+        
+        Assert.assertEquals(400, response.httpCode);
+        Assert.assertEquals("Not Hexadecimal15  g", response.error);
+    }
+    
+    
+    @Test
+    public void testViewSnippetLambdaPositive() {
+    	input = new ViewSnippetRequest("abcdef12345689af");
+    	
         ViewSnippet handler = new ViewSnippet();
         Context ctx = createContext();
 
         ViewSnippetResponse response = handler.handleRequest(input, ctx);
         Snippet snippet = response.getSnippet();
-        Assert.assertEquals("abcdef", snippet.snippetID);
+        Assert.assertEquals("abcdef12345689af", snippet.snippetID);
     }
 }
