@@ -49,7 +49,7 @@ public class SnippetsDAO {
         }
     }
     
-    public boolean updateConstant() throws Exception {
+    public boolean updateSnippet() throws Exception {
     	// TODO: need to change from constant to snippet
         try {
         	String query = "UPDATE " + tblName + " SET value=? WHERE name=?;";
