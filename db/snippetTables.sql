@@ -1,7 +1,6 @@
 
 CREATE TABLE Snippet(
 	snippetID VARCHAR(30) PRIMARY KEY,
-    creatorID VARCHAR(30),
 	text NVARCHAR2(4000),
     info VARCHAR(1000),
     codeLanguage VARCHAR(10),

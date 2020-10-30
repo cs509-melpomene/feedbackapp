@@ -17,7 +17,7 @@ public class SnippetsDAO {
 
 	java.sql.Connection conn;
 	
-	final String tblName = "MyGuests";   // Exact capitalization
+	final String tblName = "Snippet";   // Exact capitalization
 
     public SnippetsDAO() {
     	try  {
@@ -121,7 +121,7 @@ public class SnippetsDAO {
             return snippets;
 
         } catch (Exception e) {
-            throw new Exception("Failed in getting constants: " + e.getMessage());
+            throw new Exception("Failed in getting snippet: " + e.getMessage());
         }
     }
     
@@ -130,7 +130,13 @@ public class SnippetsDAO {
     	String snippetID  = resultSet.getString("snippetID");
     	String creatorPassword  = resultSet.getString("creatorPassword");
     	String viewerPassword  = resultSet.getString("viewerPassword");
-        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword);
+    	String text = resultSet.getString("text");
+    	String info = resultSet.getString("info");
+    	String codeLanguage = resultSet.getString("codeLanguage");
+    	String snippetTimestamp = resultSet.getString("snippetTimestamp");
+    	String URL = resultSet.getString("URL");
+    	ArrayList<String> commentIDs = new ArrayList<>();
+        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, URL, commentIDs);
 		return snippet;
     }
 

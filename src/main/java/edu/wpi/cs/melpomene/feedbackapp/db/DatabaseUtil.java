@@ -26,7 +26,7 @@ public class DatabaseUtil {
 	// Make sure matches Schema created from MySQL WorkBench
 	// Make sysEnv variable lambdaTesting so we know we are locally testing
 	public final static String lambdaTesting = "lambdaTesting";
-	public final static String dbName = "sys";
+	public final static String dbName = "SnippetDB";
 	public final static String testName = "test";
 	
 	// pooled across all usages.
@@ -54,9 +54,9 @@ public class DatabaseUtil {
 		if (dbPassword == null) {
 			System.err.println("Environment variable dbPassword is not set!");
 		}
-		String rdsMySqlDatabaseUrl = System.getenv("rdsMySqlDatabaseUrl");
+		String rdsMySqlDatabaseUrl = System.getenv("rdsMySqlSnippetDBUrl");
 		if (rdsMySqlDatabaseUrl == null) {
-			System.err.println("Environment variable rdsMySqlDatabaseUrl is not set!");
+			System.err.println("Environment variable rdsMySqlSnippetDBUrl is not set!");
 		}
 		
 		try {
