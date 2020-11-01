@@ -15,8 +15,9 @@ public class DatabaseUtilHelper {
 		StringBuilder sb = new StringBuilder();
 		BufferedReader reader;
 		try {
-			reader = new BufferedReader(new FileReader(
-					"C:\\Users\\YahelNachum\\eclipse-workspace\\feedbackapp\\db\\createTable.sql"));
+			String currentDir = System.getProperty("user.dir");
+			String filePath = currentDir + "\\db\\snippetTables.sql";
+			reader = new BufferedReader(new FileReader(filePath));
 			String line = reader.readLine();
 			while (line != null) {
 				sb.append(line);
@@ -49,13 +50,23 @@ public class DatabaseUtilHelper {
 		PreparedStatement ps;
 		try {
 			Connection conn = DatabaseUtil.connect();
-			ps = conn.prepareStatement("DROP TABLE MyGuests");
+			ps = conn.prepareStatement("DROP TABLE Snippet");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			throw new Exception("createTable: " + e.getMessage());
 		}
         ps.execute();
+        
+//        try {
+//			Connection conn = DatabaseUtil.connect();
+//			ps = conn.prepareStatement("DROP TABLE Snippet");
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			//e.printStackTrace();
+//			throw new Exception("createTable: " + e.getMessage());
+//		}
+//        ps.execute();
 	}
 
 }

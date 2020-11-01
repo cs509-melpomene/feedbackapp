@@ -46,11 +46,11 @@ public class DatabaseUtil {
 		}
 		
 		// These three environment variables must be set!
-		String dbUsername = System.getenv("dbUsername");
+		String dbUsername = System.getenv("snippetDBUsername");
 		if (dbUsername == null) {
 			System.err.println("Environment variable dbUsername is not set!");
 		}
-		String dbPassword = System.getenv("dbPassword");
+		String dbPassword = System.getenv("snippetDBPassword");
 		if (dbPassword == null) {
 			System.err.println("Environment variable dbPassword is not set!");
 		}

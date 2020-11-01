@@ -12,8 +12,12 @@ import edu.wpi.cs.melpomene.feedbackapp.db.DatabaseUtilHelper;
 public abstract class LambdaTest {
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		DatabaseUtilHelper.createTable();
+	public static void setUpBeforeClass() {
+		try {
+			DatabaseUtilHelper.createTable();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@AfterClass
