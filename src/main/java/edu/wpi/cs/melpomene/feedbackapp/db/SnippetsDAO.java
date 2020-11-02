@@ -91,14 +91,12 @@ public class SnippetsDAO {
                 return false;
             }
 
-            // TODO: change this to include other columns when db has fuller script (e.g. info, text, etc)
-            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, creatorPassword, viewerPassword) values(?, ?, ?);");
+            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp, URL) values(?, '', '', '', ?, ?, '1990-09-01', '');");
             ps.setString(1,  snippet.snippetID);
-            ps.setString(2,  snippet.creatorPassword);
-            ps.setString(3,  snippet.viewerPassword);
+            ps.setString(3,  snippet.creatorPassword);
+            ps.setString(2,  snippet.viewerPassword);
             ps.execute();
             return true;
-
         } catch (Exception e) {
             throw new Exception("Failed to add snippet: " + e.getMessage());
         }
