@@ -8,8 +8,9 @@
 </head>
 <body>
    <div class = "center">
-      <form>
+      <form id="form" method="POST" action="createSnippet.php?snippetID=">
          <input type="button" onclick="myFunction()" value="Create Snippet" style = "font-size:20px">
+         <input type="checkbox" name="isCreator" value="true" style = "font-size:20px">
       </form> 
       <br>
       <br>
@@ -33,8 +34,12 @@ function nameOfTheFunction() {
       if (httpRequest.status === 200) {
 		console.log("responseText: " + httpRequest.responseText)
 		const obj = JSON.parse(httpRequest.responseText);
-		console.log(obj.snippetID)
-		window.location.href = ('./createSnippet.php?snippetID=' + obj.snippetID);
+		console.log("snippetID " + obj.snippetID);
+      console.log("form " + document.getElementById("form").action);
+      document.getElementById("form").action = document.getElementById("form").action + obj.snippetID;
+      console.log("form " + document.getElementById("form").action);
+      document.getElementById("form").submit();
+		//window.location.href = ('./createSnippet.php?snippetID=' + obj.snippetID);
       } else {
         console.log("status: " + httpRequest.status)
       }

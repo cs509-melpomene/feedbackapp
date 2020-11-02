@@ -47,6 +47,7 @@
 	</div>
 </body>
 <script>
+console.log("<?php echo $_POST["isCreator"] ?>")
 function myFunction() {
   httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/<?php echo($_GET["snippetID"])?>', true);
