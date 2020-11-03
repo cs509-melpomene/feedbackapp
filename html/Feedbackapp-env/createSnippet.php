@@ -17,10 +17,7 @@
 					Unique ID: <?php echo($_GET["snippetID"])?><br>
 					<a href="http://feedbackapp-env.eba-9ipq52ps.us-east-2.elasticbeanstalk.com/createSnippet.php?snippetID=<?php echo($_GET["snippetID"])?>" target="_blank">Click to open Viewer Screen</a>
 					                <br>
-					Time Stamp: <?php
-					    date_default_timezone_set("America/New_York");
-						echo(date("m-d-Y h:i a"));
-						?>
+					Time Stamp: <div id='timestampDiv'></div>
 					<br>Programming Language: <br><input type="text" id="Planguage"
 					<?php
                     	if (strcmp($_POST["isCreator"] , "true" ) != 0){
@@ -96,7 +93,15 @@ function nameOfTheFunction2() {
         let body1 = '{"action":"update","text":"' + document.getElementById("text").value + '"}'
 		console.log("responseText: " + httpRequest1.responseText)
 		const obj = JSON.parse(httpRequest1.responseText);
-		document.getElementById("text").value = obj['snippet']['text']
+		if (obj['snippet'] === undefined) {
+			window.location.href = ('./notfound.php');
+			return;
+		}
+		
+		document.getElementById("text").value = obj['snippet']['text'];
+		document.getElementById("timestampDiv").innerHTML = obj['snippet']['timestamp'];
+		document.getElementById("Planguage").value = obj['snippet']['codingLanguage'];
+		
 		console.log("success")
       } else {
         console.log("status: " + httpRequest1.status)
