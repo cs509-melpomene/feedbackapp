@@ -1,5 +1,8 @@
 # cs509-melpomene-feedbackapp
 ### HTML:
+#### Warning:
+formating for entering code is not fully accurate.
+For example, adding an enter to space out code will not show up when page is refreshed.
 #### Things that are working:
 ##### Landing Page:
 1. "Create snippet" button goes to creater view
