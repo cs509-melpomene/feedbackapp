@@ -61,8 +61,10 @@ function codeFunction() {
   httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/<?php echo($_GET["snippetID"])?>', true);
   httpRequest.setRequestHeader('Content-Type', 'application/json');
-  let body = '{"action":"update","text":"' + document.getElementById("text").value + '"}';
-  console.log(document.getElementById("text").value);
+  let body = document.getElementById("text").value;
+  body = body.replace(/\n/g,"\\n").replace(/\r/g,"\\r").replace(/\"/g,'\\"')
+  body = '{"action":"update","text":"' + body + '"}';
+  console.log(body);
   httpRequest.send(body);
   httpRequest.onreadystatechange = nameOfTheFunction;
 }
