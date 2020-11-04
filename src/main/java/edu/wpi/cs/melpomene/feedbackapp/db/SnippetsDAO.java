@@ -17,7 +17,8 @@ public class SnippetsDAO {
 
 	java.sql.Connection conn;
 	
-	final String tblName = "MyGuests";   // Exact capitalization
+	final String snippetTable = "Snippet";   // Exact capitalization
+	final String commentTable = "SnippetComment";
 
     public SnippetsDAO() {
     	try  {
@@ -29,10 +30,8 @@ public class SnippetsDAO {
     }
 
     public Snippet getSnippet(String snippetID) throws Exception {
-        
         try {
-            
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE snippetID=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + snippetTable + " WHERE snippetID=?;");
             ps.setString(1,  snippetID);
             ResultSet resultSet = ps.executeQuery();
             
@@ -49,11 +48,25 @@ public class SnippetsDAO {
         }
     }
     
-    public boolean updateConstant() throws Exception {
-    	// TODO: need to change from constant to snippet
+    public boolean updateCode(String snippetID, String code, String field) throws Exception {
         try {
-        	String query = "UPDATE " + tblName + " SET value=? WHERE name=?;";
-        	PreparedStatement ps = conn.prepareStatement(query);
+        	PreparedStatement ps = conn.prepareStatement("UPDATE " + snippetTable + " SET " + field + " = ? WHERE snippetID = ?;");
+        	ps.setString(1,  code);
+        	ps.setString(2,  snippetID);
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return (numAffected == 1);
+        } catch (Exception e) {
+            throw new Exception("Failed to update report: " + e.getMessage());
+        }
+    }
+    
+    public boolean updateInfo(String snippetID, String info, String field) throws Exception {
+        try {
+        	PreparedStatement ps = conn.prepareStatement("UPDATE " + snippetTable + " SET " + field + " = ? WHERE snippetID = ?;");
+        	ps.setString(1,  info);
+        	ps.setString(2,  snippetID);
             int numAffected = ps.executeUpdate();
             ps.close();
             
@@ -65,7 +78,7 @@ public class SnippetsDAO {
     
     public boolean deleteSnippet(String snippetID) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + tblName + " WHERE snippetID = ?;");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetID = ?;");
             ps.setString(1,  snippetID);
             int numAffected = ps.executeUpdate();
             ps.close();
@@ -76,11 +89,10 @@ public class SnippetsDAO {
             throw new Exception("Failed to delete constant: " + e.getMessage());
         }
     }
-
-
+    
     public boolean addSnippet(Snippet snippet) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE snippetID = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + snippetTable + " WHERE snippetID = ?;");
             ps.setString(1,  snippet.snippetID);
             ResultSet resultSet = ps.executeQuery();
             
@@ -91,24 +103,21 @@ public class SnippetsDAO {
                 return false;
             }
 
-            // TODO: change this to include other columns when db has fuller script (e.g. info, text, etc)
-            ps = conn.prepareStatement("INSERT INTO " + tblName + " (snippetID, creatorPassword, viewerPassword) values(?, ?, ?);");
+            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp, URL) values(?, '', '', '', ?, ?, '1990-09-01', '');");
             ps.setString(1,  snippet.snippetID);
-            ps.setString(2,  snippet.creatorPassword);
-            ps.setString(3,  snippet.viewerPassword);
+            ps.setString(3,  snippet.creatorPassword);
+            ps.setString(2,  snippet.viewerPassword);
             ps.execute();
             return true;
-
         } catch (Exception e) {
             throw new Exception("Failed to add snippet: " + e.getMessage());
         }
     }
 
     public ArrayList<Snippet> getAllSnippets() throws Exception {
-        
         try {
         	Statement statement = conn.createStatement();
-            String query = "SELECT * FROM " + tblName + ";";
+            String query = "SELECT * FROM " + snippetTable + ";";
             ResultSet resultSet = statement.executeQuery(query);
             
             ArrayList<Snippet> snippets = new ArrayList<Snippet>();
@@ -121,17 +130,21 @@ public class SnippetsDAO {
             return snippets;
 
         } catch (Exception e) {
-            throw new Exception("Failed in getting constants: " + e.getMessage());
+            throw new Exception("Failed in getting snippet: " + e.getMessage());
         }
     }
     
     private Snippet generateSnippet(ResultSet resultSet) throws Exception {
-    	// TODO: return all snippet information
     	String snippetID  = resultSet.getString("snippetID");
     	String creatorPassword  = resultSet.getString("creatorPassword");
     	String viewerPassword  = resultSet.getString("viewerPassword");
-        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword);
+    	String text = resultSet.getString("text");
+    	String info = resultSet.getString("info");
+    	String codeLanguage = resultSet.getString("codeLanguage");
+    	String snippetTimestamp = resultSet.getString("snippetTimestamp");
+    	String URL = resultSet.getString("URL");
+    	ArrayList<String> commentIDs = new ArrayList<>();
+        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, URL, commentIDs);
 		return snippet;
     }
-
 }

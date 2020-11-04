@@ -1,6 +1,7 @@
 package edu.wpi.cs.melpomene.feedbackapp.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Snippet {
 
@@ -24,7 +25,7 @@ public class Snippet {
 		this.timestamp = "";	
 	}
 	
-	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, ArrayList<String> commentIDs, String timestamp) {
+	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, String timestamp, String URL, ArrayList<String> commentIDs) {
 		this.snippetID = snippetID;
 		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
