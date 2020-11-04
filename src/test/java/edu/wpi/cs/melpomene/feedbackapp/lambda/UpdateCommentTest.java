@@ -19,7 +19,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class UpdateSnippetTest extends LambdaTest{
+public class UpdateCommentTest extends LambdaTest{
 
     private static UpdateSnippetRequest input;
 

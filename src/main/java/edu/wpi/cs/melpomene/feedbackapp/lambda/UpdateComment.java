@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import edu.wpi.cs.melpomene.feedbackapp.db.SnippetsDAO;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
-public class UpdateComments {
+public class UpdateComment {
 //	public void addComment() {
 //		// How to tell which snippet I'm referencing?
 //		Snippet snippet = dao.getSnippet(snippetID);

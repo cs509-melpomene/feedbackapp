@@ -30,9 +30,7 @@ public class SnippetsDAO {
     }
 
     public Snippet getSnippet(String snippetID) throws Exception {
-        
         try {
-            
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + snippetTable + " WHERE snippetID=?;");
             ps.setString(1,  snippetID);
             ResultSet resultSet = ps.executeQuery();
@@ -50,10 +48,24 @@ public class SnippetsDAO {
         }
     }
     
-    public boolean updateSnippet(String snippetID, String code, String field) throws Exception {
+    public boolean updateCode(String snippetID, String code, String field) throws Exception {
         try {
         	PreparedStatement ps = conn.prepareStatement("UPDATE " + snippetTable + " SET " + field + " = ? WHERE snippetID = ?;");
         	ps.setString(1,  code);
+        	ps.setString(2,  snippetID);
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return (numAffected == 1);
+        } catch (Exception e) {
+            throw new Exception("Failed to update report: " + e.getMessage());
+        }
+    }
+    
+    public boolean updateInfo(String snippetID, String info, String field) throws Exception {
+        try {
+        	PreparedStatement ps = conn.prepareStatement("UPDATE " + snippetTable + " SET " + field + " = ? WHERE snippetID = ?;");
+        	ps.setString(1,  info);
         	ps.setString(2,  snippetID);
             int numAffected = ps.executeUpdate();
             ps.close();
@@ -105,7 +117,6 @@ public class SnippetsDAO {
     }
 
     public ArrayList<Snippet> getAllSnippets() throws Exception {
-        
         try {
         	Statement statement = conn.createStatement();
             String query = "SELECT * FROM " + snippetTable + ";";
@@ -138,5 +149,4 @@ public class SnippetsDAO {
         Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, URL, commentIDs);
 		return snippet;
     }
-
 }

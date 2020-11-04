@@ -18,6 +18,12 @@ public class UpdateSnippetResponse {
 		this.httpCode = 200;
 	}
 	
+	public UpdateSnippetResponse (Snippet snippet, String error) {
+		this.snippet = snippet;
+		this.error = error;
+		this.httpCode = 200;
+	}
+	
 	/**
 	 * Create failure response.
 	 * @param error
