@@ -42,7 +42,12 @@
 			</div>
 			<div class="col-md-5" style="border-style: solid none solid none;">
 				<br>
-				<label>Code: </label><br><textarea id="text" oninput="codeFunction()" rows="25" cols="68"></textarea><br>
+				<label>Code: </label><br>
+				<div class="highlightWrapper" id="highlightWrapper">
+					<div class="highlight" id="highlight"></div>
+				</div>
+				<textarea class="snippetText" id="text" oninput="codeFunction()"></textarea>
+				<br>
 			</div>
 			<div class="commentSidebar" style="border-style: solid;">
 				<br>
@@ -58,37 +63,37 @@
 				</form>
 				</div>
 				<div id="comments">
-					<div class="singleComment" onclick="clickedComment(123)">
+					<div class="singleComment">
 						<div class="commentColumn">UniqueID:</div>
 						<div class="commentColumn">sdljf489</div>
 						<div class="commentColumn">Timestamp:</div>
 						<div class="commentColumn">s;odfj8943</div>
 						<div class="commentFormColumnLabel">Start Region:</div>
-						<div class="commentFormColumnInput">3</div>
+						<div class="commentFormColumnInput regionStart">3</div>
 						<div class="commentFormColumnLabel">End Region:</div>
-						<div class="commentFormColumnInput">11</div>
+						<div class="commentFormColumnInput regionEnd">5</div>
 						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 					</div>
-					<div class="singleComment" onclick="clickedComment(456)">
+					<div class="singleComment">
 						<div class="commentColumn">UniqueID:</div>
 						<div class="commentColumn">sdljf489</div>
 						<div class="commentColumn">Timestamp:</div>
 						<div class="commentColumn">s;odfj8943</div>
 						<div class="commentFormColumnLabel">Start Region:</div>
-						<div class="commentFormColumnInput">3</div>
+						<div class="commentFormColumnInput regionStart">6</div>
 						<div class="commentFormColumnLabel">End Region:</div>
-						<div class="commentFormColumnInput">11</div>
+						<div class="commentFormColumnInput regionEnd">10</div>
 						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 					</div>
-					<div class="singleComment" onclick="clickedComment(789)">
+					<div class="singleComment">
 						<div class="commentColumn">UniqueID:</div>
 						<div class="commentColumn">sdljf489</div>
 						<div class="commentColumn">Timestamp:</div>
 						<div class="commentColumn">s;odfj8943</div>
 						<div class="commentFormColumnLabel">Start Region:</div>
-						<div class="commentFormColumnInput">3</div>
+						<div class="commentFormColumnInput regionStart">4</div>
 						<div class="commentFormColumnLabel">End Region:</div>
-						<div class="commentFormColumnInput">11</div>
+						<div class="commentFormColumnInput regionEnd">7</div>
 						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 					</div>
 				</div>
@@ -106,8 +111,46 @@ function submitComment(){
 	console.log("Submiting Comment")
 }
 
-function clickedComment(id){
-	console.log("Clicking Comment: " + id)
+function getRegionValue(child, regionName){
+	let region = child.getElementsByClassName(regionName);
+	region = region[0].innerHTML;
+	console.log(regionName + region);
+	return parseInt(region);
+}
+
+let comments = document.getElementById("comments");
+let children = comments.childNodes;
+[].forEach.call(children, function(child) {
+	if (child.nodeType == Node.TEXT_NODE)
+		return;
+
+	let regionStart = getRegionValue(child, "regionStart");
+	let regionEnd = getRegionValue(child, "regionEnd");
+
+	child.onclick = clickedCommentFunc(regionStart,regionEnd)
+});
+
+let enabled = false
+
+function clickedCommentFunc(originalRegionStart, originalRegionEnd){
+	return function() {
+		if (enabled) {
+			regionStart = 0
+			regionEnd = 0
+		}
+		else {
+			regionStart = originalRegionStart
+			regionEnd = originalRegionEnd
+		}
+		console.log("Clicking Comment: " + regionStart + " " + regionEnd)
+		let lines = regionEnd - regionStart
+		let highlightDiv = document.getElementById("highlight");
+		let highlightDivHeight = 24.3;
+		highlightDiv.style.height = highlightDivHeight * lines
+		highlightDiv.style.top = highlightDivHeight * regionStart
+
+		enabled = !enabled
+	}
 }
 
 function codeFunction() {
