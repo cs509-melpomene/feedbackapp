@@ -47,14 +47,16 @@
 			<div class="commentSidebar" style="border-style: solid;">
 				<br>
 				<label>Comments: </label><br>
+				<div class="singleComment">
 				<form action="">
-					<label for="regionStart">Start Region:</label>
-					<input type="text" id="regionStartID" name="regionStart"><br>
-					<label for="regionEnd">End Region:</label>
-					<input type="text" id="regionEndID" name="regionEnd"><br>
-					<textarea rows="10" cols="30" id="comment"></textarea><br>
-					<input type="submit" formmethod="post" onclick="submitComment()"/><br>
+					<label class="commentFormColumnLabel" for="regionStart">Start Region:</label>
+					<input class="commentFormColumnInput" type="text" id="regionStartID" name="regionStart">
+					<label class="commentFormColumnLabel" for="regionEnd">End Region:</label>
+					<input class="commentFormColumnInput" type="text" id="regionEndID" name="regionEnd">
+					<textarea class="columnFormText" id="comment"></textarea><br>
+					<input class="submitColumnButton" type="submit" formmethod="post" onclick="submitComment()"/><br>
 				</form>
+				</div>
 				<div id="comments">
 					<div class="singleComment" onclick="clickedComment(123)">
 						<div class="commentColumn">UniqueID:</div>
