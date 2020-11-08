@@ -8,3 +8,28 @@
 #adminPassLabel{
 	font-size: 21px;
 }
+
+.commentSidebar {
+  float: left;
+  width: 25%;
+  height: 700px;
+  overflow-y: scroll;
+}
+
+.singleComment {
+  background-color: rgb(200,200,200);
+  width: 90%;
+  height: 200px;
+  margin: 5%;
+}
+
+.commentColumn {
+  float: left;
+  width: 50%;
+}
+
+.commentText {
+  width: 100%;
+  height: 100px;
+  overflow-y: scroll;
+}

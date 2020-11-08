@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 	<link rel="stylesheet" href="mainGrid.css"/>
 	<link rel="icon" type="image/png" href="favicon.png"/>
+	<link rel="stylesheet" href="main.css" />
 	<title>Feedback Application</title>
 </head>
 
@@ -26,7 +27,7 @@
                     ?>><br>
 					<div>
                     </div>
-					<label>Information:</label<br><textarea rows="20" cols="30" id="info"
+					<label>Information:</label><br><textarea rows="15" cols="30" id="info"
 					    <?php
                             if (strcmp($_POST["isCreator"] , "true" ) != 0){
                               echo("readonly");
@@ -41,13 +42,54 @@
 			</div>
 			<div class="col-md-5" style="border-style: solid none solid none;">
 				<br>
-				<label>Code: </label><br><textarea id="text" oninput="codeFunction()" rows="27" cols="68"></textarea><br>
+				<label>Code: </label><br><textarea id="text" oninput="codeFunction()" rows="25" cols="68"></textarea><br>
 			</div>
-			<div class="col-md-3" style="border-style: solid;">
+			<div class="commentSidebar" style="border-style: solid;">
 				<br>
-				<label>Comments: </label><br><textarea rows="27" cols="30" id="comment"></textarea><br>
-				<br>
-				<br>
+				<label>Comments: </label><br>
+				<form action="">
+					<label for="regionStart">Start Region:</label>
+					<input type="text" id="regionStartID" name="regionStart"><br>
+					<label for="regionEnd">End Region:</label>
+					<input type="text" id="regionEndID" name="regionEnd"><br>
+					<textarea rows="10" cols="30" id="comment"></textarea><br>
+					<input type="submit" formmethod="post" onclick="submitComment()"/><br>
+				</form>
+				<div id="comments">
+					<div class="singleComment" onclick="clickedComment(123)">
+						<div class="commentColumn">UniqueID:</div>
+						<div class="commentColumn">sdljf489</div>
+						<div class="commentColumn">Timestamp:</div>
+						<div class="commentColumn">s;odfj8943</div>
+						<div class="commentColumn">Start Region:</div>
+						<div class="commentColumn">3</div>
+						<div class="commentColumn">End Region:</div>
+						<div class="commentColumn">11</div>
+						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+					</div>
+					<div class="singleComment" onclick="clickedComment(456)">
+						<div class="commentColumn">UniqueID:</div>
+						<div class="commentColumn">sdljf489</div>
+						<div class="commentColumn">Timestamp:</div>
+						<div class="commentColumn">s;odfj8943</div>
+						<div class="commentColumn">Start Region:</div>
+						<div class="commentColumn">3</div>
+						<div class="commentColumn">End Region:</div>
+						<div class="commentColumn">11</div>
+						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+					</div>
+					<div class="singleComment" onclick="clickedComment(789)">
+						<div class="commentColumn">UniqueID:</div>
+						<div class="commentColumn">sdljf489</div>
+						<div class="commentColumn">Timestamp:</div>
+						<div class="commentColumn">s;odfj8943</div>
+						<div class="commentColumn">Start Region:</div>
+						<div class="commentColumn">3</div>
+						<div class="commentColumn">End Region:</div>
+						<div class="commentColumn">11</div>
+						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -57,6 +99,15 @@
 function deleteSnippet(){
 
 }
+
+function submitComment(){
+	console.log("Submiting Comment")
+}
+
+function clickedComment(id){
+	console.log("Clicking Comment: " + id)
+}
+
 function codeFunction() {
   httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/<?php echo($_GET["snippetID"])?>', true);
