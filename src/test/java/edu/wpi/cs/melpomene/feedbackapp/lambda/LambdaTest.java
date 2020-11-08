@@ -14,7 +14,7 @@ public abstract class LambdaTest {
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		try {
-			DatabaseUtilHelper.createTable();
+			DatabaseUtilHelper.createTables();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -22,6 +22,6 @@ public abstract class LambdaTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		DatabaseUtilHelper.dropTable();
+		DatabaseUtilHelper.dropTables();
 	}
 }

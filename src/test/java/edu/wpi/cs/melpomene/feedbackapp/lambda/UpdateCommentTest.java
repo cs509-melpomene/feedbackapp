@@ -59,7 +59,7 @@ public class UpdateCommentTest extends LambdaTest{
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
         UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "update", "", "whatever");
+        input = new UpdateSnippetRequest(csResponse.snippetID, "update", null, "whatever");
         
         UpdateSnippetResponse response = handler.handleRequest(input, ctx);
         
