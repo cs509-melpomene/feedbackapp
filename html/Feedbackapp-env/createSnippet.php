@@ -63,10 +63,10 @@
 						<div class="commentColumn">sdljf489</div>
 						<div class="commentColumn">Timestamp:</div>
 						<div class="commentColumn">s;odfj8943</div>
-						<div class="commentColumn">Start Region:</div>
-						<div class="commentColumn">3</div>
-						<div class="commentColumn">End Region:</div>
-						<div class="commentColumn">11</div>
+						<div class="commentFormColumnLabel">Start Region:</div>
+						<div class="commentFormColumnInput">3</div>
+						<div class="commentFormColumnLabel">End Region:</div>
+						<div class="commentFormColumnInput">11</div>
 						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 					</div>
 					<div class="singleComment" onclick="clickedComment(456)">
@@ -74,10 +74,10 @@
 						<div class="commentColumn">sdljf489</div>
 						<div class="commentColumn">Timestamp:</div>
 						<div class="commentColumn">s;odfj8943</div>
-						<div class="commentColumn">Start Region:</div>
-						<div class="commentColumn">3</div>
-						<div class="commentColumn">End Region:</div>
-						<div class="commentColumn">11</div>
+						<div class="commentFormColumnLabel">Start Region:</div>
+						<div class="commentFormColumnInput">3</div>
+						<div class="commentFormColumnLabel">End Region:</div>
+						<div class="commentFormColumnInput">11</div>
 						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 					</div>
 					<div class="singleComment" onclick="clickedComment(789)">
@@ -85,10 +85,10 @@
 						<div class="commentColumn">sdljf489</div>
 						<div class="commentColumn">Timestamp:</div>
 						<div class="commentColumn">s;odfj8943</div>
-						<div class="commentColumn">Start Region:</div>
-						<div class="commentColumn">3</div>
-						<div class="commentColumn">End Region:</div>
-						<div class="commentColumn">11</div>
+						<div class="commentFormColumnLabel">Start Region:</div>
+						<div class="commentFormColumnInput">3</div>
+						<div class="commentFormColumnLabel">End Region:</div>
+						<div class="commentFormColumnInput">11</div>
 						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 					</div>
 				</div>
