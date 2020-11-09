@@ -38,14 +38,17 @@
 
 			</div>
 			<div class="col-md-1" style="border-style: solid none solid none; text-align: right;">
+				<br>
+				<br>
+				<textarea readonly id="numbers" class="numbers" cols="1" rows="27" style="padding-top: 10px; overflow: scroll; vertical-align: right; border-style: none; border-color: Transparent; overflow: auto;"><?php for($i = 1; $i <= 500; $i++){echo $i; echo ("\n");}?></textarea>
 			</div>
 			<div class="col-md-5" style="border-style: solid none solid none;">
 				<br>
-				<label>Code: </label><br><textarea id="text" oninput="codeFunction()" rows="27" cols="68"></textarea><br>
+				<label>Code: </label><textarea class="text" id="text" oninput="codeFunction()" rows="27" cols="68" ></textarea><br>
 			</div>
 			<div class="col-md-3" style="border-style: solid;">
 				<br>
-				<label>Comments: </label><br><textarea rows="27" cols="30" id="comment"></textarea><br>
+				<label>Comments: </label><br><textarea rows="27" cols="30" id="comment" style="overflow: scroll;" onscroll="OnScroll(this)"></textarea><br>
 				<br>
 				<br>
 			</div>
@@ -54,9 +57,19 @@
 	</form>
 </body>
 <script>
+
 function deleteSnippet(){
 
 }
+var s1 = document.getElementById('numbers');
+var s2 = document.getElementById('text');
+
+function select_scroll_1(e) { s2.scrollTop = s1.scrollTop; }
+function select_scroll_2(e) { s1.scrollTop = s2.scrollTop; }
+
+s1.addEventListener('scroll', select_scroll_1, false);
+s2.addEventListener('scroll', select_scroll_2, false);
+
 function codeFunction() {
   httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/<?php echo($_GET["snippetID"])?>', true);
@@ -99,11 +112,11 @@ function nameOfTheFunction2() {
 			window.location.href = ('./notfound.php');
 			return;
 		}
-		
+
 		document.getElementById("text").value = obj['snippet']['text'];
 		document.getElementById("timestampDiv").innerHTML = obj['snippet']['timestamp'];
 		document.getElementById("Planguage").value = obj['snippet']['codingLanguage'];
-		
+
 		console.log("success")
       } else {
         console.log("status: " + httpRequest1.status)
