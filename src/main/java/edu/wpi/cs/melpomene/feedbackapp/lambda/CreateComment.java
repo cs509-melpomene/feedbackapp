@@ -7,11 +7,15 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import edu.wpi.cs.melpomene.feedbackapp.db.SnippetsDAO;
+import edu.wpi.cs.melpomene.feedbackapp.db.CommentsDAO;
 import edu.wpi.cs.melpomene.feedbackapp.db.DatabaseUtil;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentRequest;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.model.Comment;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
-public class CreateComment implements RequestHandler<Object, CreateSnippetResponse> {
+public class CreateComment implements RequestHandler<CreateCommentRequest, CreateCommentResponse> {
 
     static final int ID_LENGTH = 16;
     static final int HEX_MAX_DECIMAL = 16;
@@ -38,35 +42,33 @@ public class CreateComment implements RequestHandler<Object, CreateSnippetRespon
      * @return
      * @throws Exception if a unique id could not be constructed within 10 tries
      */
-    public String createUniqueID() throws Exception {
-    	SnippetsDAO dao = new SnippetsDAO();
+    public String createUniqueID(String snippetID) throws Exception {
+    	CommentsDAO dao = new CommentsDAO();
     	for(int i = 0; i < MAX_UNIQUE_ID_TRIES; i++) {
-			String newSnippetID = createID();
-	        if (dao.getSnippet(newSnippetID) == null) {
-	        	return newSnippetID;
+			String newCommentID = createID();
+	        if (dao.getComment(newCommentID, snippetID) == null) {
+	        	return newCommentID;
 	        }
     	}
     	throw new Exception("A unique ID could not be constructed within " + MAX_UNIQUE_ID_TRIES + " tries!");
     }
 
     @Override
-    public CreateSnippetResponse handleRequest(Object input, Context context) {
-        CreateSnippetResponse response = null;
+    public CreateCommentResponse handleRequest(CreateCommentRequest input, Context context) {
+        CreateCommentResponse response = null;
         try {
-           String snippetID = createUniqueID();
-           String creatorPassword = createID();
-           String viewerPassword = createID();
-           Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword);
-           SnippetsDAO dao = new SnippetsDAO();
-           Snippet snippetFromDB = dao.getSnippet(snippetID);
-           if (snippetFromDB == null) {
-        	   dao.addSnippet(snippet);
-        	   response = new CreateSnippetResponse(snippetID, creatorPassword, viewerPassword);
-        	   context.getLogger().log(String.format("CreateSnippetResponse Success: snippetID: %s, creatorPassword: %s, viewerPassword: %s\n", response.getSnippetID(), response.getCreatorPassword(), response.getViewerPassword()));
+           String commentID = createUniqueID(input.snippetID);
+           Comment comment = new Comment(commentID, input.snippetID, input.startLine, input.endLine);
+           CommentsDAO dao = new CommentsDAO();
+           Comment commentFromDB = dao.getComment(commentID, input.snippetID);
+           if (commentFromDB == null) {
+        	   dao.addComment(comment);
+        	   response = new CreateCommentResponse(commentID);
+        	   context.getLogger().log(String.format("CreateCommentResponse Success: snippetID: %s, commentID: %s, startLine: %i, endLine: %i\n", response.getSnippetID(), response.getCommentID(), response.getStartLine(), response.getEndLine()));
            }
        } catch (Exception e) {
-	       context.getLogger().log(String.format("CreateSnippetResponse Failure: %s", e.getMessage()));
-	       response = new CreateSnippetResponse(e.getMessage());
+	       context.getLogger().log(String.format("CreateCommentResponse Failure: %s", e.getMessage()));
+	       response = new CreateCommentResponse(e.getMessage());
        }
 
        return response;

@@ -18,7 +18,6 @@ public class SnippetsDAO {
 	java.sql.Connection conn;
 	
 	final String snippetTable = "Snippet";   // Exact capitalization
-	final String commentTable = "SnippetComment";
 
     public SnippetsDAO() {
     	try  {

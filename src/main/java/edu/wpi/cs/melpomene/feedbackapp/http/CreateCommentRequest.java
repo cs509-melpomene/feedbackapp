@@ -9,6 +9,8 @@ package edu.wpi.cs.melpomene.feedbackapp.http;
 public class CreateCommentRequest {
 	
 	public final String snippetID;
+	public final int startLine;
+	public final int endLine;
 	
 	/**
 	 * Create success response.
@@ -17,10 +19,14 @@ public class CreateCommentRequest {
 
 	public CreateCommentRequest() {
 		this.snippetID = "";
+		this.startLine = 0;
+		this.endLine = 0;
 	}
 	
-	public CreateCommentRequest(String snippetID) {
+	public CreateCommentRequest(String snippetID, int startLine, int endLine) {
 		this.snippetID = snippetID;
+		this.startLine = startLine;
+		this.endLine = endLine;
 	}
 	
 	public String toString() {
