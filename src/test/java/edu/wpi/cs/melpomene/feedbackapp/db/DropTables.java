@@ -9,11 +9,11 @@ import java.sql.SQLException;
 
 import edu.wpi.cs.melpomene.feedbackapp.db.DatabaseUtil;
 
-public class CreateTable {
+public class DropTables {
 
 	public static void main(String[] args) {
 		try {
-			DatabaseUtilHelper.createTable();
+			DatabaseUtilHelper.dropTables();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

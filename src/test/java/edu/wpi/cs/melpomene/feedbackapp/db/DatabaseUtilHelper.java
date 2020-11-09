@@ -32,41 +32,31 @@ public class DatabaseUtilHelper {
 		return sb.toString();
 	}
 	
-	public static void createTable() throws Exception {
+	public static void createTables() throws Exception {
 		PreparedStatement ps;
 		try {
 			Connection conn = DatabaseUtil.connect();
 			
 			ps = conn.prepareStatement(readFile());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 			throw new Exception("createTable: " + e.getMessage());
 		}
         ps.execute();
 	}
 	
-	public static void dropTable() throws Exception {
+	public static void dropTables() throws Exception {
 		PreparedStatement ps;
 		try {
 			Connection conn = DatabaseUtil.connect();
+			ps = conn.prepareStatement("DROP TABLE SnippetComment");
+	        ps.execute();
 			ps = conn.prepareStatement("DROP TABLE Snippet");
+	        ps.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 			throw new Exception("createTable: " + e.getMessage());
 		}
-        ps.execute();
-        
-//        try {
-//			Connection conn = DatabaseUtil.connect();
-//			ps = conn.prepareStatement("DROP TABLE Snippet");
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			//e.printStackTrace();
-//			throw new Exception("createTable: " + e.getMessage());
-//		}
-//        ps.execute();
 	}
 
 }
