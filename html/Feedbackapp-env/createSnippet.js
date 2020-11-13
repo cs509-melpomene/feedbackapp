@@ -45,6 +45,7 @@ comments.innerHTML += generateCommentString(2, "10:50", 4, 10, longStr);
 longStr = "tire"; for(let i = 0; i < 10; i++) {longStr += longStr}
 comments.innerHTML += generateCommentString(3, "10:55", 4, 10, longStr);
 comments.innerHTML += generateCommentString(4, "10:51", 2, 4, "haha");
+comments.innerHTML += generateCommentString(5, "10:51", 30, 32, "bottom");
 addOnClickToComments();
 
 function addOnClickToComments() {
@@ -67,9 +68,18 @@ function reportWindowSize() {
 	console.log(window.innerWidth);
 	let textE = document.getElementById("text")
 	let style = getComputedStyle(textE);
-	console.log(style.width)
+    console.log(style.width)
+    
+    // set up width of text highlight element
 	let highlightDiv = document.getElementById("highlight");
-	highlightDiv.style.width = style.width;
+    highlightDiv.style.width = style.width;
+    
+    
+    // set up width and height of top highlight mask element
+    console.log("offsetTop " + textE.offsetTop);
+    let highlightMaskTopE = document.getElementById("highlightMaskTop")
+    highlightMaskTopE.style.height = textE.offsetTop;
+    highlightMaskTopE.style.width = style.width;
 }
 
 window.onresize = reportWindowSize;

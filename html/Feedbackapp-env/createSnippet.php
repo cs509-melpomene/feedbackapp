@@ -41,6 +41,9 @@
 			<div class="col-md-1" style="border-style: solid none solid none; text-align: right;">
 			</div>
 			<div class="col-md-5" id="snippetTextPanel" style="border-style: solid none solid none;">
+				<div class="highlightWrapper" id="highlightWrapper">
+					<div class="highlightMaskTop" id="highlightMaskTop"></div>
+				</div>
 				<br>
 				<label>Code: </label><br>
 				<div class="highlightWrapper" id="highlightWrapper">
