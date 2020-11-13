@@ -85,11 +85,18 @@ function getRegionValue(child, regionName){
 	return parseInt(region);
 }
 
+function getCommentUniqueID(child){
+	let commentUniqueIDDiv = child.getElementsByClassName("commentUniqueID");
+	commentUniqueID = commentUniqueIDDiv[0].innerHTML;
+	console.log("commentUniqueID " + commentUniqueID);
+	return commentUniqueID;
+}
+
 function generateCommentString(uniqueID, timestamp, startRegion, endRegion, text) {
 	let commentStr = `
 		<div class="singleComment">
 			<div class="commentColumn">UniqueID:</div>
-			<div class="commentColumn">${uniqueID}</div>
+			<div class="commentColumn commentUniqueID">${uniqueID}</div>
 			<div class="commentColumn">Timestamp:</div>
 			<div class="commentColumn">${timestamp}</div>
 			<div class="commentFormColumnLabel">Start Region:</div>
@@ -119,15 +126,31 @@ function addOnClickToComments() {
 		if (child.nodeType == Node.TEXT_NODE)
 			return;
 
+		let commentUniqueID = getCommentUniqueID(child);
 		let regionStart = getRegionValue(child, "regionStart");
 		let regionEnd = getRegionValue(child, "regionEnd");
 
-		child.onclick = clickedCommentFunc(regionStart,regionEnd)
+		child.onclick = clickedCommentFunc(child, commentUniqueID, regionStart,regionEnd)
 	});
 }
 
+function reportWindowSize() {
+	console.log(window.innerHeight);
+	console.log(window.innerWidth);
+	let textE = document.getElementById("text")
+	let style = getComputedStyle(textE);
+	console.log(style.width)
+	let highlightDiv = document.getElementById("highlight");
+	highlightDiv.style.width = style.width;
+}
+
+window.onresize = reportWindowSize;
+reportWindowSize()
+
 let commentEnabled = false
 let originalHighlightDivTop = 0;
+let currentCommentUniqueID = "";
+let currentChild = null;
 
 // set highlight div top relative to scroll bar
 function setHighlightDivTop() {
@@ -144,32 +167,48 @@ function setHighlightDivTop() {
 	highlightDiv.style.top = originalHighlightDivTop - scrollTop
 }
 
-function clickedCommentFunc(originalRegionStart, originalRegionEnd){
+function changeHighlightComment(enableHighlight, child) {
+	if (child == null) {
+		return;
+	}
+
+	let newRGB = enableHighlight ? "rgb(255, 255, 0)" : "rgb(200,200,200)";
+	let style = getComputedStyle(child);
+	console.log("style.backgroundColor " + style.backgroundColor);
+	child.style.backgroundColor = newRGB;
+}
+
+function clickedCommentFunc(child, commentUniqueID, originalRegionStart, originalRegionEnd){
 	return function() {
-		// get expected highlight div top to compare with
-		let highlightDivHeight = 24.3;
-		let comparison = highlightDivHeight * originalRegionStart
+
+		changeHighlightComment(false, currentChild)
 		
 		// set enabled to false if highlight is enabled for a different comment
 		// already and we want to switch to the new comment instead
-		let isSameComment = Math.abs(originalHighlightDivTop - comparison) < 0.1;
+		let isSameComment = (currentCommentUniqueID == commentUniqueID)
 		if (commentEnabled && isSameComment) {
 			regionStart = 0
 			regionEnd = 0
-			enabled = false;
+			commentEnabled = false;
 		}
 		else {
 			regionStart = originalRegionStart
 			regionEnd = originalRegionEnd
 			commentEnabled = true;
+			changeHighlightComment(true, child);
 		}
+		
 		let lines = regionEnd - regionStart;
 		console.log("Clicking Comment: " + regionStart + " " + regionEnd)
 
 		let highlightDiv = document.getElementById("highlight");
 		let highlightDivTop = parseFloat(highlightDiv.style.top);
+		let highlightDivHeight = 24.3;
+		
 		highlightDiv.style.height = highlightDivHeight * lines
 		originalHighlightDivTop = highlightDivHeight * regionStart
+		currentCommentUniqueID = commentUniqueID
+		currentChild = child
 		setHighlightDivTop();
 	}
 }
