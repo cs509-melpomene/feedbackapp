@@ -35,12 +35,15 @@ function nameOfTheFunction() {
       if (httpRequest.status === 200) {
 		console.log("responseText: " + httpRequest.responseText)
 		const obj = JSON.parse(httpRequest.responseText);
+      if (obj['httpCode'] !== 200) {
+         console.log('Failed to create snippet.')
+         return;
+      }
 		console.log("snippetID " + obj.snippetID);
       console.log("form " + document.getElementById("form").action);
       document.getElementById("form").action = document.getElementById("form").action + obj.snippetID;
       console.log("form " + document.getElementById("form").action);
       document.getElementById("form").submit();
-		//window.location.href = ('./createSnippet.php?snippetID=' + obj.snippetID);
       } else {
         console.log("status: " + httpRequest.status)
       }

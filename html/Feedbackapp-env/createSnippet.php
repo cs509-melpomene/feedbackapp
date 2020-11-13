@@ -13,7 +13,7 @@
     <form>
 	<div class="container-fluid">
 		<div class="row" >
-			<div class="col-md-3" style="border-style: solid;">
+			<div class="col-md-3" id="snippetInfoSidePanel" style="border-style: solid;">
 				<br>
 					Unique ID: <?php echo($_GET["snippetID"])?><br>
 					<a href="http://feedbackapp-env.eba-9ipq52ps.us-east-2.elasticbeanstalk.com/createSnippet.php?snippetID=<?php echo($_GET["snippetID"])?>" target="_blank">Click to open Viewer Screen</a>
@@ -40,16 +40,16 @@
 			</div>
 			<div class="col-md-1" style="border-style: solid none solid none; text-align: right;">
 			</div>
-			<div class="col-md-5" style="border-style: solid none solid none;">
+			<div class="col-md-5" id="snippetTextPanel" style="border-style: solid none solid none;">
 				<br>
 				<label>Code: </label><br>
 				<div class="highlightWrapper" id="highlightWrapper">
 					<div class="highlight" id="highlight"></div>
 				</div>
-				<textarea class="snippetText" id="text" oninput="codeFunction()"></textarea>
+				<textarea class="snippetText" id="text" oninput="codeFunction()" onscroll="codeScrolling()"></textarea>
 				<br>
 			</div>
-			<div class="commentSidebar" style="border-style: solid;">
+			<div class="commentSidebar" id="commentSidebar" style="border-style: solid;">
 				<br>
 				<label>Comments: </label><br>
 				<div class="singleComment">
@@ -63,39 +63,6 @@
 				</form>
 				</div>
 				<div id="comments">
-					<div class="singleComment">
-						<div class="commentColumn">UniqueID:</div>
-						<div class="commentColumn">sdljf489</div>
-						<div class="commentColumn">Timestamp:</div>
-						<div class="commentColumn">s;odfj8943</div>
-						<div class="commentFormColumnLabel">Start Region:</div>
-						<div class="commentFormColumnInput regionStart">3</div>
-						<div class="commentFormColumnLabel">End Region:</div>
-						<div class="commentFormColumnInput regionEnd">5</div>
-						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-					</div>
-					<div class="singleComment">
-						<div class="commentColumn">UniqueID:</div>
-						<div class="commentColumn">sdljf489</div>
-						<div class="commentColumn">Timestamp:</div>
-						<div class="commentColumn">s;odfj8943</div>
-						<div class="commentFormColumnLabel">Start Region:</div>
-						<div class="commentFormColumnInput regionStart">6</div>
-						<div class="commentFormColumnLabel">End Region:</div>
-						<div class="commentFormColumnInput regionEnd">10</div>
-						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-					</div>
-					<div class="singleComment">
-						<div class="commentColumn">UniqueID:</div>
-						<div class="commentColumn">sdljf489</div>
-						<div class="commentColumn">Timestamp:</div>
-						<div class="commentColumn">s;odfj8943</div>
-						<div class="commentFormColumnLabel">Start Region:</div>
-						<div class="commentFormColumnInput regionStart">4</div>
-						<div class="commentFormColumnLabel">End Region:</div>
-						<div class="commentFormColumnInput regionEnd">7</div>
-						<div class="commentText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,<br><br><br> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -118,39 +85,99 @@ function getRegionValue(child, regionName){
 	return parseInt(region);
 }
 
+function generateCommentString(uniqueID, timestamp, startRegion, endRegion, text) {
+	let commentStr = `
+		<div class="singleComment">
+			<div class="commentColumn">UniqueID:</div>
+			<div class="commentColumn">${uniqueID}</div>
+			<div class="commentColumn">Timestamp:</div>
+			<div class="commentColumn">${timestamp}</div>
+			<div class="commentFormColumnLabel">Start Region:</div>
+			<div class="commentFormColumnInput regionStart">${startRegion}</div>
+			<div class="commentFormColumnLabel">End Region:</div>
+			<div class="commentFormColumnInput regionEnd">${endRegion}</div>
+			<div class="commentText">${text}</div>
+		</div>
+	`
+	console.log("new comment: " + commentStr);
+	return commentStr;
+}
+
 let comments = document.getElementById("comments");
-let children = comments.childNodes;
-[].forEach.call(children, function(child) {
-	if (child.nodeType == Node.TEXT_NODE)
-		return;
+comments.innerHTML += generateCommentString(1, "10:23", 3, 5, "blah");
+let longStr = "where "; for(let i = 0; i < 10; i++) {longStr += longStr}
+comments.innerHTML += generateCommentString(2, "10:50", 4, 10, longStr);
+longStr = "tire"; for(let i = 0; i < 10; i++) {longStr += longStr}
+comments.innerHTML += generateCommentString(3, "10:55", 4, 10, longStr);
+comments.innerHTML += generateCommentString(4, "10:51", 2, 4, "haha");
+addOnClickToComments();
 
-	let regionStart = getRegionValue(child, "regionStart");
-	let regionEnd = getRegionValue(child, "regionEnd");
+function addOnClickToComments() {
+	let comments = document.getElementById("comments");
+	let children = comments.childNodes;
+	[].forEach.call(children, function(child) {
+		if (child.nodeType == Node.TEXT_NODE)
+			return;
 
-	child.onclick = clickedCommentFunc(regionStart,regionEnd)
-});
+		let regionStart = getRegionValue(child, "regionStart");
+		let regionEnd = getRegionValue(child, "regionEnd");
 
-let enabled = false
+		child.onclick = clickedCommentFunc(regionStart,regionEnd)
+	});
+}
+
+let commentEnabled = false
+let originalHighlightDivTop = 0;
+
+// set highlight div top relative to scroll bar
+function setHighlightDivTop() {
+	// get scroll y position
+	let textE = document.getElementById("text")
+	let scrollTop = textE.scrollTop;
+	console.log("scrollTop: " + scrollTop);
+
+	// get highlight div
+	let highlightDiv = document.getElementById("highlight");
+	let highlightDivTop = parseFloat(highlightDiv.style.top);
+
+	// set highlight div top to correct value
+	highlightDiv.style.top = originalHighlightDivTop - scrollTop
+}
 
 function clickedCommentFunc(originalRegionStart, originalRegionEnd){
 	return function() {
-		if (enabled) {
+		// get expected highlight div top to compare with
+		let highlightDivHeight = 24.3;
+		let comparison = highlightDivHeight * originalRegionStart
+		
+		// set enabled to false if highlight is enabled for a different comment
+		// already and we want to switch to the new comment instead
+		let isSameComment = Math.abs(originalHighlightDivTop - comparison) < 0.1;
+		if (commentEnabled && isSameComment) {
 			regionStart = 0
 			regionEnd = 0
+			enabled = false;
 		}
 		else {
 			regionStart = originalRegionStart
 			regionEnd = originalRegionEnd
+			commentEnabled = true;
 		}
+		let lines = regionEnd - regionStart;
 		console.log("Clicking Comment: " + regionStart + " " + regionEnd)
-		let lines = regionEnd - regionStart
-		let highlightDiv = document.getElementById("highlight");
-		let highlightDivHeight = 24.3;
-		highlightDiv.style.height = highlightDivHeight * lines
-		highlightDiv.style.top = highlightDivHeight * regionStart
 
-		enabled = !enabled
+		let highlightDiv = document.getElementById("highlight");
+		let highlightDivTop = parseFloat(highlightDiv.style.top);
+		highlightDiv.style.height = highlightDivHeight * lines
+		originalHighlightDivTop = highlightDivHeight * regionStart
+		setHighlightDivTop();
 	}
+}
+
+// adjust highlight div top as user scrolls
+function codeScrolling() {
+	console.log("scrolling");
+	setHighlightDivTop();
 }
 
 function codeFunction() {
@@ -192,7 +219,18 @@ function nameOfTheFunction2() {
 		console.log("responseText: " + httpRequest1.responseText)
 		const obj = JSON.parse(httpRequest1.responseText);
 		if (obj['snippet'] === undefined) {
-			window.location.href = ('./notfound.php');
+			let commentSidebarDiv = document.getElementById("commentSidebar");
+			let snippetInfoSidePanelDiv = document.getElementById("snippetInfoSidePanel");
+			commentSidebarDiv.innerHTML = "";
+			snippetInfoSidePanelDiv.innerHTML = "";
+
+			let snippetNotFoundHTML = `
+				<div class="snippetNotFoundText">
+						Snippet ID <?php echo($_GET["snippetID"])?> not found!
+				</div>
+			`;
+			let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
+			snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
 			return;
 		}
 		
