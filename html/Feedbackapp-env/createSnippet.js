@@ -130,8 +130,8 @@ function clickedCommentFunc(child, commentUniqueID, originalRegionStart, origina
 			commentEnabled = false;
 		}
 		else {
-			regionStart = originalRegionStart
-			regionEnd = originalRegionEnd
+			regionStart = originalRegionStart - 1 // inclusive of region start
+			regionEnd = originalRegionEnd // already inclusive of region end
 			commentEnabled = true;
 			changeHighlightComment(true, child);
 		}
@@ -165,12 +165,13 @@ function codeFunction() {
   httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
   httpRequest.setRequestHeader('Content-Type', 'application/json');
-  let body = document.getElementById("text").value;
-  body = body.replace(/\n/g,"\\n").replace(/\r/g,"\\r").replace(/\"/g,'\\"')
+  let bodyOrg = document.getElementById("text").value;
+  body = bodyOrg.replace(/\n/g,"\\n").replace(/\r/g,"\\r").replace(/\"/g,'\\"')
   body = '{"action":"update","text":"' + body + '"}';
   console.log(body);
   httpRequest.send(body);
   httpRequest.onreadystatechange = nameOfTheFunction;
+  updateNumbers(bodyOrg);
 }
 
   httpRequest1 = new XMLHttpRequest();
@@ -217,8 +218,10 @@ function nameOfTheFunction2() {
 		
 		document.getElementById("text").value = obj['snippet']['text'];
 		document.getElementById("timestampDiv").innerHTML = obj['snippet']['timestamp'];
-		document.getElementById("Planguage").value = obj['snippet']['codingLanguage'];
-		
+        document.getElementById("Planguage").value = obj['snippet']['codingLanguage'];
+        
+        updateNumbers(obj['snippet']['text']);
+
 		console.log("success")
       } else {
         console.log("status: " + httpRequest1.status)
@@ -228,3 +231,21 @@ function nameOfTheFunction2() {
 	  console.log("bad")
   }
 }
+
+function updateNumbers(text){
+    let numOfNumbers = text.replace(/[^\n]/g,"").length;
+    let numbersStr = "";
+    for (let i = 1; i <= numOfNumbers + 1; i++){ // adding 1 because last line might not have newline char
+        numbersStr += i + "\n"
+    }
+    document.getElementById("numbers").value = numbersStr;
+}
+
+var s1 = document.getElementById('numbers');
+var s2 = document.getElementById('text');
+
+function select_scroll_1(e) { s2.scrollTop = s1.scrollTop; }
+function select_scroll_2(e) { s1.scrollTop = s2.scrollTop; }
+
+s1.addEventListener('scroll', select_scroll_1, false);
+s2.addEventListener('scroll', select_scroll_2, false);

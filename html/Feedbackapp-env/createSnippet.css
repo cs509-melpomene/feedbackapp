@@ -34,6 +34,17 @@
     word-wrap: break-word;
 }
   
+.snippetLineNumbers {
+    padding-top: 10px;
+    overflow: scroll;
+    vertical-align: right;
+    border-style: none;
+    border-color: Transparent;
+    overflow: auto;
+    height: 600px;
+    text-align: right;
+}
+
 .snippetText {
     white-space: pre;
     width: 82%;

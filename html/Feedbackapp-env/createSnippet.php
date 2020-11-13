@@ -34,11 +34,16 @@
                            }
                         ?>></textarea><br>
 					<div>
-                    </div>
-                    <input type="button" onclick="deleteSnippet()" value="Delete Snippet" style = "font-size:20px">
+					</div>
+					<?php if (strcmp($_POST["isCreator"] , "true" ) == 0): ?>
+                        <input type="button" onclick="deleteSnippet()" value="Delete Snippet" style = "font-size:20px">
+                    <?php endif; ?>
 
 			</div>
 			<div class="col-md-1" style="border-style: solid none solid none; text-align: right;">
+				<br>
+				<br>
+				<textarea readonly id="numbers" class="snippetLineNumbers numbers" cols="4" rows="27"><?php for($i = 1; $i <= 500; $i++){echo $i; echo ("\n");}?></textarea>
 			</div>
 			<div class="col-md-5" id="snippetTextPanel" style="border-style: solid none solid none;">
 				<div class="highlightWrapper" id="highlightWrapper">
