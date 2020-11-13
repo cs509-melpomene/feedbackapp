@@ -28,19 +28,20 @@
                     </div>
 					<label>Information:</label<br><textarea rows="20" cols="30" id="info"
 					    <?php
-                            if (strcmp($_POST["isCreator"] , "true" ) != 0){
+					        if (strcmp($_POST["isCreator"] , "true" ) != 0){
                               echo("readonly");
                            }
                         ?>></textarea><br>
 					<div>
                     </div>
-                    <input type="button" onclick="deleteSnippet()" value="Delete Snippet" style = "font-size:20px">
-
+                    <?php if (strcmp($_POST["isCreator"] , "true" ) == 0): ?>
+                        <input type="button" onclick="deleteSnippet()" value="Delete Snippet" style = "font-size:20px">
+                    <?php endif; ?>
 			</div>
 			<div class="col-md-1" style="border-style: solid none solid none; text-align: right;">
 				<br>
 				<br>
-				<textarea readonly id="numbers" class="numbers" cols="1" rows="27" style="padding-top: 10px; overflow: scroll; vertical-align: right; border-style: none; border-color: Transparent; overflow: auto;"><?php for($i = 1; $i <= 500; $i++){echo $i; echo ("\n");}?></textarea>
+				<textarea readonly id="numbers" class="numbers" cols="2" rows="27" style="padding-top: 10px; overflow: scroll; vertical-align: right; border-style: none; border-color: Transparent; overflow: auto;"><?php for($i = 1; $i <= 500; $i++){echo $i; echo ("\n");}?></textarea>
 			</div>
 			<div class="col-md-5" style="border-style: solid none solid none;">
 				<br>
