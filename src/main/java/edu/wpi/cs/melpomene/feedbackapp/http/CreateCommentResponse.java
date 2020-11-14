@@ -9,21 +9,24 @@ package edu.wpi.cs.melpomene.feedbackapp.http;
 public class CreateCommentResponse {
 	
 	public final String snippetID;
-	public final String creatorPassword;
-	public final String viewerPassword;
+	public final String commentID;
+	public final int startLine;
+	public final int endLine;
 	public final String error;
 	public final int httpCode;
 	
 	/**
 	 * Create success response.
 	 * @param snippetID
-	 * @param creatorPassword
-	 * @param viewerPassword
+	 * @param commentID
+	 * @param startLine
+	 * @param endLine
 	 */
-	public CreateCommentResponse (String snippetID,  String creatorPassword, String viewerPassword) {
+	public CreateCommentResponse (String snippetID,  String commentID, int startLine, int endLine) {
 		this.snippetID = snippetID;
-		this.creatorPassword = creatorPassword;
-		this.viewerPassword = viewerPassword;
+		this.commentID = commentID;
+		this.startLine = startLine;
+		this.endLine = endLine;
 		this.error = "";
 		this.httpCode = 200;
 	}
@@ -34,8 +37,9 @@ public class CreateCommentResponse {
 	 */
 	public CreateCommentResponse (String error) {
 		this.snippetID = "";
-		this.creatorPassword = "";
-		this.viewerPassword = "";
+		this.commentID = "";
+		this.startLine = -1;
+		this.endLine = -1;
 		this.error = error;
 		this.httpCode = 500;
 	}
@@ -44,15 +48,19 @@ public class CreateCommentResponse {
 		return snippetID;
 	}
 	
-	public String getCreatorPassword() {
-		return creatorPassword;
+	public String getCommentID() {
+		return commentID;
 	}
 	
-	public String getViewerPassword() {
-		return viewerPassword;
+	public int getStartLine() {
+		return startLine;
+	}
+	
+	public int getEndLine() {
+		return endLine;
 	}
 	
 	public String toString() {
-		return "Response(" + snippetID + ")";
+		return "Response(" + commentID + ")";
 	}
 }
