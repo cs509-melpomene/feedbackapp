@@ -63,7 +63,7 @@ public class UpdateSnippet implements RequestHandler<UpdateSnippetRequest, Updat
 				}		
 			}
 			else if(input.info != null) {
-				updateInfo(input.snippetID, input.text);
+				updateInfo(input.snippetID, input.info);
 			}
 		}
 		// if the action is "delete"

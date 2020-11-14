@@ -59,7 +59,7 @@ public class UpdateSnippetTest extends LambdaTest{
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
         UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "update", "", "whatever");
+        input = new UpdateSnippetRequest(csResponse.snippetID, "update", null, "whatever");
         
         UpdateSnippetResponse response = handler.handleRequest(input, ctx);
         
@@ -67,7 +67,7 @@ public class UpdateSnippetTest extends LambdaTest{
         ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
         ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
         
-        Assert.assertEquals(viewResponse.snippet.info, "whatever");
+        Assert.assertEquals("whatever", viewResponse.snippet.info);
         Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
         
     }
