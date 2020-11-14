@@ -103,7 +103,7 @@ public class SnippetsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp, URL) values(?, '', '', '', ?, ?, '1990-09-01', '');");
+            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp) values(?, '', '', '', ?, ?, '1990-09-01');");
             ps.setString(1,  snippet.snippetID);
             ps.setString(3,  snippet.creatorPassword);
             ps.setString(2,  snippet.viewerPassword);
@@ -142,9 +142,8 @@ public class SnippetsDAO {
     	String info = resultSet.getString("info");
     	String codeLanguage = resultSet.getString("codeLanguage");
     	String snippetTimestamp = resultSet.getString("snippetTimestamp");
-    	String URL = resultSet.getString("URL");
     	ArrayList<String> commentIDs = new ArrayList<>();
-        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, URL, commentIDs);
+        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, commentIDs);
 		return snippet;
     }
 }

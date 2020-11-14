@@ -25,7 +25,7 @@ public class Snippet {
 		this.timestamp = "";	
 	}
 	
-	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, String timestamp, String URL, ArrayList<String> commentIDs) {
+	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, String timestamp, ArrayList<String> commentIDs) {
 		this.snippetID = snippetID;
 		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
