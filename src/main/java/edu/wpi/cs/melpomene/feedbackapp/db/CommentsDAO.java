@@ -49,11 +49,12 @@ public class CommentsDAO {
         }
     }
     
-    public boolean updateText(String snippetID, String code, String field) throws Exception {
+    public boolean updateText(String snippetID, String commentID, String text) throws Exception {
         try {
-        	PreparedStatement ps = conn.prepareStatement("UPDATE " + commentTable + " SET " + field + " = ? WHERE snippetID = ?;");
-        	ps.setString(1,  code);
+        	PreparedStatement ps = conn.prepareStatement("UPDATE " + commentTable + " SET text = ? WHERE snippetID = ? AND commentID = ?;");
+        	ps.setString(1,  text);
         	ps.setString(2,  snippetID);
+        	ps.setString(3,  commentID);
             int numAffected = ps.executeUpdate();
             ps.close();
             
@@ -63,7 +64,7 @@ public class CommentsDAO {
         }
     }
         
-    public boolean deleteComment(String snippetID) throws Exception {
+    public boolean deleteComment(String snippetID, String commentID) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + commentTable + " WHERE snippetID = ?;");
             ps.setString(1,  snippetID);

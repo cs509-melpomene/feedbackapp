@@ -26,9 +26,9 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 	java.sql.Connection conn;
 	CommentsDAO dao = new CommentsDAO();
 	
-	public void updateText(String snippetID, String text) {
+	public void updateText(String snippetID, String commentID, String text) {
 		try {
-			dao.updateText(snippetID, text, "text");
+			dao.updateText(snippetID, commentID, text);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -38,7 +38,7 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 	
 	public void deleteComment(String snippetID, String commentID) {
 		try {
-			dao.deleteComment(snippetID);
+			dao.deleteComment(snippetID, commentID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,7 +48,7 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 	public UpdateCommentResponse handleRequest(UpdateCommentRequest input, Context context) {
 		UpdateCommentResponse response = null;
 		if(input.action == "update") {
-			updateText(input.snippetID, input.text);
+			updateText(input.snippetID, input.commentID, input.text);
 			try {
 				response = new UpdateCommentResponse(dao.getComment(input.snippetID, input.commentID));
 			} catch (Exception e) {
