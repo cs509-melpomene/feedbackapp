@@ -1,9 +1,10 @@
 package edu.wpi.cs.melpomene.feedbackapp.http;
 
+import edu.wpi.cs.melpomene.feedbackapp.model.Comment;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 public class UpdateCommentResponse {
-	public final Snippet snippet;
+	public final Comment comment;
 	
 	public final String error;
 	public final int httpCode;
@@ -12,14 +13,14 @@ public class UpdateCommentResponse {
 	 * Create success response.
 	 * @param snippet
 	 */
-	public UpdateCommentResponse (Snippet snippet) {
-		this.snippet = snippet;
+	public UpdateCommentResponse (Comment comment) {
+		this.comment = comment;
 		this.error = "";
 		this.httpCode = 200;
 	}
 	
-	public UpdateCommentResponse (Snippet snippet, String error) {
-		this.snippet = snippet;
+	public UpdateCommentResponse (Comment comment, String error) {
+		this.comment = comment;
 		this.error = error;
 		this.httpCode = 200;
 	}
@@ -29,7 +30,7 @@ public class UpdateCommentResponse {
 	 * @param error
 	 */
 	public UpdateCommentResponse (String error, int code) {
-		this.snippet = null;
+		this.comment = null;
 		this.error = error;
 		this.httpCode = code;
 	}
@@ -39,6 +40,6 @@ public class UpdateCommentResponse {
 	}
 	
 	public String toString() {
-		return "Response(" + snippet + ")";
+		return "Response(" + comment + ")";
 	}
 }

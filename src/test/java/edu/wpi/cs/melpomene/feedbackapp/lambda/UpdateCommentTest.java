@@ -31,49 +31,29 @@ public class UpdateCommentTest extends LambdaTest{
 
         return ctx;
     }     
-    
-    @Test
-    public void testUpdateCodeLambdaPositive() {
-    	CreateSnippet csHandler = new CreateSnippet();
-    	Context ctx = createContext();
-    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
-        UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "update", "whatever", "");
-        
-        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
-        
-        ViewSnippet snippet = new ViewSnippet();
-        ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
-        ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
-        
-        Assert.assertEquals(viewResponse.snippet.text, "whatever");
-        Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
-        
-    }
+//    @Test
+//    public void testUpdateTextLambdaPositive() {
+//    	CreateSnippet csHandler = new CreateSnippet();
+//    	Context ctx = createContext();
+//    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
+//
+//        UpdateSnippet handler = new UpdateSnippet();
+//        input = new UpdateSnippetRequest(csResponse.snippetID, "update", "whatever", "");
+//        
+//        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
+//        
+//        ViewSnippet snippet = new ViewSnippet();
+//        ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
+//        ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
+//        
+//        Assert.assertEquals(viewResponse.snippet.text, "whatever");
+//        Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
+//        
+//    }
     
     @Test
-    public void testUpdateInfoLambdaPositive() {
-    	CreateSnippet csHandler = new CreateSnippet();
-    	Context ctx = createContext();
-    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
-
-        UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "update", null, "whatever");
-        
-        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
-        
-        ViewSnippet snippet = new ViewSnippet();
-        ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
-        ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
-        
-        Assert.assertEquals(viewResponse.snippet.info, "whatever");
-        Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
-        
-    }
-    
-    @Test
-    public void testDeleteSnippetLambdaPositive() {
+    public void testDeleteCommentLambdaPositive() {
     	CreateSnippet csHandler = new CreateSnippet();
     	Context ctx = createContext();
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
