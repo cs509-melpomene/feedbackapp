@@ -1,5 +1,38 @@
 function deleteSnippet(){
+    httpRequest2 = new XMLHttpRequest();
+    httpRequest2.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
+    httpRequest2.setRequestHeader('Content-Type', 'application/json');
+    body = '{"action":"delete"}';
+    console.log(body);
+    httpRequest2.send(body);
+    httpRequest2.onreadystatechange = deleteSnippetResponse;
+}
 
+function snippetNotFound(){
+    let commentSidebarDiv = document.getElementById("commentSidebar");
+    let snippetInfoSidePanelDiv = document.getElementById("snippetInfoSidePanel");
+    commentSidebarDiv.innerHTML = "";
+    snippetInfoSidePanelDiv.innerHTML = "";
+    document.getElementById("codeNumbersSidePanel").innerHTML = "";
+    let snippetNotFoundHTML = `
+        <div class="snippetNotFoundText">
+                Snippet ID ${urlParamsSnippetID} not found!
+        </div>
+    `;
+    let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
+    snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
+}
+
+function deleteSnippetResponse(){
+    if (httpRequest2.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest2.status === 200) {
+            console.log("responseText: " + httpRequest2.responseText)
+            snippetNotFound();
+            return;
+        }
+    } else {
+        console.log("bad")
+    }
 }
 
 function submitComment(){
@@ -191,18 +224,7 @@ function nameOfTheFunction2() {
 		console.log("responseText: " + httpRequest1.responseText)
 		const obj = JSON.parse(httpRequest1.responseText);
 		if (obj['snippet'] === undefined) {
-			let commentSidebarDiv = document.getElementById("commentSidebar");
-			let snippetInfoSidePanelDiv = document.getElementById("snippetInfoSidePanel");
-			commentSidebarDiv.innerHTML = "";
-			snippetInfoSidePanelDiv.innerHTML = "";
-
-			let snippetNotFoundHTML = `
-				<div class="snippetNotFoundText">
-						Snippet ID ${urlParamsSnippetID} not found!
-				</div>
-			`;
-			let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
-			snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
+            snippetNotFound();
 			return;
 		}
 		

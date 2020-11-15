@@ -40,7 +40,7 @@
                     <?php endif; ?>
 
 			</div>
-			<div class="col-md-1" style="border-style: solid none solid none; text-align: right;">
+			<div class="col-md-1" id="codeNumbersSidePanel" style="border-style: solid none solid none; text-align: right;">
 				<br>
 				<br>
 				<textarea readonly id="numbers" class="snippetLineNumbers numbers" cols="4" rows="27"><?php for($i = 1; $i <= 500; $i++){echo $i; echo ("\n");}?></textarea>
