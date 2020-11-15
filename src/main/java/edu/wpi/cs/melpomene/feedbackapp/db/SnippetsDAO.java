@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.cs.melpomene.feedbackapp.model.Comment;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 /**
@@ -40,6 +41,15 @@ public class SnippetsDAO {
             }
             resultSet.close();
             ps.close();
+            
+            if (snippet == null) {
+            	return snippet;
+            }
+            
+            CommentsDAO daoComment = new CommentsDAO();
+            ArrayList<Comment> comments = daoComment.getComments(snippetID);
+            snippet.comments = comments;
+            
             return snippet;
         } catch (Exception e) {
         	e.printStackTrace();
@@ -102,10 +112,11 @@ public class SnippetsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp) values(?, '', '', '', ?, ?, '1990-09-01');");
+            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp) values(?, '', '', '', ?, ?, ?);");
             ps.setString(1,  snippet.snippetID);
             ps.setString(3,  snippet.creatorPassword);
             ps.setString(2,  snippet.viewerPassword);
+            ps.setString(4,  snippet.timestamp);
             ps.execute();
             return true;
         } catch (Exception e) {
@@ -141,8 +152,8 @@ public class SnippetsDAO {
     	String info = resultSet.getString("info");
     	String codeLanguage = resultSet.getString("codeLanguage");
     	String snippetTimestamp = resultSet.getString("snippetTimestamp");
-    	ArrayList<String> commentIDs = new ArrayList<>();
-        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, commentIDs);
+    	ArrayList<Comment> comments = new ArrayList<>();
+        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, comments);
 		return snippet;
     }
 }

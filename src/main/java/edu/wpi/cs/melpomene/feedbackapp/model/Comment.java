@@ -12,11 +12,11 @@ public class Comment {
 	public final int endLine;
 	public final String snippetID;
 	
-	public Comment(String commentID, String snippetID, int startLine, int endLine) {
+	public Comment(String commentID, String snippetID, int startLine, int endLine, String timestamp) {
 		this.commentID = commentID;
 		this.snippetID = snippetID;
 		this.text = "";
-		this.timestamp = "";	
+		this.timestamp = timestamp;	
 		this.startLine = startLine;
 		this.endLine = endLine;
 	}

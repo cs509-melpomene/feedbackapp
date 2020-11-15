@@ -49,6 +49,25 @@ public class CommentsDAO {
         }
     }
     
+    public ArrayList<Comment> getComments(String snippetID) throws Exception {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + commentTable + " WHERE snippetID = ?;");
+            ps.setString(1,  snippetID);
+            ResultSet resultSet = ps.executeQuery();
+            
+            ArrayList<Comment> comments = new ArrayList<Comment>();
+            while (resultSet.next()) {
+            	comments.add(generateComment(resultSet));
+            }
+            resultSet.close();
+            ps.close();
+            return comments;
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in getting comment: " + e.getMessage());
+        }
+    }
+    
     public boolean updateText(String snippetID, String commentID, String text) throws Exception {
         try {
         	PreparedStatement ps = conn.prepareStatement("UPDATE " + commentTable + " SET text = ? WHERE snippetID = ? AND commentID = ?;");
@@ -92,11 +111,12 @@ public class CommentsDAO {
                 return false;
             }
         	
-            ps = conn.prepareStatement("INSERT INTO " + commentTable + " (commentID, timestamp, text, startLine, endLine, snippetID) values(?, '1990-09-01', '', ?, ?, ?);");
+            ps = conn.prepareStatement("INSERT INTO " + commentTable + " (commentID, timestamp, text, startLine, endLine, snippetID) values(?, ?, '', ?, ?, ?);");
             ps.setString(1, comment.commentID);
-            ps.setInt(2, comment.startLine);
-            ps.setInt(3, comment.endLine);
-            ps.setString(4, comment.snippetID);
+            ps.setInt(3, comment.startLine);
+            ps.setInt(4, comment.endLine);
+            ps.setString(5, comment.snippetID);
+            ps.setString(2, comment.timestamp);
             ps.execute();
             return true;
         } catch (Exception e) {
