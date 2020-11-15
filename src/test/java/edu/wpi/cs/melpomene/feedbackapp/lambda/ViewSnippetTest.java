@@ -100,7 +100,7 @@ public class ViewSnippetTest extends LambdaTest{
         Assert.assertEquals(csResponse.snippetID, snippet.snippetID);
         Assert.assertEquals(csResponse.creatorPassword, snippet.creatorPassword);
         Assert.assertEquals(csResponse.viewerPassword, snippet.viewerPassword);
-        Assert.assertEquals(1, snippet.commentIDs.size());
-        Assert.assertEquals(ccResponse.commentID, snippet.commentIDs.get(0));
+        Assert.assertEquals(1, snippet.comments.size());
+        Assert.assertEquals(ccResponse.commentID, snippet.comments.get(0).commentID);
     }
 }

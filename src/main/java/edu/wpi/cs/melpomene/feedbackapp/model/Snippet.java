@@ -11,7 +11,7 @@ public class Snippet {
 	public final String text;
 	public final String info;
 	public final String codingLanguage;
-	public ArrayList<String> commentIDs;
+	public ArrayList<Comment> comments;
 	public final String timestamp;
 	
 	public Snippet(String snippetID, String creatorPassword, String viewerPassword) {
@@ -21,22 +21,22 @@ public class Snippet {
 		this.text = "";
 		this.info = "";
 		this.codingLanguage = "";
-		this.commentIDs = new ArrayList<String>();
+		this.comments = new ArrayList<Comment>();
 		this.timestamp = "";	
 	}
 	
-	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, String timestamp, ArrayList<String> commentIDs) {
+	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, String timestamp, ArrayList<Comment> comments) {
 		this.snippetID = snippetID;
 		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
 		this.text = text;
 		this.info = info;
 		this.codingLanguage = codingLanguage;
-		this.commentIDs = commentIDs;
+		this.comments = comments;
 		this.timestamp = timestamp;	
 	}
 	
-	public void addCommentID(String commentID) {
-		commentIDs.add(commentID);
+	public void addCommentID(Comment comment) {
+		comments.add(comment);
 	}
 }

@@ -49,19 +49,19 @@ public class CommentsDAO {
         }
     }
     
-    public ArrayList<String> getCommentIDs(String snippetID) throws Exception {
+    public ArrayList<Comment> getComments(String snippetID) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT commentID FROM " + commentTable + " WHERE snippetID = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + commentTable + " WHERE snippetID = ?;");
             ps.setString(1,  snippetID);
             ResultSet resultSet = ps.executeQuery();
             
-            ArrayList<String> commentIDs = new ArrayList<String>();
+            ArrayList<Comment> comments = new ArrayList<Comment>();
             while (resultSet.next()) {
-            	commentIDs.add(resultSet.getString("commentID"));
+            	comments.add(generateComment(resultSet));
             }
             resultSet.close();
             ps.close();
-            return commentIDs;
+            return comments;
         } catch (Exception e) {
         	e.printStackTrace();
             throw new Exception("Failed in getting comment: " + e.getMessage());
