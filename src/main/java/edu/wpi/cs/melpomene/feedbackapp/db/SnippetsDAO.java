@@ -112,10 +112,11 @@ public class SnippetsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp) values(?, '', '', '', ?, ?, '1990-09-01');");
+            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp) values(?, '', '', '', ?, ?, ?);");
             ps.setString(1,  snippet.snippetID);
             ps.setString(3,  snippet.creatorPassword);
             ps.setString(2,  snippet.viewerPassword);
+            ps.setString(4,  snippet.timestamp);
             ps.execute();
             return true;
         } catch (Exception e) {

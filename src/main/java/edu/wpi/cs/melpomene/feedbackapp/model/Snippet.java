@@ -14,7 +14,7 @@ public class Snippet {
 	public ArrayList<Comment> comments;
 	public final String timestamp;
 	
-	public Snippet(String snippetID, String creatorPassword, String viewerPassword) {
+	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String timestamp) {
 		this.snippetID = snippetID;
 		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
@@ -22,7 +22,7 @@ public class Snippet {
 		this.info = "";
 		this.codingLanguage = "";
 		this.comments = new ArrayList<Comment>();
-		this.timestamp = "";	
+		this.timestamp = timestamp;	
 	}
 	
 	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, String timestamp, ArrayList<Comment> comments) {
