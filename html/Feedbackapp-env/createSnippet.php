@@ -27,7 +27,7 @@
                     ?>><br>
 					<div>
                     </div>
-					<label>Information:</label><br><textarea rows="15" cols="30" id="info"
+					<label>Information:</label><br><textarea id="info" oninput="codeFunction('info')" rows="15" cols="30" id="info"
 					    <?php
                             if (strcmp($_POST["isCreator"] , "true" ) != 0){
                               echo("readonly");
@@ -54,7 +54,7 @@
 				<div class="highlightWrapper" id="highlightWrapper">
 					<div class="highlight" id="highlight"></div>
 				</div>
-				<textarea class="snippetText" id="text" oninput="codeFunction()" onscroll="codeScrolling()"></textarea>
+				<textarea class="snippetText" id="text" oninput="codeFunction('text')" onscroll="codeScrolling()"></textarea>
 				<br>
 			</div>
 			<div class="commentSidebar" id="commentSidebar" style="border-style: solid;">

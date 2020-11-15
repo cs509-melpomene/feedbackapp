@@ -184,17 +184,25 @@ var urlParams = new URLSearchParams(window.location.search);
 console.log(urlParams.get('snippetID')); // true
 let urlParamsSnippetID = urlParams.get('snippetID');
 
-function codeFunction() {
+function codeFunction(divID) {
   httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
   httpRequest.setRequestHeader('Content-Type', 'application/json');
-  let bodyOrg = document.getElementById("text").value;
-  body = bodyOrg.replace(/\n/g,"\\n").replace(/\r/g,"\\r").replace(/\"/g,'\\"')
-  body = '{"action":"update","text":"' + body + '"}';
+  let bodyOrg = document.getElementById(divID).value;
+  //body1 = bodyOrg.replace(/\n/g,"\\n").replace(/\r/g,"\\r").replace(/\"/g,'\\"')
+  body = {
+      "action":"update"
+    };
+  body[divID] = bodyOrg;//body1;
+  if (divID != "text") {
+    body["text"] = null;
+  }
   console.log(body);
-  httpRequest.send(body);
+  httpRequest.send(JSON.stringify(body));
   httpRequest.onreadystatechange = nameOfTheFunction;
-  updateNumbers(bodyOrg);
+  if (divID == "text") {
+    updateNumbers(bodyOrg);
+  }
 }
 
   httpRequest1 = new XMLHttpRequest();
