@@ -7,6 +7,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.melpomene.feedbackapp.TestContext;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentRequest;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetRequest;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetResponse;
@@ -78,5 +80,27 @@ public class ViewSnippetTest extends LambdaTest{
         Assert.assertEquals(csResponse.snippetID, snippet.snippetID);
         Assert.assertEquals(csResponse.creatorPassword, snippet.creatorPassword);
         Assert.assertEquals(csResponse.viewerPassword, snippet.viewerPassword);
+    }
+    
+    @Test
+    public void testViewSnippetLambdaWithCommentsPositive() {
+    	CreateSnippet csHandler = new CreateSnippet();
+    	Context ctx = createContext();
+    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
+
+    	CreateCommentRequest ccRequest = new CreateCommentRequest(csResponse.snippetID, 3, 5);
+    	CreateComment ccHandler = new CreateComment();
+    	CreateCommentResponse ccResponse = ccHandler.handleRequest(ccRequest, ctx);
+    	
+        ViewSnippet handler = new ViewSnippet();
+        input = new ViewSnippetRequest(csResponse.snippetID);
+        
+        ViewSnippetResponse response = handler.handleRequest(input, ctx);
+        Snippet snippet = response.getSnippet();
+        Assert.assertEquals(csResponse.snippetID, snippet.snippetID);
+        Assert.assertEquals(csResponse.creatorPassword, snippet.creatorPassword);
+        Assert.assertEquals(csResponse.viewerPassword, snippet.viewerPassword);
+        Assert.assertEquals(1, snippet.commentIDs.size());
+        Assert.assertEquals(ccResponse.commentID, snippet.commentIDs.get(0));
     }
 }

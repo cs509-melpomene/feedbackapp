@@ -49,6 +49,25 @@ public class CommentsDAO {
         }
     }
     
+    public ArrayList<String> getCommentIDs(String snippetID) throws Exception {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT commentID FROM " + commentTable + " WHERE snippetID = ?;");
+            ps.setString(1,  snippetID);
+            ResultSet resultSet = ps.executeQuery();
+            
+            ArrayList<String> commentIDs = new ArrayList<String>();
+            while (resultSet.next()) {
+            	commentIDs.add(resultSet.getString("commentID"));
+            }
+            resultSet.close();
+            ps.close();
+            return commentIDs;
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in getting comment: " + e.getMessage());
+        }
+    }
+    
     public boolean updateText(String snippetID, String commentID, String text) throws Exception {
         try {
         	PreparedStatement ps = conn.prepareStatement("UPDATE " + commentTable + " SET text = ? WHERE snippetID = ? AND commentID = ?;");

@@ -40,6 +40,15 @@ public class SnippetsDAO {
             }
             resultSet.close();
             ps.close();
+            
+            if (snippet == null) {
+            	return snippet;
+            }
+            
+            CommentsDAO daoComment = new CommentsDAO();
+            ArrayList<String> commentIDs = daoComment.getCommentIDs(snippetID);
+            snippet.commentIDs = commentIDs;
+            
             return snippet;
         } catch (Exception e) {
         	e.printStackTrace();

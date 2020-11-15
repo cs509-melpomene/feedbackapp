@@ -11,7 +11,7 @@ public class Snippet {
 	public final String text;
 	public final String info;
 	public final String codingLanguage;
-	public final ArrayList<String> commentIDs;
+	public ArrayList<String> commentIDs;
 	public final String timestamp;
 	
 	public Snippet(String snippetID, String creatorPassword, String viewerPassword) {

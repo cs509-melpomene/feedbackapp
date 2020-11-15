@@ -63,8 +63,8 @@ public class CreateComment implements RequestHandler<CreateCommentRequest, Creat
            Comment commentFromDB = dao.getComment(commentID, input.snippetID);
            if (commentFromDB == null) {
         	   dao.addComment(comment);
-        	   response = new CreateCommentResponse(commentID);
-        	   context.getLogger().log(String.format("CreateCommentResponse Success: snippetID: %s, commentID: %s, startLine: %i, endLine: %i\n", response.getSnippetID(), response.getCommentID(), response.getStartLine(), response.getEndLine()));
+        	   response = new CreateCommentResponse(input.snippetID, commentID, input.startLine, input.endLine);
+        	   context.getLogger().log(String.format("CreateCommentResponse Success: snippetID: %s, commentID: %s, startLine: %d, endLine: %d\n", response.getSnippetID(), response.getCommentID(), response.getStartLine(), response.getEndLine()));
            }
        } catch (Exception e) {
 	       context.getLogger().log(String.format("CreateCommentResponse Failure: %s", e.getMessage()));
