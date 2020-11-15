@@ -47,7 +47,7 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 	@Override
 	public UpdateCommentResponse handleRequest(UpdateCommentRequest input, Context context) {
 		UpdateCommentResponse response = null;
-		if(input.action == "update") {
+		if(input.action.equals("update")) {
 			updateText(input.snippetID, input.commentID, input.text);
 			try {
 				response = new UpdateCommentResponse(dao.getComment(input.snippetID, input.commentID));
@@ -55,8 +55,8 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 				e.printStackTrace();
 			}		
 		}
-		// if the action is "delete"
-		else {
+		
+		if(input.action.equals("delete")) {
 			Comment comment = null;
 			try {
 				comment = dao.getComment(input.snippetID, input.commentID);

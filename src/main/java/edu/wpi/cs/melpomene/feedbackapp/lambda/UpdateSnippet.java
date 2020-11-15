@@ -53,7 +53,7 @@ public class UpdateSnippet implements RequestHandler<UpdateSnippetRequest, Updat
 	@Override
 	public UpdateSnippetResponse handleRequest(UpdateSnippetRequest input, Context context) {
 		UpdateSnippetResponse response = null;
-		if(input.action == "update") {
+		if(input.action.equals("update")) {
 			if(input.text != null) {
 				updateCode(input.snippetID, input.text);
 				try {
@@ -66,8 +66,8 @@ public class UpdateSnippet implements RequestHandler<UpdateSnippetRequest, Updat
 				updateInfo(input.snippetID, input.info);
 			}
 		}
-		// if the action is "delete"
-		else {
+		
+		if(input.action.equals("delete")) {
 			Snippet snippet = null;
 			try {
 				snippet = dao.getSnippet(input.snippetID);

@@ -66,8 +66,9 @@ public class CommentsDAO {
         
     public boolean deleteComment(String snippetID, String commentID) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + commentTable + " WHERE snippetID = ?;");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + commentTable + " WHERE snippetID = ? AND commentID = ?;");
             ps.setString(1,  snippetID);
+            ps.setString(2,  commentID);
             int numAffected = ps.executeUpdate();
             ps.close();
             
