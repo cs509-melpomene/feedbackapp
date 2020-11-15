@@ -38,16 +38,6 @@ function generateCommentString(uniqueID, timestamp, startRegion, endRegion, text
 	return commentStr;
 }
 
-let comments = document.getElementById("comments");
-comments.innerHTML += generateCommentString(1, "10:23", 3, 5, "blah");
-let longStr = "where "; for(let i = 0; i < 10; i++) {longStr += longStr}
-comments.innerHTML += generateCommentString(2, "10:50", 4, 10, longStr);
-longStr = "tire"; for(let i = 0; i < 10; i++) {longStr += longStr}
-comments.innerHTML += generateCommentString(3, "10:55", 4, 10, longStr);
-comments.innerHTML += generateCommentString(4, "10:51", 2, 4, "haha");
-comments.innerHTML += generateCommentString(5, "10:51", 30, 32, "bottom");
-addOnClickToComments();
-
 function addOnClickToComments() {
 	let comments = document.getElementById("comments");
 	let children = comments.childNodes;
@@ -222,6 +212,13 @@ function nameOfTheFunction2() {
         
         updateNumbers(obj['snippet']['text']);
 
+        let comments = obj['snippet']['comments']
+        let commentsDiv = document.getElementById("comments");
+        for(let i = 0; i < comments.length; i++){
+            let comment = comments[i];
+            commentsDiv.innerHTML += generateCommentString(comment['commentID'], comment['timestamp'], comment['startLine'], comment['endLine'], comment['text']); 
+        }
+        addOnClickToComments();
 		console.log("success")
       } else {
         console.log("status: " + httpRequest1.status)
