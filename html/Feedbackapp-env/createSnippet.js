@@ -1,11 +1,12 @@
 import { snippetNotFound } from './deleteSnippet.js';
 import { deleteSnippetHTTPRequest } from './deleteSnippet.js';
+import { updateSnippetHTTPRequest } from './updateSnippet.js';
 import { viewSnippetHTTPRequest } from './viewSnippet.js';
 import { urlParamsSnippetID } from './util.js';
-import { updateNumbers } from './util.js';
 import { setHighlightDivTop } from './viewSnippet.js'; // TODO: move to new file called comments.js?
 
 window.deleteSnippetHTTPRequest = deleteSnippetHTTPRequest
+window.updateSnippetHTTPRequest = updateSnippetHTTPRequest
 viewSnippetHTTPRequest(); // not called by a button, called on page load
 
 window.createCommentHTTPRequest = function createCommentHTTPRequest(){
@@ -99,45 +100,6 @@ window.changeHighlightComment = function changeHighlightComment(enableHighlight,
 window.codeScrolling = function codeScrolling() {
 	console.log("scrolling");
 	setHighlightDivTop();
-}
-
-// update snippet
-// divID: either 'text' or 'info' based on which part of the snippet you want to update
-window.updateSnippetHTTPRequest = function updateSnippetHTTPRequest(divID) {
-    let httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
-    httpRequest.setRequestHeader('Content-Type', 'application/json');
-    let bodyOrg = document.getElementById(divID).value;
-    let body = { "action": "update" };
-    body[divID] = bodyOrg;
-
-    // set text to null if we are updating the snippet info
-    if (divID != "text") {
-        body["text"] = null;
-    }
-
-    console.log(body);
-    httpRequest.send(JSON.stringify(body));
-    httpRequest.onreadystatechange = updateSnippetHTTPResponse(httpRequest);
-
-    // update line numbers only if we updated the code text
-    if (divID == "text") {
-        updateNumbers(bodyOrg);
-    }
-}
-
-function updateSnippetHTTPResponse(httpRequest) {
-    return function(){
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                    console.log("success")
-            } else {
-                    console.log("status: " + httpRequest.status)
-            }
-        } else {
-            console.log("not done")
-        }
-    }
 }
 
 var s1 = document.getElementById('numbers');

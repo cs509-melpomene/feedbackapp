@@ -1,5 +1,7 @@
-import { urlParamsSnippetID } from './util.js';
-import { updateNumbers } from './util.js';
+import {
+    urlParamsSnippetID,
+    updateNumbers
+} from './util.js';
 
 export function viewSnippetHTTPRequest(httpRequest) {
     let httpRequest1 = new XMLHttpRequest();
