@@ -1,13 +1,13 @@
-import { urlParamsSnippetID } from './mainURLParams.js';
+import { urlParamsSnippetID } from './util.js';
 
 export function deleteSnippetHTTPRequest(){
-    let httpRequest2 = new XMLHttpRequest();
-    httpRequest2.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
-    httpRequest2.setRequestHeader('Content-Type', 'application/json');
+    let httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
+    httpRequest.setRequestHeader('Content-Type', 'application/json');
     let body = '{"action":"delete"}';
     console.log(body);
-    httpRequest2.send(body);
-    httpRequest2.onreadystatechange = deleteSnippetHTTPResponse(httpRequest2);
+    httpRequest.send(body);
+    httpRequest.onreadystatechange = deleteSnippetHTTPResponse(httpRequest);
 }
 
 export function snippetNotFound(){
