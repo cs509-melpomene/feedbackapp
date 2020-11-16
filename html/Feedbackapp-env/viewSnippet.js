@@ -31,12 +31,7 @@ function viewSnippetHTTPResponse(httpRequest) {
                 updateNumbers(obj['snippet']['text']);
 
                 let comments = obj['snippet']['comments']
-                let commentsDiv = document.getElementById("comments");
-                for(let i = 0; i < comments.length; i++){
-                    let comment = comments[i];
-                    commentsDiv.innerHTML += generateCommentString(comment['commentID'], comment['timestamp'], comment['startLine'], comment['endLine'], comment['text']); 
-                }
-                addOnClickToComments();
+                repopulateCommentsDiv(comments)
                 console.log("success")
             } else {
                 console.log("status: " + httpRequest.status)
@@ -46,6 +41,15 @@ function viewSnippetHTTPResponse(httpRequest) {
             console.log("bad")
         }
     }
+}
+
+function repopulateCommentsDiv(comments){
+    let commentsDiv = document.getElementById("comments");
+    for(let i = 0; i < comments.length; i++){
+        let comment = comments[i];
+        commentsDiv.innerHTML += generateCommentString(comment['commentID'], comment['timestamp'], comment['startLine'], comment['endLine'], comment['text']); 
+    }
+    addOnClickToComments();
 }
 
 function getRegionValue(child, regionName){
