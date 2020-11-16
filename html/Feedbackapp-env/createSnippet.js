@@ -36,8 +36,55 @@ function deleteSnippetResponse(){
 }
 
 function submitComment(){
-	console.log("Submiting Comment")
+    console.log("Submitting Comment")
+    let regionStartInput = document.getElementById("regionStartID");
+    let regionEndInput = document.getElementById("regionEndID");
+    console.log("region start value " + regionStartInput.value)
+    console.log("region end   value " + regionEndInput.value)
+    
+    httpRequest3 = new XMLHttpRequest();
+    httpRequest3.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}/create-comment`, true);
+    httpRequest3.setRequestHeader('Content-Type', 'application/json');
+    let body = {
+        "startLine": regionStartInput.value,
+        "endLine": regionEndInput.value
+    };
+    console.log(body);
+    httpRequest3.send(JSON.stringify(body));
+    httpRequest3.onreadystatechange = createCommentRequestStateChange;
 }
+
+function createCommentRequestStateChange() {
+    if (httpRequest3.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest3.status === 200) {
+            console.log("success")
+            console.log(httpRequest3.responseText)
+            const obj = JSON.parse(httpRequest3.responseText);
+            console.log("snippetID " + obj['snippetID'])
+            console.log("commentID " + obj['commentID'])
+
+            httpRequest3 = new XMLHttpRequest();
+            httpRequest3.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}/comment/${obj['commentID']}`, true);
+            httpRequest3.setRequestHeader('Content-Type', 'application/json');
+            let commentTextInput = document.getElementById("commentTextID");
+            console.log("commentTextInput " + commentTextInput.value);
+            let body = {
+                "text": commentTextInput.value,
+                "action": "update"
+            };
+            console.log(body);
+            httpRequest3.send(JSON.stringify(body));
+            httpRequest3.onreadystatechange = createCommentRequestStateChange;
+        
+        } else {
+            console.log("status: " + httpRequest3.status)
+            console.log(httpRequest3.responseText)
+        }
+  
+    } else {
+        console.log("not done")
+    }
+  }
 
 function getRegionValue(child, regionName){
 	let region = child.getElementsByClassName(regionName);
