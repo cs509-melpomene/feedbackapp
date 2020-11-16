@@ -74,5 +74,5 @@
 	</div>
 	</form>
 </body>
-<script src="createSnippet.js"></script>
+<script type="module" src="createSnippet.js"></script>
 </html>

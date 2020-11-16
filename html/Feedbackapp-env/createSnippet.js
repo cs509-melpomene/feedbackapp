@@ -1,39 +1,8 @@
-function deleteSnippetHTTPRequest(){
-    httpRequest2 = new XMLHttpRequest();
-    httpRequest2.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
-    httpRequest2.setRequestHeader('Content-Type', 'application/json');
-    body = '{"action":"delete"}';
-    console.log(body);
-    httpRequest2.send(body);
-    httpRequest2.onreadystatechange = deleteSnippetHTTPResponse;
-}
+import { snippetNotFound } from './deleteSnippet.js';
+import { deleteSnippetHTTPRequest } from './deleteSnippet.js';
+import { urlParamsSnippetID } from './mainURLParams.js';
 
-function snippetNotFound(){
-    let commentSidebarDiv = document.getElementById("commentSidebar");
-    let snippetInfoSidePanelDiv = document.getElementById("snippetInfoSidePanel");
-    commentSidebarDiv.innerHTML = "";
-    snippetInfoSidePanelDiv.innerHTML = "";
-    document.getElementById("codeNumbersSidePanel").innerHTML = "";
-    let snippetNotFoundHTML = `
-        <div class="snippetNotFoundText">
-                Snippet ID ${urlParamsSnippetID} not found!
-        </div>
-    `;
-    let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
-    snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
-}
-
-function deleteSnippetHTTPResponse(){
-    if (httpRequest2.readyState === XMLHttpRequest.DONE) {
-        if (httpRequest2.status === 200) {
-            console.log("responseText: " + httpRequest2.responseText)
-            snippetNotFound();
-            return;
-        }
-    } else {
-        console.log("bad")
-    }
-}
+window.deleteSnippetHTTPRequest = deleteSnippetHTTPRequest
 
 function createCommentHTTPRequest(){
     console.log("Submitting Comment")
@@ -257,11 +226,6 @@ function codeScrolling() {
 	setHighlightDivTop();
 }
 
-// get snippet ID from query parameter
-var urlParams = new URLSearchParams(window.location.search);
-console.log(urlParams.get('snippetID')); // true
-let urlParamsSnippetID = urlParams.get('snippetID');
-
 // update snippet
 // divID: either 'text' or 'info' based on which part of the snippet you want to update
 function updateSnippetHTTPRequest(divID) {
@@ -287,7 +251,7 @@ function updateSnippetHTTPRequest(divID) {
     }
 }
 
-httpRequest1 = new XMLHttpRequest();
+let httpRequest1 = new XMLHttpRequest();
 httpRequest1.open('GET', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
 httpRequest1.setRequestHeader('Content-Type', 'application/json');
 httpRequest1.send();
