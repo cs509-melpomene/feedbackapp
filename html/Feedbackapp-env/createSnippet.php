@@ -64,7 +64,7 @@
 					<label class="commentFormColumnLabel" for="regionEnd">End Region:</label>
 					<input class="commentFormColumnInput" type="text" id="regionEndID" name="regionEnd">
 					<textarea class="columnFormText" id="commentTextID"></textarea><br>
-					<input class="submitColumnButton" type="button" onclick="createCommentHTTPRequest()"/><br>
+					<input class="submitColumnButton" type="button" onclick="createCommentHTTPRequest()" value="Submit" /><br>
 				</form>
 				</div>
 				<div id="comments">
