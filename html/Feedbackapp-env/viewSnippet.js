@@ -2,6 +2,7 @@ import {
     urlParamsSnippetID,
     updateNumbers
 } from './util.js';
+import { snippetNotFound } from './deleteSnippet.js';
 
 export function viewSnippetHTTPRequest(httpRequest) {
     let httpRequest1 = new XMLHttpRequest();
