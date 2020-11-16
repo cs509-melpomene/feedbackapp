@@ -236,7 +236,8 @@ function nameOfTheFunction2() {
 			return;
 		}
 		
-		document.getElementById("text").value = obj['snippet']['text'];
+        document.getElementById("text").value = obj['snippet']['text'];
+        document.getElementById("info").value = obj['snippet']['info'];
 		document.getElementById("timestampDiv").innerHTML = obj['snippet']['timestamp'];
         document.getElementById("Planguage").value = obj['snippet']['codingLanguage'];
         
