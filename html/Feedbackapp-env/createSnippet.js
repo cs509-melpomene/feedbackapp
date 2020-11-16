@@ -189,7 +189,6 @@ function codeFunction(divID) {
   httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
   httpRequest.setRequestHeader('Content-Type', 'application/json');
   let bodyOrg = document.getElementById(divID).value;
-  //body1 = bodyOrg.replace(/\n/g,"\\n").replace(/\r/g,"\\r").replace(/\"/g,'\\"')
   body = {
       "action":"update"
     };
@@ -214,8 +213,6 @@ function codeFunction(divID) {
 function nameOfTheFunction() {
   if (httpRequest.readyState === XMLHttpRequest.DONE) {
       if (httpRequest.status === 200) {
-		//console.log("responseText: " + httpRequest.responseText)
-		//const obj = JSON.parse(httpRequest.responseText);
 		console.log("success")
       } else {
         console.log("status: " + httpRequest.status)
