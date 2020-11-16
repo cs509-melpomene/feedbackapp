@@ -143,13 +143,6 @@ function reportWindowSize() {
     // set up width of text highlight element
 	let highlightDiv = document.getElementById("highlight");
     highlightDiv.style.width = style.width;
-    
-    
-    // set up width and height of top highlight mask element
-    console.log("offsetTop " + textE.offsetTop);
-    let highlightMaskTopE = document.getElementById("highlightMaskTop")
-    highlightMaskTopE.style.height = textE.offsetTop;
-    highlightMaskTopE.style.width = style.width;
 }
 
 window.onresize = reportWindowSize;
@@ -157,6 +150,7 @@ reportWindowSize()
 
 let commentEnabled = false
 let originalHighlightDivTop = 0;
+let originalHighlightDivHeight = 0;
 let currentCommentUniqueID = "";
 let currentChild = null;
 
@@ -171,8 +165,39 @@ function setHighlightDivTop() {
 	let highlightDiv = document.getElementById("highlight");
 	let highlightDivTop = parseFloat(highlightDiv.style.top);
 
-	// set highlight div top to correct value
-	highlightDiv.style.top = originalHighlightDivTop - scrollTop
+    // set highlight div top and height to correct value
+    let style = getComputedStyle(textE);
+    let textEHeight = parseFloat(style.height);
+    console.log("textEHeight " + textEHeight);
+
+    let newTop = originalHighlightDivTop - scrollTop
+    let newHeight = originalHighlightDivHeight
+    console.log("highlightDiv.style.top " + highlightDiv.style.top);
+    console.log("newTop " + newTop);
+
+    // if highlight is completely over the text area
+    if (newTop + newHeight < 0) {
+        newTop = 0
+        newHeight = 0
+    }
+    // if highlight is partially over the text area
+    else if (newTop < 0) {
+        newHeight += newTop; // new height based on where top should be
+        newTop = 0;
+    }
+    // if highlight is completely under text area
+    else if (newTop > textEHeight) {
+        newTop = textEHeight;
+        newHeight = 0
+    }
+    // if highlight is partially under the text area
+    else if (newTop + newHeight > textEHeight) {
+        newHeight = textEHeight - newTop // new height based on text area's height and where top is
+
+    }
+
+    highlightDiv.style.top = newTop
+    highlightDiv.style.height = newHeight
 }
 
 function changeHighlightComment(enableHighlight, child) {
@@ -212,9 +237,10 @@ function clickedCommentFunc(child, commentUniqueID, originalRegionStart, origina
 		let highlightDiv = document.getElementById("highlight");
 		let highlightDivTop = parseFloat(highlightDiv.style.top);
 		let highlightDivHeight = 24.3;
-		
-		highlightDiv.style.height = highlightDivHeight * lines
-		originalHighlightDivTop = highlightDivHeight * regionStart
+        
+        originalHighlightDivHeight = highlightDivHeight * lines
+		highlightDiv.style.height = originalHighlightDivHeight
+		originalHighlightDivTop =  highlightDivHeight * regionStart
 		currentCommentUniqueID = commentUniqueID
 		currentChild = child
 		setHighlightDivTop();

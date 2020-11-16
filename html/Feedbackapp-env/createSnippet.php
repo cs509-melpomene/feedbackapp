@@ -46,9 +46,6 @@
 				<textarea readonly id="numbers" class="snippetLineNumbers numbers" cols="4" rows="27"><?php for($i = 1; $i <= 500; $i++){echo $i; echo ("\n");}?></textarea>
 			</div>
 			<div class="col-md-5" id="snippetTextPanel" style="border-style: solid none solid none;">
-				<div class="highlightWrapper" id="highlightWrapper">
-					<div class="highlightMaskTop" id="highlightMaskTop"></div>
-				</div>
 				<br>
 				<label>Code: </label><br>
 				<div class="highlightWrapper" id="highlightWrapper">
