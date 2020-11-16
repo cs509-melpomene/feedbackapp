@@ -27,7 +27,7 @@
                     ?>><br>
 					<div>
                     </div>
-					<label>Information:</label><br><textarea id="info" oninput="codeFunction('info')" rows="15" cols="30" id="info"
+					<label>Information:</label><br><textarea id="info" oninput="updateSnippetHTTPRequest('info')" rows="15" cols="30" id="info"
 					    <?php
                             if (strcmp($_POST["isCreator"] , "true" ) != 0){
                               echo("readonly");
@@ -36,7 +36,7 @@
 					<div>
 					</div>
 					<?php if (strcmp($_POST["isCreator"] , "true" ) == 0): ?>
-                        <input type="button" onclick="deleteSnippet()" value="Delete Snippet" style = "font-size:20px">
+                        <input type="button" onclick="deleteSnippetHTTPRequest()" value="Delete Snippet" style = "font-size:20px">
                     <?php endif; ?>
 
 			</div>
@@ -51,7 +51,7 @@
 				<div class="highlightWrapper" id="highlightWrapper">
 					<div class="highlight" id="highlight"></div>
 				</div>
-				<textarea class="snippetText" id="text" oninput="codeFunction('text')" onscroll="codeScrolling()"></textarea>
+				<textarea class="snippetText" id="text" oninput="updateSnippetHTTPRequest('text')" onscroll="codeScrolling()"></textarea>
 				<br>
 			</div>
 			<div class="commentSidebar" id="commentSidebar" style="border-style: solid;">
@@ -64,7 +64,7 @@
 					<label class="commentFormColumnLabel" for="regionEnd">End Region:</label>
 					<input class="commentFormColumnInput" type="text" id="regionEndID" name="regionEnd">
 					<textarea class="columnFormText" id="commentTextID"></textarea><br>
-					<input class="submitColumnButton" type="button" onclick="submitComment()"/><br>
+					<input class="submitColumnButton" type="button" onclick="createCommentHTTPRequest()"/><br>
 				</form>
 				</div>
 				<div id="comments">

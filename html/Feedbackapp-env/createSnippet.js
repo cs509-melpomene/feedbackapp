@@ -1,11 +1,11 @@
-function deleteSnippet(){
+function deleteSnippetHTTPRequest(){
     httpRequest2 = new XMLHttpRequest();
     httpRequest2.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
     httpRequest2.setRequestHeader('Content-Type', 'application/json');
     body = '{"action":"delete"}';
     console.log(body);
     httpRequest2.send(body);
-    httpRequest2.onreadystatechange = deleteSnippetResponse;
+    httpRequest2.onreadystatechange = deleteSnippetHTTPResponse;
 }
 
 function snippetNotFound(){
@@ -23,7 +23,7 @@ function snippetNotFound(){
     snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
 }
 
-function deleteSnippetResponse(){
+function deleteSnippetHTTPResponse(){
     if (httpRequest2.readyState === XMLHttpRequest.DONE) {
         if (httpRequest2.status === 200) {
             console.log("responseText: " + httpRequest2.responseText)
@@ -35,7 +35,7 @@ function deleteSnippetResponse(){
     }
 }
 
-function submitComment(){
+function createCommentHTTPRequest(){
     console.log("Submitting Comment")
     let regionStartInput = document.getElementById("regionStartID");
     let regionEndInput = document.getElementById("regionEndID");
@@ -51,40 +51,42 @@ function submitComment(){
     };
     console.log(body);
     httpRequest3.send(JSON.stringify(body));
-    httpRequest3.onreadystatechange = createCommentRequestStateChange;
+    httpRequest3.onreadystatechange = createCommentHTTPResponse(httpRequest3);
 }
 
-function createCommentRequestStateChange() {
-    if (httpRequest3.readyState === XMLHttpRequest.DONE) {
-        if (httpRequest3.status === 200) {
-            console.log("success")
-            console.log(httpRequest3.responseText)
-            const obj = JSON.parse(httpRequest3.responseText);
-            console.log("snippetID " + obj['snippetID'])
-            console.log("commentID " + obj['commentID'])
+function createCommentHTTPResponse(httpRequest) {
+    return function(){
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                console.log("success")
+                console.log(httpRequest.responseText)
+                const obj = JSON.parse(httpRequest.responseText);
+                console.log("snippetID " + obj['snippetID'])
+                console.log("commentID " + obj['commentID'])
 
-            httpRequest3 = new XMLHttpRequest();
-            httpRequest3.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}/comment/${obj['commentID']}`, true);
-            httpRequest3.setRequestHeader('Content-Type', 'application/json');
-            let commentTextInput = document.getElementById("commentTextID");
-            console.log("commentTextInput " + commentTextInput.value);
-            let body = {
-                "text": commentTextInput.value,
-                "action": "update"
-            };
-            console.log(body);
-            httpRequest3.send(JSON.stringify(body));
-            httpRequest3.onreadystatechange = createCommentRequestStateChange;
-        
+                httpRequest = new XMLHttpRequest();
+                httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}/comment/${obj['commentID']}`, true);
+                httpRequest.setRequestHeader('Content-Type', 'application/json');
+                let commentTextInput = document.getElementById("commentTextID");
+                console.log("commentTextInput " + commentTextInput.value);
+                let body = {
+                    "text": commentTextInput.value,
+                    "action": "update"
+                };
+                console.log(body);
+                httpRequest.send(JSON.stringify(body));
+                // httpRequest.onreadystatechange = createCommentRequestStateChange; // currently we do not care about the response
+            
+            } else {
+                console.log("status: " + httpRequest.status)
+                console.log(httpRequest.responseText)
+            }
+    
         } else {
-            console.log("status: " + httpRequest3.status)
-            console.log(httpRequest3.responseText)
+            console.log("not done")
         }
-  
-    } else {
-        console.log("not done")
     }
-  }
+}
 
 function getRegionValue(child, regionName){
 	let region = child.getElementsByClassName(regionName);
@@ -133,7 +135,8 @@ function addOnClickToComments() {
 	});
 }
 
-function reportWindowSize() {
+// resets highlight width to width of text element
+function adjustHighlightWidth() {
 	console.log(window.innerHeight);
 	console.log(window.innerWidth);
 	let textE = document.getElementById("text")
@@ -145,8 +148,9 @@ function reportWindowSize() {
     highlightDiv.style.width = style.width;
 }
 
-window.onresize = reportWindowSize;
-reportWindowSize()
+// on window resize, recomput highlight width
+window.onresize = adjustHighlightWidth;
+adjustHighlightWidth() // initial computation
 
 let commentEnabled = false
 let originalHighlightDivTop = 0;
@@ -253,81 +257,89 @@ function codeScrolling() {
 	setHighlightDivTop();
 }
 
+// get snippet ID from query parameter
 var urlParams = new URLSearchParams(window.location.search);
 console.log(urlParams.get('snippetID')); // true
 let urlParamsSnippetID = urlParams.get('snippetID');
 
-function codeFunction(divID) {
-  httpRequest = new XMLHttpRequest();
-  httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
-  httpRequest.setRequestHeader('Content-Type', 'application/json');
-  let bodyOrg = document.getElementById(divID).value;
-  body = {
-      "action":"update"
-    };
-  body[divID] = bodyOrg;//body1;
-  if (divID != "text") {
-    body["text"] = null;
-  }
-  console.log(body);
-  httpRequest.send(JSON.stringify(body));
-  httpRequest.onreadystatechange = nameOfTheFunction;
-  if (divID == "text") {
-    updateNumbers(bodyOrg);
-  }
+// update snippet
+// divID: either 'text' or 'info' based on which part of the snippet you want to update
+function updateSnippetHTTPRequest(divID) {
+    httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
+    httpRequest.setRequestHeader('Content-Type', 'application/json');
+    let bodyOrg = document.getElementById(divID).value;
+    body = { "action": "update" };
+    body[divID] = bodyOrg;
+
+    // set text to null if we are updating the snippet info
+    if (divID != "text") {
+        body["text"] = null;
+    }
+
+    console.log(body);
+    httpRequest.send(JSON.stringify(body));
+    httpRequest.onreadystatechange = updateSnippetHTTPResponse(httpRequest);
+
+    // update line numbers only if we updated the code text
+    if (divID == "text") {
+        updateNumbers(bodyOrg);
+    }
 }
 
-  httpRequest1 = new XMLHttpRequest();
-  httpRequest1.open('GET', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
-  httpRequest1.setRequestHeader('Content-Type', 'application/json');
-  httpRequest1.send();
-  httpRequest1.onreadystatechange = nameOfTheFunction2;
+httpRequest1 = new XMLHttpRequest();
+httpRequest1.open('GET', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
+httpRequest1.setRequestHeader('Content-Type', 'application/json');
+httpRequest1.send();
+httpRequest1.onreadystatechange = viewSnippetHTTPResponse(httpRequest1);
 
-function nameOfTheFunction() {
-  if (httpRequest.readyState === XMLHttpRequest.DONE) {
-      if (httpRequest.status === 200) {
-		console.log("success")
-      } else {
-        console.log("status: " + httpRequest.status)
-      }
-
-  } else {
-	  console.log("not done")
-  }
-}
-function nameOfTheFunction2() {
-  if (httpRequest1.readyState === XMLHttpRequest.DONE) {
-      if (httpRequest1.status === 200) {
-        let body1 = '{"action":"update","text":"' + document.getElementById("text").value + '"}'
-		console.log("responseText: " + httpRequest1.responseText)
-		const obj = JSON.parse(httpRequest1.responseText);
-		if (obj['snippet'] === undefined) {
-            snippetNotFound();
-			return;
-		}
-		
-        document.getElementById("text").value = obj['snippet']['text'];
-        document.getElementById("info").value = obj['snippet']['info'];
-		document.getElementById("timestampDiv").innerHTML = obj['snippet']['timestamp'];
-        document.getElementById("Planguage").value = obj['snippet']['codingLanguage'];
-        
-        updateNumbers(obj['snippet']['text']);
-
-        let comments = obj['snippet']['comments']
-        let commentsDiv = document.getElementById("comments");
-        for(let i = 0; i < comments.length; i++){
-            let comment = comments[i];
-            commentsDiv.innerHTML += generateCommentString(comment['commentID'], comment['timestamp'], comment['startLine'], comment['endLine'], comment['text']); 
+function updateSnippetHTTPResponse(httpRequest) {
+    return function(){
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                    console.log("success")
+            } else {
+                    console.log("status: " + httpRequest.status)
+            }
+        } else {
+            console.log("not done")
         }
-        addOnClickToComments();
-		console.log("success")
-      } else {
-        console.log("status: " + httpRequest1.status)
-      }
+    }
+}
+function viewSnippetHTTPResponse(httpRequest) {
+    return function(){
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                console.log("responseText: " + httpRequest.responseText)
+                const obj = JSON.parse(httpRequest.responseText);
+                if (obj['snippet'] === undefined) {
+                    snippetNotFound();
+                    return;
+                }
+                
+                document.getElementById("text").value = obj['snippet']['text'];
+                document.getElementById("info").value = obj['snippet']['info'];
+                document.getElementById("timestampDiv").innerHTML = obj['snippet']['timestamp'];
+                document.getElementById("Planguage").value = obj['snippet']['codingLanguage'];
+                
+                updateNumbers(obj['snippet']['text']);
 
-  } else {
-	  console.log("bad")
-  }
+                let comments = obj['snippet']['comments']
+                let commentsDiv = document.getElementById("comments");
+                for(let i = 0; i < comments.length; i++){
+                    let comment = comments[i];
+                    commentsDiv.innerHTML += generateCommentString(comment['commentID'], comment['timestamp'], comment['startLine'], comment['endLine'], comment['text']); 
+                }
+                addOnClickToComments();
+                console.log("success")
+            } else {
+                console.log("status: " + httpRequest.status)
+            }
+
+        } else {
+            console.log("bad")
+        }
+    }
 }
 
 function updateNumbers(text){
