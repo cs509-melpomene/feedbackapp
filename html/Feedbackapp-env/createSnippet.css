@@ -75,13 +75,6 @@
     background-color: rgb(255, 255, 0);
 }
 
-.highlightMaskTop {
-    top: 0px;
-    position: relative;
-    z-index: -1;
-    background-color: rgb(255, 255, 255);
-}
-  
 .snippetNotFoundText {
     text-align: center;
     font-size: 30px;
