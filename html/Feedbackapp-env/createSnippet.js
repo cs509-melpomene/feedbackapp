@@ -9,6 +9,33 @@ window.updateSnippetHTTPRequest = updateSnippetHTTPRequest
 window.createCommentHTTPRequest = createCommentHTTPRequest
 viewSnippetHTTPRequest(); // not called by a button, called on page load
 
+function selectionChange(){
+    console.log('new selection');
+    let selection = document.getSelection()
+    let selectionStr = document.getSelection().toString()
+    console.log('selection ', selection);
+    console.log('selction string ' + selectionStr);
+    console.log('selction focusNode.id ' + selection.focusNode.id);
+    if (selection.focusNode.id == 'snippetTextPanel') {
+        console.log('selection from snippet text / code')
+        let textE = document.getElementById('text');
+        let textStr = textE.value;
+
+        let textSelStart = textE.selectionStart;
+        let textSelEnd = textE.selectionEnd;
+        
+        let textSub0 = textStr.substring(0, textSelStart);
+        let textSub1 = textStr.substring(textSelStart, textSelEnd);
+        console.log('substr ' + textSub1);
+
+        let linesStart = textSub0.split("\n").length
+        let linesNum = textSub1.split("\n").length - 1
+        document.getElementById('regionStartID').value = linesStart
+        document.getElementById('regionEndID').value = linesStart + linesNum
+    }
+}
+document.onselectionchange = selectionChange
+
 // resets highlight width to width of text element
 function adjustHighlightWidth() {
 	console.log(window.innerHeight);
