@@ -1,4 +1,6 @@
 import { urlParamsSnippetID } from './util.js';
+import { viewSnippetHTTPRequest } from './viewSnippet.js';
+import { resetCurrentComment } from './viewSnippet.js'; // TODO: move to new file called comments.js?
 
 export function createCommentHTTPRequest(){
     console.log("Submitting Comment")
@@ -41,6 +43,7 @@ function createCommentHTTPResponse(httpRequest) {
     }
 }
 
+// isUpdate: if true then update text, otherwise delete comment
 export function updateCommentHTTPRequest(commentID, isUpdate){
     let httpRequest = new XMLHttpRequest();
     httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}/comment/${commentID}`, true);
@@ -60,5 +63,24 @@ export function updateCommentHTTPRequest(commentID, isUpdate){
 
     console.log(body);
     httpRequest.send(JSON.stringify(body));
-    // httpRequest.onreadystatechange = createCommentRequestStateChange; // currently we do not care about the response
+    httpRequest.onreadystatechange = updateCommentHTTPResponse(httpRequest);
+}
+
+function updateCommentHTTPResponse(httpRequest) {
+    return function(){
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                console.log("success")
+                console.log(httpRequest.responseText)
+                const obj = JSON.parse(httpRequest.responseText);
+            } else {
+                console.log("status: " + httpRequest.status)
+                console.log(httpRequest.responseText)
+            }
+            viewSnippetHTTPRequest(); // lambda currently sends 500 either way
+            resetCurrentComment()
+        } else {
+            console.log("not done")
+        }
+    }
 }

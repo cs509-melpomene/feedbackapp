@@ -46,6 +46,7 @@ function viewSnippetHTTPResponse(httpRequest) {
 
 function repopulateCommentsDiv(comments){
     let commentsDiv = document.getElementById("comments");
+    commentsDiv.innerHTML = "";
     for(let i = 0; i < comments.length; i++){
         let comment = comments[i];
         commentsDiv.innerHTML += generateCommentString(comment['commentID'], comment['timestamp'], comment['startLine'], comment['endLine'], comment['text']); 
@@ -143,6 +144,15 @@ function generateCommentString(uniqueID, timestamp, startRegion, endRegion, text
 export function deleteCommentClick(uniqueID){
     console.log("clicked delete comment button: " + uniqueID)
     updateCommentHTTPRequest(uniqueID, false)
+}
+
+export function resetCurrentComment() {
+    window.commentEnabled = false
+    window.originalHighlightDivTop = 0;
+    window.originalHighlightDivHeight = 0;
+    window.currentCommentUniqueID = "";
+    window.currentChild = null;
+    setHighlightDivTop();
 }
 
 // set highlight div top relative to scroll bar

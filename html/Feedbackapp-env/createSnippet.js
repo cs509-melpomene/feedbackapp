@@ -4,6 +4,7 @@ import { createCommentHTTPRequest } from './createComment.js';
 import { viewSnippetHTTPRequest } from './viewSnippet.js';
 import { setHighlightDivTop } from './viewSnippet.js'; // TODO: move to new file called comments.js?
 import { deleteCommentClick } from './viewSnippet.js'; // TODO: move to new file called comments.js?
+import { resetCurrentComment } from './viewSnippet.js'; // TODO: move to new file called comments.js?
 
 window.deleteSnippetHTTPRequest = deleteSnippetHTTPRequest
 window.updateSnippetHTTPRequest = updateSnippetHTTPRequest
@@ -56,11 +57,7 @@ function adjustHighlightWidth() {
 window.onresize = adjustHighlightWidth;
 adjustHighlightWidth() // initial computation
 
-window.commentEnabled = false
-window.originalHighlightDivTop = 0;
-window.originalHighlightDivHeight = 0;
-window.currentCommentUniqueID = "";
-window.currentChild = null;
+resetCurrentComment();
 
 window.changeHighlightComment = function changeHighlightComment(enableHighlight, child) {
 	if (child == null) {
