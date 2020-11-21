@@ -16,7 +16,7 @@
 			<div class="col-md-3" id="snippetInfoSidePanel" style="border-style: solid;">
 				<br>
 					Unique ID: <?php echo($_GET["snippetID"])?><br>
-					<a href="http://feedbackapp-env.eba-9ipq52ps.us-east-2.elasticbeanstalk.com/createSnippet.php?snippetID=<?php echo($_GET["snippetID"])?>" target="_blank">Click to open Viewer Screen</a>
+					<a href="./createSnippet.php?snippetID=<?php echo($_GET["snippetID"])?>" target="_blank">Click to open Viewer Screen</a>
 					                <br>
 					Time Stamp: <div id='timestampDiv'></div>
 					<br>Programming Language: <br><input type="text" id="Planguage"
