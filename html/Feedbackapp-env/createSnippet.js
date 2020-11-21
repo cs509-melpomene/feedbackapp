@@ -3,11 +3,14 @@ import { updateSnippetHTTPRequest } from './updateSnippet.js';
 import { createCommentHTTPRequest } from './createComment.js';
 import { viewSnippetHTTPRequest } from './viewSnippet.js';
 import { setHighlightDivTop } from './viewSnippet.js'; // TODO: move to new file called comments.js?
+import { deleteCommentClick } from './viewSnippet.js'; // TODO: move to new file called comments.js?
 
 window.deleteSnippetHTTPRequest = deleteSnippetHTTPRequest
 window.updateSnippetHTTPRequest = updateSnippetHTTPRequest
 window.createCommentHTTPRequest = createCommentHTTPRequest
 viewSnippetHTTPRequest(); // not called by a button, called on page load
+
+window.deleteCommentClick = deleteCommentClick
 
 function selectionChange(){
     console.log('new selection');

@@ -29,19 +29,7 @@ function createCommentHTTPResponse(httpRequest) {
                 console.log("snippetID " + obj['snippetID'])
                 console.log("commentID " + obj['commentID'])
 
-                httpRequest = new XMLHttpRequest();
-                httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}/comment/${obj['commentID']}`, true);
-                httpRequest.setRequestHeader('Content-Type', 'application/json');
-                let commentTextInput = document.getElementById("commentTextID");
-                console.log("commentTextInput " + commentTextInput.value);
-                let body = {
-                    "text": commentTextInput.value,
-                    "action": "update"
-                };
-                console.log(body);
-                httpRequest.send(JSON.stringify(body));
-                // httpRequest.onreadystatechange = createCommentRequestStateChange; // currently we do not care about the response
-            
+                updateCommentHTTPRequest(obj['commentID'], true);
             } else {
                 console.log("status: " + httpRequest.status)
                 console.log(httpRequest.responseText)
@@ -51,4 +39,26 @@ function createCommentHTTPResponse(httpRequest) {
             console.log("not done")
         }
     }
+}
+
+export function updateCommentHTTPRequest(commentID, isUpdate){
+    let httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}/comment/${commentID}`, true);
+    httpRequest.setRequestHeader('Content-Type', 'application/json');
+    let commentTextInput = document.getElementById("commentTextID");
+    console.log("commentTextInput " + commentTextInput.value);
+    let body = {
+        "action": "delete"
+    };
+
+    if (isUpdate) {
+        body = {
+            "text": commentTextInput.value,
+            "action": "update"
+        };
+    }
+
+    console.log(body);
+    httpRequest.send(JSON.stringify(body));
+    // httpRequest.onreadystatechange = createCommentRequestStateChange; // currently we do not care about the response
 }
