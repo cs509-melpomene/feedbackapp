@@ -24,9 +24,9 @@ public class ViewSnippet implements RequestHandler<ViewSnippetRequest, ViewSnipp
         		throw new Exception("not 16 characters"); 
         	}
         	for(int i=0;i<input.snippetID.length();i++) {
-        		char namethisnowidk = input.snippetID.charAt(i);
-        		if((namethisnowidk < '0' || namethisnowidk > '9' )&&( namethisnowidk < 'a' || namethisnowidk > 'f' )) {
-        			throw new Exception("Not Hexadecimal" + i + "  " + namethisnowidk);
+        		char c = input.snippetID.charAt(i);
+        		if((c < '0' || c > '9' )&&( c < 'a' || c > 'f' )) {
+        			throw new Exception("Not Hexadecimal" + i + "  " + c);
         		}
         		
         	}

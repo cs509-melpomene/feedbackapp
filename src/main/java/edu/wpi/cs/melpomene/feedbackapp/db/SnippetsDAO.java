@@ -144,6 +144,26 @@ public class SnippetsDAO {
         }
     }
     
+    public ArrayList<String> showAllSnippets() throws Exception {
+        try {
+        	Statement statement = conn.createStatement();
+            String query = "SELECT snippetID, snippetTimestamp FROM " + snippetTable + ";";
+            ResultSet resultSet = statement.executeQuery(query);
+            
+            ArrayList<String> snippets = new ArrayList<String>();
+            while (resultSet.next()) {
+            	String temp = resultSet.getNString(1) + resultSet.getString(2);
+            	snippets.add(temp);
+            }
+            resultSet.close();
+            statement.close();
+            return snippets;
+
+        } catch (Exception e) {
+            throw new Exception("Failed in getting snippet: " + e.getMessage());
+        }
+    }
+    
     private Snippet generateSnippet(ResultSet resultSet) throws Exception {
     	String snippetID  = resultSet.getString("snippetID");
     	String creatorPassword  = resultSet.getString("creatorPassword");

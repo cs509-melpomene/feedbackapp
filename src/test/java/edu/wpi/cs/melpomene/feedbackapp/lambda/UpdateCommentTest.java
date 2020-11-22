@@ -7,11 +7,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.melpomene.feedbackapp.TestContext;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.http.UpdateCommentRequest;
+import edu.wpi.cs.melpomene.feedbackapp.http.UpdateCommentResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.UpdateSnippetRequest;
 import edu.wpi.cs.melpomene.feedbackapp.http.UpdateSnippetResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetRequest;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.model.Comment;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -21,7 +25,7 @@ import com.amazonaws.services.lambda.runtime.Context;
  */
 public class UpdateCommentTest extends LambdaTest{
 
-    private static UpdateSnippetRequest input;
+    private static UpdateCommentRequest input;
 
     private Context createContext() {
         TestContext ctx = new TestContext();
@@ -32,39 +36,49 @@ public class UpdateCommentTest extends LambdaTest{
         return ctx;
     }     
 
-//    @Test
-//    public void testUpdateTextLambdaPositive() {
-//    	CreateSnippet csHandler = new CreateSnippet();
-//    	Context ctx = createContext();
-//    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
-//
-//        UpdateSnippet handler = new UpdateSnippet();
-//        input = new UpdateSnippetRequest(csResponse.snippetID, "update", "whatever", "");
-//        
-//        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
-//        
-//        ViewSnippet snippet = new ViewSnippet();
-//        ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
-//        ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
-//        
+    @Test
+    public void testUpdateTextLambdaPositive() {
+    	CreateComment csHandler = new CreateComment();
+    	Context ctx = createContext();
+    	CreateCommentResponse csResponse = csHandler.handleRequest(null, ctx);
+
+        UpdateComment handler = new UpdateComment();
+        input = new UpdateCommentRequest(csResponse.snippetID, csResponse.commentID, "update", "whatever");
+        
+        UpdateCommentResponse response = handler.handleRequest(input, ctx);
+        
+        ViewSnippet snippet = new ViewSnippet();
+        ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
+        ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
+        
+        boolean isFound = false;
+        for(Comment comment : viewResponse.snippet.comments) {
+        	if(comment.commentID.equals(response.comment.commentID)) {
+        		isFound = true;
+        		Assert.assertEquals(comment.text, "whatever");
+        		break;
+        	}
+        }
+        
+        Assert.assertTrue(isFound);
 //        Assert.assertEquals(viewResponse.snippet.text, "whatever");
 //        Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
-//        
-//    }
+        
+    }
     
     @Test
     public void testDeleteCommentLambdaPositive() {
-    	CreateSnippet csHandler = new CreateSnippet();
+    	CreateComment csHandler = new CreateComment();
     	Context ctx = createContext();
-    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
+    	CreateCommentResponse csResponse = csHandler.handleRequest(null, ctx);
 
-        UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "delete", "", "");
+        UpdateComment handler = new UpdateComment();
+        input = new UpdateCommentRequest(csResponse.snippetID, csResponse.commentID, "delete", "");
         
-        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
-     
-        Assert.assertEquals(response.snippet.snippetID, csResponse.snippetID);
-        Assert.assertEquals(response.error, "Snippet deleted successfully");
+        UpdateCommentResponse response = handler.handleRequest(input, ctx);
+        
+        Assert.assertEquals(response.comment.commentID, csResponse.commentID);
+        Assert.assertEquals(response.error, "Comment deleted successfully");
         
     }
 }

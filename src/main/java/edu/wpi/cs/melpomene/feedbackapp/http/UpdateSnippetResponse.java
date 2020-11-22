@@ -4,7 +4,6 @@ import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 public class UpdateSnippetResponse {
 	public final Snippet snippet;
-	
 	public final String error;
 	public final int httpCode;
 	
