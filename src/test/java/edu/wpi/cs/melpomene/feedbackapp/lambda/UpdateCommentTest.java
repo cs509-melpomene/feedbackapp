@@ -38,6 +38,7 @@ public class UpdateCommentTest extends LambdaTest{
 
     @Test
     public void testUpdateTextLambdaPositive() {
+    	// create snippet
     	CreateComment csHandler = new CreateComment();
     	Context ctx = createContext();
     	CreateCommentResponse csResponse = csHandler.handleRequest(null, ctx);
@@ -68,6 +69,7 @@ public class UpdateCommentTest extends LambdaTest{
     
     @Test
     public void testDeleteCommentLambdaPositive() {
+    	//create snippet
     	CreateComment csHandler = new CreateComment();
     	Context ctx = createContext();
     	CreateCommentResponse csResponse = csHandler.handleRequest(null, ctx);

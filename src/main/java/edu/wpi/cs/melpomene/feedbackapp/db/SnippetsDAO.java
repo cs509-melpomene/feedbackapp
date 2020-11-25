@@ -1,6 +1,7 @@
 package edu.wpi.cs.melpomene.feedbackapp.db;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class SnippetsDAO {
             
             return (numAffected == 1);
         } catch (Exception e) {
-            throw new Exception("Failed to update report: " + e.getMessage());
+            throw new Exception("Failed to update code: " + e.getMessage());
         }
     }
     
@@ -81,12 +82,13 @@ public class SnippetsDAO {
             
             return (numAffected == 1);
         } catch (Exception e) {
-            throw new Exception("Failed to update report: " + e.getMessage());
+            throw new Exception("Failed to update info: " + e.getMessage());
         }
     }
     
     public boolean deleteSnippet(String snippetID) throws Exception {
         try {
+        	
             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetID = ?;");
             ps.setString(1,  snippetID);
             int numAffected = ps.executeUpdate();
@@ -95,10 +97,28 @@ public class SnippetsDAO {
             return (numAffected == 1);
 
         } catch (Exception e) {
-            throw new Exception("Failed to delete constant: " + e.getMessage());
+            throw new Exception("Failed to delete snippet: " + e.getMessage());
         }
     }
     
+    public int deleteStaleSnippets(int nDays) throws Exception {
+        try {
+        	LocalDate today = LocalDate.now();
+        	LocalDate compareDate = today.minusDays(nDays);
+        	String staleDate = compareDate.toString();
+        	// test this
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetTimestamp <= ?;");
+            ps.setString(1, staleDate);
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return numAffected;
+
+        } catch (Exception e) {
+            throw new Exception("Failed to delete snippets: " + e.getMessage());
+        }
+    }
+
     public boolean addSnippet(Snippet snippet) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + snippetTable + " WHERE snippetID = ?;");
@@ -144,7 +164,7 @@ public class SnippetsDAO {
         }
     }
     
-    public ArrayList<String> showAllSnippets() throws Exception {
+    public ArrayList<String> listAllSnippets() throws Exception {
         try {
         	Statement statement = conn.createStatement();
             String query = "SELECT snippetID, snippetTimestamp FROM " + snippetTable + ";";
@@ -152,7 +172,7 @@ public class SnippetsDAO {
             
             ArrayList<String> snippets = new ArrayList<String>();
             while (resultSet.next()) {
-            	String temp = resultSet.getNString(1) + resultSet.getString(2);
+            	String temp = resultSet.getNString(1) + " " + resultSet.getString(2);
             	snippets.add(temp);
             }
             resultSet.close();
@@ -160,7 +180,7 @@ public class SnippetsDAO {
             return snippets;
 
         } catch (Exception e) {
-            throw new Exception("Failed in getting snippet: " + e.getMessage());
+            throw new Exception("Failed in listing snippets: " + e.getMessage());
         }
     }
     

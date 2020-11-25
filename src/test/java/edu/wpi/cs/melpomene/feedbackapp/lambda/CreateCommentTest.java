@@ -1,6 +1,7 @@
 package edu.wpi.cs.melpomene.feedbackapp.lambda;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
