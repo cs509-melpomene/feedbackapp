@@ -43,7 +43,7 @@ export function viewSnippetHTTPResponseFinish(){
     document.getElementById("text").value = window.globalSnippet['snippet']['text'];
     document.getElementById("info").value = window.globalSnippet['snippet']['info'];
     document.getElementById("timestampDiv").innerHTML = window.globalSnippet['snippet']['timestamp'];
-    document.getElementById("Planguage").value = window.globalSnippet['snippet']['codingLanguage'];
+    document.getElementById("codeLanguage").value = window.globalSnippet['snippet']['codingLanguage'];
     document.getElementById("viewerPasswordInput").value = window.globalSnippet['snippet']['viewerPassword'];
 
     updateNumbers(window.globalSnippet['snippet']['text']);

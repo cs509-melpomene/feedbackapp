@@ -18,6 +18,10 @@ export function updateSnippetHTTPRequest(divID) {
         body["text"] = null;
     }
 
+    if (divID != "info") {
+        body["info"] = null;
+    }
+
     console.log(body);
     httpRequest.send(JSON.stringify(body));
     httpRequest.onreadystatechange = updateSnippetHTTPResponse(httpRequest);

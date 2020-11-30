@@ -22,7 +22,7 @@
 					Viewer Password: <input id='viewerPasswordInput' type='password' value='Placeholder' readonly/>
 					<input type='checkbox' onclick='togglePasswordText()' />
 					<input type='button' onclick='copyViewerPassword()' value='Copy' />
-					<br>Programming Language: <br><input type="text" id="Planguage"
+					<br>Programming Language: <br><input type="text" id="codeLanguage" oninput="updateSnippetHTTPRequest('codeLanguage')"
 					<?php
                     	if (strcmp($_POST["isCreator"] , "true" ) != 0){
                                 echo("readonly");
