@@ -14,15 +14,18 @@ export function snippetNotFound(){
     let commentSidebarDiv = document.getElementById("commentSidebar");
     let snippetInfoSidePanelDiv = document.getElementById("snippetInfoSidePanel");
     commentSidebarDiv.innerHTML = "";
-    snippetInfoSidePanelDiv.innerHTML = "";
+    
+    snippetInfoSidePanelDiv.innerHTML = `
+        <a href="/">Home</a>
+    `;
+
     document.getElementById("codeNumbersSidePanel").innerHTML = "";
-    let snippetNotFoundHTML = `
+    let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
+    snippetTextPanelDiv.innerHTML = `
         <div class="snippetNotFoundText">
                 Snippet ID ${urlParamsSnippetID} not found!
         </div>
     `;
-    let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
-    snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
 }
 
 function deleteSnippetHTTPResponse(httpRequest){
