@@ -35,7 +35,7 @@
 }
   
 .snippetLineNumbers {
-    padding-top: 10px;
+    margin-top: 9px;
     overflow: scroll;
     vertical-align: right;
     border-style: none;
@@ -43,6 +43,7 @@
     overflow: auto;
     height: 600px;
     text-align: right;
+    font-size: 16px;
 }
 
 .snippetText {
@@ -51,6 +52,7 @@
     height: 600px;
     overflow: scroll;
     background-color: transparent;
+    font-size: 16px;
 }
   
 .columnFormText {
@@ -71,8 +73,9 @@
     height: 0px;
     top: 0px;
     position: relative;
-    z-index: -2;
+    z-index: 2;
     background-color: rgb(255, 255, 0);
+    opacity: 0.25;
 }
 
 .snippetNotFoundText {

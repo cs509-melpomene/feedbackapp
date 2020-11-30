@@ -19,14 +19,21 @@ function selectionChange(){
     let selectionStr = document.getSelection().toString()
     console.log('selection ', selection);
     console.log('selction string ' + selectionStr);
-    console.log('selction focusNode.id ' + selection.focusNode.id);
-    if (selection.focusNode.id == 'snippetTextPanel') {
+    console.log('selction focusNode.parentElement.id ' + selection.focusNode.parentElement.id);
+    if (selection.focusNode.parentElement.id == 'text') {
         console.log('selection from snippet text / code')
         let textE = document.getElementById('text');
-        let textStr = textE.value;
+        let textStr = textE.innerText;
+        "".replace(/\r/, "")
 
-        let textSelStart = textE.selectionStart;
-        let textSelEnd = textE.selectionEnd;
+        let textSelStart = textStr.indexOf(selectionStr)
+        let textSelEnd = textSelStart + selectionStr.length
+        /*let textSelStart = textE.selectionStart;
+        le=t textSelEnd = textE.selectionEnd;*/
+
+        /*console.log("selection.getRangeAt(0)" + selection.getRangeAt(0))
+        let textSelStart = selection.getRangeAt(0).startOffset;
+        let textSelEnd = selection.getRangeAt(0).endOffset;*/
         
         let textSub0 = textStr.substring(0, textSelStart);
         let textSub1 = textStr.substring(textSelStart, textSelEnd);
@@ -64,9 +71,12 @@ function windowResize(){
     adjustBlurred()
 }
 
-// on window resize, recomput highlight width
-window.onresize = windowResize;
-windowResize() // initial computation
+window.onload = function() {
+    // on window resize, recompute highlight width
+    window.onresize = windowResize;
+    windowResize() // initial computation
+}
+
 
 resetCurrentComment();
 
