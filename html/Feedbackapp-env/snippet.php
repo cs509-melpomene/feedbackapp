@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 	<link rel="stylesheet" href="mainGrid.css"/>
 	<link rel="icon" type="image/png" href="favicon.png"/>
-	<link rel="stylesheet" href="createSnippet.css" />
+	<link rel="stylesheet" href="snippet.css" />
 	<title>Feedback Application</title>
 </head>
 
@@ -16,7 +16,7 @@
 			<div class="col-md-3" id="snippetInfoSidePanel" style="border-style: solid;">
 				<br>
 					Unique ID: <?php echo($_GET["snippetID"])?><br>
-					<a href="http://feedbackapp-env.eba-9ipq52ps.us-east-2.elasticbeanstalk.com/createSnippet.php?snippetID=<?php echo($_GET["snippetID"])?>" target="_blank">Click to open Viewer Screen</a>
+					<a href="./snippet.php?snippetID=<?php echo($_GET["snippetID"])?>" target="_blank">Click to open Viewer Screen</a>
 					                <br>
 					Time Stamp: <div id='timestampDiv'></div>
 					<br>Programming Language: <br><input type="text" id="Planguage"
@@ -74,5 +74,5 @@
 	</div>
 	</form>
 </body>
-<script type="module" src="createSnippet.js"></script>
+<script type="module" src="snippet.js"></script>
 </html>
