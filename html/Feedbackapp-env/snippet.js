@@ -9,7 +9,7 @@ import { resetCurrentComment } from './viewSnippet.js'; // TODO: move to new fil
 window.deleteSnippetHTTPRequest = deleteSnippetHTTPRequest
 window.updateSnippetHTTPRequest = updateSnippetHTTPRequest
 window.createCommentHTTPRequest = createCommentHTTPRequest
-viewSnippetHTTPRequest(); // not called by a button, called on page load
+viewSnippetHTTPRequest(true); // not called by a button, called on page load
 
 window.deleteCommentClick = deleteCommentClick
 
@@ -53,9 +53,20 @@ function adjustHighlightWidth() {
     highlightDiv.style.width = style.width;
 }
 
+function adjustBlurred(){
+    let blurredDiv = document.getElementById("blurredDiv")
+    blurredDiv.style.height = window.innerHeight 
+    blurredDiv.style.width = window.innerWidth 
+}
+
+function windowResize(){
+    adjustHighlightWidth()
+    adjustBlurred()
+}
+
 // on window resize, recomput highlight width
-window.onresize = adjustHighlightWidth;
-adjustHighlightWidth() // initial computation
+window.onresize = windowResize;
+windowResize() // initial computation
 
 resetCurrentComment();
 
@@ -84,3 +95,37 @@ function select_scroll_2(e) { s1.scrollTop = s2.scrollTop; }
 
 s1.addEventListener('scroll', select_scroll_1, false);
 s2.addEventListener('scroll', select_scroll_2, false);
+
+window.togglePasswordText = function togglePasswordText(){
+    var viewPasswordInput = document.getElementById("viewerPasswordInput");
+    if (viewPasswordInput.type === "password") {
+        viewPasswordInput.type = "text";
+    } else {
+        viewPasswordInput.type = "password";
+    }
+}
+
+window.copyViewerPassword = function copyViewerPassword(){
+    var neededTypeSwitch = false;
+    var viewPasswordInput = document.getElementById("viewerPasswordInput");
+    if (viewPasswordInput.type === "password") {
+        viewPasswordInput.type = "text";
+        neededTypeSwitch = true;
+    }
+    viewPasswordInput.select();
+    viewPasswordInput.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    if (neededTypeSwitch) {
+        viewPasswordInput.type = "password";
+    }
+}
+
+import { viewSnippetHTTPResponseFinish } from './viewSnippet.js';
+window.unlockViewerPassword = function unlockViewerPassword(){
+    var unlockViewerPasswordText = document.getElementById("unlockViewerPasswordText");
+    if (unlockViewerPasswordText.value == window.globalSnippet['snippet']['viewerPassword'] ) {
+        var blurredDiv = document.getElementById("blurredDiv");
+        blurredDiv.hidden = true
+        viewSnippetHTTPResponseFinish();
+    }
+}

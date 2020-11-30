@@ -19,6 +19,9 @@
 					<a href="./snippet.php?snippetID=<?php echo($_GET["snippetID"])?>" target="_blank">Click to open Viewer Screen</a>
 					                <br>
 					Time Stamp: <div id='timestampDiv'></div>
+					Viewer Password: <input id='viewerPasswordInput' type='password' value='Placeholder' readonly/>
+					<input type='checkbox' onclick='togglePasswordText()' />
+					<input type='button' onclick='copyViewerPassword()' value='Copy' />
 					<br>Programming Language: <br><input type="text" id="Planguage"
 					<?php
                     	if (strcmp($_POST["isCreator"] , "true" ) != 0){
@@ -73,6 +76,15 @@
 		</div>
 	</div>
 	</form>
+	<div id='blurredDiv' class='blurred'>
+		<div class='viewerPasswordInputDiv'>
+			<form>
+				<label>Viewer Password:</label><br>
+				<input type='text' id='unlockViewerPasswordText' /><br>
+				<input type='button' value='Unlock' onclick='unlockViewerPassword()'/>
+			</form>
+		</div>
+	</div>
 </body>
 <script type="module" src="snippet.js"></script>
 </html>

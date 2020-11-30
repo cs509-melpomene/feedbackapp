@@ -82,3 +82,25 @@
     top: 45%;
     position: relative;
 }
+
+.blurred {
+    top: 0px;
+    left: 0px;
+    height: 200px;
+    width: 200px;
+    float: left;
+    position: absolute;
+    z-index: 1;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+}
+
+.viewerPasswordInputDiv {
+    top: 33%;
+    left: 34%;
+    width: 33%;
+    height: 33%;
+    position: absolute;
+    z-index: 1;
+    background-color: rgb(200, 200, 200);
+}
