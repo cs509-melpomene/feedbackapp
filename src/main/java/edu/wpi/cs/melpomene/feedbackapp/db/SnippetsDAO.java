@@ -86,6 +86,21 @@ public class SnippetsDAO {
         }
     }
     
+    public boolean updateLanguage(String snippetID, String language, String field) throws Exception {
+        try {
+        	PreparedStatement ps = conn.prepareStatement("UPDATE " + snippetTable + " SET " + field + " = ? WHERE snippetID = ?;");
+        	ps.setString(1,  language);
+        	ps.setString(2,  snippetID);
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return (numAffected == 1);
+        } catch (Exception e) {
+            throw new Exception("Failed to update info: " + e.getMessage());
+        }
+    }
+    
+    
     public boolean deleteSnippet(String snippetID) throws Exception {
         try {
         	

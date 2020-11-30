@@ -42,6 +42,16 @@ public class UpdateSnippet implements RequestHandler<UpdateSnippetRequest, Updat
 		}
 	}
 	
+	public void updateLanguage(String snippetID, String language) {
+		try {
+			dao.updateLanguage(snippetID, language, "codeLanguage");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void deleteSnippet(String snippetID) {
 		try {
 			dao.deleteSnippet(snippetID);
@@ -64,6 +74,10 @@ public class UpdateSnippet implements RequestHandler<UpdateSnippetRequest, Updat
 			}
 			else if(input.info != null) {
 				updateInfo(input.snippetID, input.info);
+			}
+			
+			else if(input.codeLanguage != null) {
+				updateLanguage(input.snippetID, input.codeLanguage);
 			}
 		}
 		

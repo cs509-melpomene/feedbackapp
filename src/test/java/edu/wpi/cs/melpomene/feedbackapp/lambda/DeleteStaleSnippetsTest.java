@@ -47,8 +47,8 @@ public class DeleteStaleSnippetsTest extends LambdaTest{
         
         DeleteStaleSnippetsResponse response = handler.handleRequest(input, ctx);
      
-        Assert.assertEquals(response.snippet.snippetID, csResponse.snippetID);
-        Assert.assertEquals(response.error, "Snippet deleted successfully");
+        Assert.assertEquals(1, response.numDeleted);
+        Assert.assertEquals(response.error, "Snippets deleted successfully");
         
     }
 }
