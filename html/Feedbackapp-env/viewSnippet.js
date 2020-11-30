@@ -3,6 +3,7 @@ import {
     updateNumbers
 } from './util.js';
 import { snippetNotFound } from './deleteSnippet.js';
+import { updateCommentHTTPRequest } from './createComment.js';
 
 export function viewSnippetHTTPRequest(httpRequest) {
     let httpRequest1 = new XMLHttpRequest();
@@ -45,6 +46,7 @@ function viewSnippetHTTPResponse(httpRequest) {
 
 function repopulateCommentsDiv(comments){
     let commentsDiv = document.getElementById("comments");
+    commentsDiv.innerHTML = "";
     for(let i = 0; i < comments.length; i++){
         let comment = comments[i];
         commentsDiv.innerHTML += generateCommentString(comment['commentID'], comment['timestamp'], comment['startLine'], comment['endLine'], comment['text']); 
@@ -116,7 +118,7 @@ function addOnClickToComments() {
 		let regionStart = getRegionValue(child, "regionStart");
 		let regionEnd = getRegionValue(child, "regionEnd");
 
-		child.onclick = clickedCommentFunc(child, commentUniqueID, regionStart,regionEnd)
+        child.onclick = clickedCommentFunc(child, commentUniqueID, regionStart,regionEnd)
 	});
 }
 
@@ -131,11 +133,26 @@ function generateCommentString(uniqueID, timestamp, startRegion, endRegion, text
 			<div class="commentFormColumnInput regionStart">${startRegion}</div>
 			<div class="commentFormColumnLabel">End Region:</div>
 			<div class="commentFormColumnInput regionEnd">${endRegion}</div>
-			<div class="commentText">${text}</div>
+            <div class="commentText">${text}</div>
+            <input type="button" onclick="deleteCommentClick('${uniqueID}')" value="delete"/>
 		</div>
 	`
 	console.log("new comment: " + commentStr);
 	return commentStr;
+}
+
+export function deleteCommentClick(uniqueID){
+    console.log("clicked delete comment button: " + uniqueID)
+    updateCommentHTTPRequest(uniqueID, false)
+}
+
+export function resetCurrentComment() {
+    window.commentEnabled = false
+    window.originalHighlightDivTop = 0;
+    window.originalHighlightDivHeight = 0;
+    window.currentCommentUniqueID = "";
+    window.currentChild = null;
+    setHighlightDivTop();
 }
 
 // set highlight div top relative to scroll bar
