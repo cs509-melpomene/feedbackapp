@@ -19,8 +19,12 @@ function selectionChange(){
     let selectionStr = document.getSelection().toString()
     console.log('selection ', selection);
     console.log('selction string ' + selectionStr);
-    console.log('selction focusNode.parentElement.id ' + selection.focusNode.parentElement.id);
-    if (selection.focusNode.parentElement.id == 'text') {
+    let currentNode = selection.focusNode.parentElement;
+    while (currentNode.id == '') {
+        currentNode = currentNode.parentElement
+    }
+    console.log('selction currentNode.id ' + currentNode.id);
+    if (currentNode.id == 'text') {
         console.log('selection from snippet text / code')
         let textE = document.getElementById('text');
         let textStr = textE.innerText;
