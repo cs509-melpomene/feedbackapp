@@ -147,11 +147,10 @@ public class SnippetsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp) values(?, '', '', '', ?, ?, ?);");
+            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, snippetTimestamp) values(?, '', '', '', ?, ?);");
             ps.setString(1,  snippet.snippetID);
-            ps.setString(3,  snippet.creatorPassword);
             ps.setString(2,  snippet.viewerPassword);
-            ps.setString(4,  snippet.timestamp);
+            ps.setString(3,  snippet.timestamp);
             ps.execute();
             return true;
         } catch (Exception e) {
@@ -201,14 +200,13 @@ public class SnippetsDAO {
     
     private Snippet generateSnippet(ResultSet resultSet) throws Exception {
     	String snippetID  = resultSet.getString("snippetID");
-    	String creatorPassword  = resultSet.getString("creatorPassword");
     	String viewerPassword  = resultSet.getString("viewerPassword");
     	String text = resultSet.getString("text");
     	String info = resultSet.getString("info");
     	String codeLanguage = resultSet.getString("codeLanguage");
     	String snippetTimestamp = resultSet.getString("snippetTimestamp");
     	ArrayList<Comment> comments = new ArrayList<>();
-        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, comments);
+        Snippet snippet = new Snippet(snippetID, viewerPassword, text, info, codeLanguage, snippetTimestamp, comments);
 		return snippet;
     }
 }

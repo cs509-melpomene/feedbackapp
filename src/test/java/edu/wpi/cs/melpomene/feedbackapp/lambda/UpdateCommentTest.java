@@ -55,9 +55,9 @@ public class UpdateCommentTest extends LambdaTest{
         ViewSnippetRequest request = new ViewSnippetRequest(ccResponse.snippetID);
         ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
         
-        System.out.println("====================\n" + response.comment.commentID);
-        System.out.println("====================\n" + ccResponse.commentID);   
-        System.out.println("====================\n" + viewResponse.snippet.comments);  
+        System.out.println(response.comment);
+        System.out.println(ccResponse.commentID);   
+        System.out.println(viewResponse.snippet.comments);  
         
         boolean isFound = false;
         for(Comment comment : viewResponse.snippet.comments) {

@@ -5,7 +5,6 @@ CREATE TABLE Snippet(
     info VARCHAR(1000),
     codeLanguage VARCHAR(10),
     viewerPassword VARCHAR(30),
-    creatorPassword VARCHAR(30),
     snippetTimestamp DATETIME
 );
 

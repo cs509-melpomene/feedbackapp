@@ -6,7 +6,6 @@ import java.util.List;
 public class Snippet {
 
 	public final String snippetID;
-	public final String creatorPassword;
 	public final String viewerPassword;
 	public final String text;
 	public final String info;
@@ -14,9 +13,8 @@ public class Snippet {
 	public ArrayList<Comment> comments;
 	public final String timestamp;
 	
-	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String timestamp) {
+	public Snippet(String snippetID, String viewerPassword, String timestamp) {
 		this.snippetID = snippetID;
-		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
 		this.text = "";
 		this.info = "";
@@ -25,9 +23,8 @@ public class Snippet {
 		this.timestamp = timestamp;	
 	}
 	
-	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, String timestamp, ArrayList<Comment> comments) {
+	public Snippet(String snippetID, String viewerPassword, String text, String info, String codingLanguage, String timestamp, ArrayList<Comment> comments) {
 		this.snippetID = snippetID;
-		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
 		this.text = text;
 		this.info = info;

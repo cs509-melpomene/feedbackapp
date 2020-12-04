@@ -83,7 +83,7 @@ public class CommentsDAO {
         }
     }
         
-    public boolean deleteComment(String snippetID, String commentID) throws Exception {
+    public ArrayList<Comment> deleteComment(String snippetID, String commentID) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + commentTable + " WHERE snippetID = ? AND commentID = ?;");
             ps.setString(1,  snippetID);
@@ -91,7 +91,7 @@ public class CommentsDAO {
             int numAffected = ps.executeUpdate();
             ps.close();
             
-            return (numAffected == 1);
+            return getComments(snippetID);
 
         } catch (Exception e) {
             throw new Exception("Failed to delete comment: " + e.getMessage());

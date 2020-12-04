@@ -9,7 +9,6 @@ package edu.wpi.cs.melpomene.feedbackapp.http;
 public class CreateSnippetResponse {
 	
 	public final String snippetID;
-	public final String creatorPassword;
 	public final String viewerPassword;
 	public final String error;
 	public final int httpCode;
@@ -20,9 +19,8 @@ public class CreateSnippetResponse {
 	 * @param creatorPassword
 	 * @param viewerPassword
 	 */
-	public CreateSnippetResponse (String snippetID,  String creatorPassword, String viewerPassword) {
+	public CreateSnippetResponse (String snippetID, String viewerPassword) {
 		this.snippetID = snippetID;
-		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
 		this.error = "";
 		this.httpCode = 200;
@@ -34,7 +32,6 @@ public class CreateSnippetResponse {
 	 */
 	public CreateSnippetResponse (String error) {
 		this.snippetID = "";
-		this.creatorPassword = "";
 		this.viewerPassword = "";
 		this.error = error;
 		this.httpCode = 500;
@@ -42,10 +39,6 @@ public class CreateSnippetResponse {
 	
 	public String getSnippetID() {
 		return snippetID;
-	}
-	
-	public String getCreatorPassword() {
-		return creatorPassword;
 	}
 	
 	public String getViewerPassword() {

@@ -78,7 +78,6 @@ public class ViewSnippetTest extends LambdaTest{
         ViewSnippetResponse response = handler.handleRequest(input, ctx);
         Snippet snippet = response.getSnippet();
         Assert.assertEquals(csResponse.snippetID, snippet.snippetID);
-        Assert.assertEquals(csResponse.creatorPassword, snippet.creatorPassword);
         Assert.assertEquals(csResponse.viewerPassword, snippet.viewerPassword);
     }
     
@@ -98,7 +97,6 @@ public class ViewSnippetTest extends LambdaTest{
         ViewSnippetResponse response = handler.handleRequest(input, ctx);
         Snippet snippet = response.getSnippet();
         Assert.assertEquals(csResponse.snippetID, snippet.snippetID);
-        Assert.assertEquals(csResponse.creatorPassword, snippet.creatorPassword);
         Assert.assertEquals(csResponse.viewerPassword, snippet.viewerPassword);
         Assert.assertEquals(1, snippet.comments.size());
         Assert.assertEquals(ccResponse.commentID, snippet.comments.get(0).commentID);

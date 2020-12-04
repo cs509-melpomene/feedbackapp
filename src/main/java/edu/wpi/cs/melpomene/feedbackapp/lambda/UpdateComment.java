@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -36,12 +37,14 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 		}
 	}
 	
-	public void deleteComment(String snippetID, String commentID) {
+	public ArrayList<Comment> deleteComment(String snippetID, String commentID) {
 		try {
-			dao.deleteComment(snippetID, commentID);
+			return dao.deleteComment(snippetID, commentID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return null;
 	}
 
 	@Override
@@ -62,12 +65,13 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 				comment = dao.getComment(input.snippetID, input.commentID);
 			} catch (Exception e) {
 				e.printStackTrace();
+				return new UpdateCommentResponse("Comment not found", 400); 
 			}
 
-			deleteComment(input.snippetID, input.commentID);
+			ArrayList<Comment> remainingComments = deleteComment(input.snippetID, input.commentID);
 			
 			try {
-				response = new UpdateCommentResponse(comment, "Comment deleted successfully");
+				response = new UpdateCommentResponse("Comment deleted successfully", remainingComments);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}	
