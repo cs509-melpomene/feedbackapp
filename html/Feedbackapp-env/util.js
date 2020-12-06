@@ -11,3 +11,8 @@ export function updateNumbers(text){
     }
     document.getElementById("numbers").innerHTML = numbersStr;
 }
+
+export function hideLoginDiv(){
+    var blurredDiv = document.getElementById("blurredDiv");
+    blurredDiv.hidden = true
+}
