@@ -107,7 +107,7 @@ function clickedCommentFunc(child, commentUniqueID, originalRegionStart, origina
 
 		let highlightDiv = document.getElementById("highlight");
 		let highlightDivTop = parseFloat(highlightDiv.style.top);
-		let highlightDivHeight = 24.15;
+		let highlightDivHeight = 24;
         
         originalHighlightDivHeight = highlightDivHeight * lines
 		highlightDiv.style.height = originalHighlightDivHeight
