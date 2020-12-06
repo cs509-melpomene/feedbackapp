@@ -79,6 +79,15 @@ window.onload = function() {
     // on window resize, recompute highlight width
     window.onresize = windowResize;
     windowResize() // initial computation
+
+    let isCreator = document.getElementById("isCreator");
+    if (isCreator) {
+        console.log('autologging in creator')
+        var unlockViewerPasswordText = document.getElementById("unlockViewerPasswordText");
+        unlockViewerPasswordText.value = window.globalSnippet['snippet']['viewerPassword'];
+        unlockViewerPassword()
+    }
+    console.log('test')
 }
 
 
@@ -138,8 +147,12 @@ import { viewSnippetHTTPResponseFinish } from './viewSnippet.js';
 window.unlockViewerPassword = function unlockViewerPassword(){
     var unlockViewerPasswordText = document.getElementById("unlockViewerPasswordText");
     if (unlockViewerPasswordText.value == window.globalSnippet['snippet']['viewerPassword'] ) {
-        var blurredDiv = document.getElementById("blurredDiv");
-        blurredDiv.hidden = true
+        hideLoginDiv()
         viewSnippetHTTPResponseFinish();
     }
+}
+
+export function hideLoginDiv(){
+    var blurredDiv = document.getElementById("blurredDiv");
+    blurredDiv.hidden = true
 }

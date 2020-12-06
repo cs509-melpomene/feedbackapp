@@ -86,6 +86,11 @@
 			</form>
 		</div>
 	</div>
+	<?php
+		if (strcmp($_POST["isCreator"] , "true" ) == 0){
+			echo('<div id="isCreator" hidden />');
+		}
+	?>>
 </body>
 <script type="module" src="snippet.js"></script>
 <script src="./highlight/highlight.pack.js"></script>
