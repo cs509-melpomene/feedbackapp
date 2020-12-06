@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import edu.wpi.cs.melpomene.feedbackapp.db.DatabaseUtil;
 
 public class DatabaseUtilHelper {
 
+	final static String snippetTable = "Snippet";   // Exact capitalization
+	
 	public static String readFile() {
 		StringBuilder sb = new StringBuilder();
 		BufferedReader reader;
@@ -59,4 +62,19 @@ public class DatabaseUtilHelper {
 		}
 	}
 
+    public static void updateTimestamp(String snippetID, long daysOld) throws Exception {
+        try {
+        	Connection conn = DatabaseUtil.connect();
+	        long currentTime = System.currentTimeMillis();
+	        long day = 1000 * 60 * 60 * 24;
+	        Timestamp timestamp = new Timestamp(currentTime - (day *daysOld));
+        	PreparedStatement ps = conn.prepareStatement("UPDATE " + snippetTable + " SET snippetTimestamp = ? WHERE snippetID = ?;");
+        	ps.setString(1,  timestamp.toString());
+        	ps.setString(2,  snippetID);
+            int numAffected = ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            throw new Exception("Failed to update info: " + e.getMessage());
+        }
+    }
 }
