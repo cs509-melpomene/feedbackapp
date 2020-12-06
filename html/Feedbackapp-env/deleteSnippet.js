@@ -1,13 +1,19 @@
 import { urlParamsSnippetID } from './util.js';
+import { viewAllSnippetsHTTPRequest } from './viewAllSnippets.js';
 
-export function deleteSnippetHTTPRequest(){
+export function deleteSnippetHTTPRequest(snippetID=null){
     let httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
+    if (snippetID == null){
+        httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
+    }
+    else{
+        httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${snippetID}`, true);
+    }
     httpRequest.setRequestHeader('Content-Type', 'application/json');
     let body = '{"action":"delete"}';
     console.log(body);
     httpRequest.send(body);
-    httpRequest.onreadystatechange = deleteSnippetHTTPResponse(httpRequest);
+    httpRequest.onreadystatechange = deleteSnippetHTTPResponse(httpRequest, snippetID);
 }
 
 export function snippetNotFound(){
@@ -25,12 +31,17 @@ export function snippetNotFound(){
     snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
 }
 
-function deleteSnippetHTTPResponse(httpRequest){
+function deleteSnippetHTTPResponse(httpRequest, snippetID=null){
     return function(){
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 console.log("responseText: " + httpRequest.responseText)
-                snippetNotFound();
+                if (snippetID = null){
+                    snippetNotFound();
+                }
+                else{
+                
+                }
                 return;
             }
         } else {

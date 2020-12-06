@@ -16,44 +16,34 @@
             </div>
             <div class ="row" style="padding: 10px;">
                 <input type="text" id="numberDays" value="n" style="text-align: center;width: 60%;"><label>&nbsp;&nbsp;&nbsp;Days Old</label>
-                <table style="border-style:solid;width: 100%; margin-top: 5px;">
+                <table style="border-style:solid;width: 100%; margin-top: 5px;" id="ShowTable">
                   <tr style="border-style:solid;">
                     <th style="border-style:solid;">Snippet ID</th>
                     <th style="border-style:solid;">Snippet Time</th>
                   </tr>
                   <!-- for loop to display snippets -->
-                  <?php $Snippetid = array("459d67bfc77afc82bec3" => "09-28-2020 1:23pm", "559d67bfc77afc82bec4" => "10-28-2020 1:33pm", "659d67bfc77afc82bec5" => "03-23-2020 11:09pm", "759d67bfc77afc82bec6" => "11-19-2020 3:00pm"); ?>
-                  <?php foreach($Snippetid as $id => $date): ?>
-                      <tr>
-                          <td style="border-style:none solid  none none;"><?php echo $id; ?></td>
-                          <td><?php echo $date; ?></td>
-                      </tr>
-                  <?php endforeach; ?>
+
                 </table>
             </div>
             <div class="row">
-                <input type="button" value="Confirm" style="text-align: center;margin: auto; width: 50%;padding: 10px; margin-bottom: 5px;">
+                <input type="button" value="Confirm" style="text-align: center;margin: auto; width: 50%;padding: 10px; margin-bottom: 5px;" onclick ="DeleteStaleSnippetsHTTPRequest()" >
             </div>
         </div>
         <div class="col-md-8">
-            <table style="border-style:solid; width: 100%;">
+            <table style="border-style:solid; width: 100%;" id="DeleteTable">
                 <tr style="border-style:solid;">
                     <th style="border-style:solid;">Snippet ID</th>
                     <th style="border-style:solid;">Snippet Time</th>
                     <th style="border-style:solid;">Click to Delete</th>
                 </tr>
                 <!-- for loop to display snippets -->
-                <?php $Snippetid = array("459d67bfc77afc82bec3" => "09-28-2020 1:23pm", "559d67bfc77afc82bec4" => "10-28-2020 1:33pm", "659d67bfc77afc82bec5" => "03-23-2020 11:09pm", "759d67bfc77afc82bec6" => "11-19-2020 3:00pm"); ?>
-                <?php foreach($Snippetid as $id => $date): ?>
-                  <tr>
-                        <td style="border-style:none solid  none none;"><?php echo $id; ?></td>
-                        <td style="border-style:none solid  none none;"><?php echo $date; ?></td>
-                        <td><input type="button" value="Delete" style="text-align: center; width: 100%;"></td>
-                  </tr>
-                <?php endforeach; ?>
+                <script type="text/javascript">
+
+                </script>
+
              </table>
        </div>
     </div>
 </body>
-
+<script type="module" src="viewAllSnippets.js"></script>
 </html>
