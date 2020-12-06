@@ -9,7 +9,7 @@ import { resetCurrentComment } from './viewSnippet.js'; // TODO: move to new fil
 window.deleteSnippetHTTPRequest = deleteSnippetHTTPRequest
 window.updateSnippetHTTPRequest = updateSnippetHTTPRequest
 window.createCommentHTTPRequest = createCommentHTTPRequest
-viewSnippetHTTPRequest(); // not called by a button, called on page load
+viewSnippetHTTPRequest(true); // not called by a button, called on page load
 
 window.deleteCommentClick = deleteCommentClick
 
@@ -19,14 +19,25 @@ function selectionChange(){
     let selectionStr = document.getSelection().toString()
     console.log('selection ', selection);
     console.log('selction string ' + selectionStr);
-    console.log('selction focusNode.id ' + selection.focusNode.id);
-    if (selection.focusNode.id == 'snippetTextPanel') {
+    let currentNode = selection.focusNode.parentElement;
+    while (currentNode.id == '') {
+        currentNode = currentNode.parentElement
+    }
+    console.log('selction currentNode.id ' + currentNode.id);
+    if (currentNode.id == 'text') {
         console.log('selection from snippet text / code')
         let textE = document.getElementById('text');
-        let textStr = textE.value;
+        let textStr = textE.innerText;
+        "".replace(/\r/, "")
 
-        let textSelStart = textE.selectionStart;
-        let textSelEnd = textE.selectionEnd;
+        let textSelStart = textStr.indexOf(selectionStr)
+        let textSelEnd = textSelStart + selectionStr.length
+        /*let textSelStart = textE.selectionStart;
+        le=t textSelEnd = textE.selectionEnd;*/
+
+        /*console.log("selection.getRangeAt(0)" + selection.getRangeAt(0))
+        let textSelStart = selection.getRangeAt(0).startOffset;
+        let textSelEnd = selection.getRangeAt(0).endOffset;*/
         
         let textSub0 = textStr.substring(0, textSelStart);
         let textSub1 = textStr.substring(textSelStart, textSelEnd);
@@ -53,9 +64,32 @@ function adjustHighlightWidth() {
     highlightDiv.style.width = style.width;
 }
 
-// on window resize, recomput highlight width
-window.onresize = adjustHighlightWidth;
-adjustHighlightWidth() // initial computation
+function adjustBlurred(){
+    let blurredDiv = document.getElementById("blurredDiv")
+    blurredDiv.style.height = window.innerHeight 
+    blurredDiv.style.width = window.innerWidth 
+}
+
+function windowResize(){
+    adjustHighlightWidth()
+    adjustBlurred()
+}
+
+window.onload = function() {
+    // on window resize, recompute highlight width
+    window.onresize = windowResize;
+    windowResize() // initial computation
+
+    let isCreator = document.getElementById("isCreator");
+    if (isCreator) {
+        console.log('autologging in creator')
+        var unlockViewerPasswordText = document.getElementById("unlockViewerPasswordText");
+        unlockViewerPasswordText.value = window.globalSnippet['snippet']['viewerPassword'];
+        unlockViewerPassword()
+    }
+    console.log('test')
+}
+
 
 resetCurrentComment();
 
@@ -84,3 +118,41 @@ function select_scroll_2(e) { s1.scrollTop = s2.scrollTop; }
 
 s1.addEventListener('scroll', select_scroll_1, false);
 s2.addEventListener('scroll', select_scroll_2, false);
+
+window.togglePasswordText = function togglePasswordText(){
+    var viewPasswordInput = document.getElementById("viewerPasswordInput");
+    if (viewPasswordInput.type === "password") {
+        viewPasswordInput.type = "text";
+    } else {
+        viewPasswordInput.type = "password";
+    }
+}
+
+window.copyViewerPassword = function copyViewerPassword(){
+    var neededTypeSwitch = false;
+    var viewPasswordInput = document.getElementById("viewerPasswordInput");
+    if (viewPasswordInput.type === "password") {
+        viewPasswordInput.type = "text";
+        neededTypeSwitch = true;
+    }
+    viewPasswordInput.select();
+    viewPasswordInput.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    if (neededTypeSwitch) {
+        viewPasswordInput.type = "password";
+    }
+}
+
+import { viewSnippetHTTPResponseFinish } from './viewSnippet.js';
+window.unlockViewerPassword = function unlockViewerPassword(){
+    var unlockViewerPasswordText = document.getElementById("unlockViewerPasswordText");
+    if (unlockViewerPasswordText.value == window.globalSnippet['snippet']['viewerPassword'] ) {
+        hideLoginDiv()
+        viewSnippetHTTPResponseFinish();
+    }
+}
+
+export function hideLoginDiv(){
+    var blurredDiv = document.getElementById("blurredDiv");
+    blurredDiv.hidden = true
+}

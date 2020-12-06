@@ -35,7 +35,8 @@
 }
   
 .snippetLineNumbers {
-    padding-top: 10px;
+    padding-top: -10px;
+    margin-top: 3px;
     overflow: scroll;
     vertical-align: right;
     border-style: none;
@@ -43,14 +44,17 @@
     overflow: auto;
     height: 600px;
     text-align: right;
+    font-size: 16px;
 }
 
 .snippetText {
+    margin-top: -6px;
     white-space: pre;
     width: 82%;
     height: 600px;
     overflow: scroll;
     background-color: transparent;
+    font-size: 16px;
 }
   
 .columnFormText {
@@ -71,8 +75,9 @@
     height: 0px;
     top: 0px;
     position: relative;
-    z-index: -2;
+    z-index: 2;
     background-color: rgb(255, 255, 0);
+    opacity: 0.25;
 }
 
 .snippetNotFoundText {
@@ -81,4 +86,26 @@
     width: 75%;
     top: 45%;
     position: relative;
+}
+
+.blurred {
+    top: 0px;
+    left: 0px;
+    height: 200px;
+    width: 200px;
+    float: left;
+    position: absolute;
+    z-index: 1;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+}
+
+.viewerPasswordInputDiv {
+    top: 33%;
+    left: 34%;
+    width: 33%;
+    height: 33%;
+    position: absolute;
+    z-index: 1;
+    background-color: rgb(200, 200, 200);
 }
