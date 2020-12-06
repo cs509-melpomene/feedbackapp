@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="mainGrid.css"/>
 	<link rel="icon" type="image/png" href="favicon.png"/>
 	<link rel="stylesheet" href="snippet.css" />
+	<link rel="stylesheet" href="./highlight/styles/default.css">
 	<title>Feedback Application</title>
 </head>
 
@@ -46,7 +47,7 @@
 			<div class="col-md-1" id="codeNumbersSidePanel" style="border-style: solid none solid none; text-align: right;">
 				<br>
 				<br>
-				<textarea readonly id="numbers" class="snippetLineNumbers numbers" cols="4" rows="27"><?php for($i = 1; $i <= 500; $i++){echo $i; echo ("\n");}?></textarea>
+				<pre><code readonly id="numbers" class="snippetLineNumbers numbers" cols="4" rows="27"><?php for($i = 1; $i <= 500; $i++){echo $i; echo ("\n");}?></code></pre>
 			</div>
 			<div class="col-md-5" id="snippetTextPanel" style="border-style: solid none solid none;">
 				<br>
@@ -54,7 +55,7 @@
 				<div class="highlightWrapper" id="highlightWrapper">
 					<div class="highlight" id="highlight"></div>
 				</div>
-				<textarea class="snippetText" id="text" oninput="updateSnippetHTTPRequest('text')" onscroll="codeScrolling()"></textarea>
+				<pre><code class="snippetText" id="text" oninput="updateSnippetHTTPRequest('text')" onscroll="codeScrolling()" contenteditable></code></pre>
 				<br>
 			</div>
 			<div class="commentSidebar" id="commentSidebar" style="border-style: solid;">
@@ -85,6 +86,13 @@
 			</form>
 		</div>
 	</div>
+	<?php
+		if (strcmp($_POST["isCreator"] , "true" ) == 0){
+			echo('<div id="isCreator" hidden />');
+		}
+	?>>
 </body>
 <script type="module" src="snippet.js"></script>
+<script src="./highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </html>

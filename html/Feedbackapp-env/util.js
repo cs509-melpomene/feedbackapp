@@ -9,5 +9,5 @@ export function updateNumbers(text){
     for (let i = 1; i <= numOfNumbers; i++){
         numbersStr += i + "\n"
     }
-    document.getElementById("numbers").value = numbersStr;
+    document.getElementById("numbers").innerHTML = numbersStr;
 }
