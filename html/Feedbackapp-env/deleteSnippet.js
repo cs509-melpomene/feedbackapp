@@ -1,3 +1,4 @@
+import { hideLoginDiv } from './snippet.js';
 import { urlParamsSnippetID } from './util.js';
 
 export function deleteSnippetHTTPRequest(){
@@ -26,6 +27,8 @@ export function snippetNotFound(){
                 Snippet ID ${urlParamsSnippetID} not found!
         </div>
     `;
+
+    hideLoginDiv();
 }
 
 function deleteSnippetHTTPResponse(httpRequest){
