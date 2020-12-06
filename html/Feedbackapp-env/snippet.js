@@ -147,8 +147,12 @@ import { viewSnippetHTTPResponseFinish } from './viewSnippet.js';
 window.unlockViewerPassword = function unlockViewerPassword(){
     var unlockViewerPasswordText = document.getElementById("unlockViewerPasswordText");
     if (unlockViewerPasswordText.value == window.globalSnippet['snippet']['viewerPassword'] ) {
-        var blurredDiv = document.getElementById("blurredDiv");
-        blurredDiv.hidden = true
+        hideLoginDiv()
         viewSnippetHTTPResponseFinish();
     }
+}
+
+export function hideLoginDiv(){
+    var blurredDiv = document.getElementById("blurredDiv");
+    blurredDiv.hidden = true
 }
