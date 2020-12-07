@@ -1,7 +1,9 @@
 import { deleteSnippetHTTPRequest } from './deleteSnippet.js';
+import { deleteStaleSnippetsHTTPRequest } from './deleteStaleSnippets.js';
 
 window.deleteSnippetHTTPRequest = deleteSnippetHTTPRequest
 window.viewAllSnippetsHTTPRequest = viewAllSnippetsHTTPRequest
+window.deleteStaleSnippetsHTTPRequest = deleteStaleSnippetsHTTPRequest
 
 viewAllSnippetsHTTPRequest()
 console.log("Hello")
@@ -21,6 +23,9 @@ function viewAllSnippetsHTTPResponse(httpRequest){
                 let viewAllSnippets = JSON.parse(httpRequest.responseText).snippets
                 for (let i = 0; i <= viewAllSnippets.length; i++){
 
+                    if (viewAllSnippets[i] == undefined){
+                        continue;
+                    }
                     let SnippetID = viewAllSnippets[i].substring(0, 16)
                     let time = viewAllSnippets[i].substring(16)
                     let tableShow = `<tr>

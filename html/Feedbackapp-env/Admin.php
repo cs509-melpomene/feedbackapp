@@ -26,7 +26,7 @@
                 </table>
             </div>
             <div class="row">
-                <input type="button" value="Confirm" style="text-align: center;margin: auto; width: 50%;padding: 10px; margin-bottom: 5px;" onclick ="DeleteStaleSnippetsHTTPRequest()" >
+                <input type="button" value="Confirm" style="text-align: center;margin: auto; width: 50%;padding: 10px; margin-bottom: 5px;" onclick ="deleteStaleSnippetsHTTPRequest()" >
             </div>
         </div>
         <div class="col-md-8">
@@ -36,11 +36,6 @@
                     <th style="border-style:solid;">Snippet Time</th>
                     <th style="border-style:solid;">Click to Delete</th>
                 </tr>
-                <!-- for loop to display snippets -->
-                <script type="text/javascript">
-
-                </script>
-
              </table>
        </div>
     </div>
