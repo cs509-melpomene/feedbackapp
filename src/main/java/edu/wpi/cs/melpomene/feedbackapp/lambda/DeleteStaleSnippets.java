@@ -30,7 +30,8 @@ public class DeleteStaleSnippets implements RequestHandler<DeleteStaleSnippetsRe
 		
 		//Admin wants to delete all stale snippets that are n days old
 		if(input.action.contentEquals("deleteStale")) {
-			int numDeleted = deleteStaleSnippets(input.nDays);
+			int nPlus = input.nDays + 1;
+			int numDeleted = deleteStaleSnippets(nPlus);
 			try {
 				response = new DeleteStaleSnippetsResponse("Snippets deleted successfully", 200, numDeleted);
 			} catch(Exception e) {

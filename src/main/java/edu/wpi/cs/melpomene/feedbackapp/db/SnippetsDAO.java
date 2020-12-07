@@ -122,7 +122,7 @@ public class SnippetsDAO {
         	LocalDate compareDate = today.minusDays(nDays);
         	String staleDate = compareDate.toString();
         	// test this
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetTimestamp <= ?;");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetTimestamp < ?;");
             ps.setString(1, staleDate);
             int numAffected = ps.executeUpdate();
             ps.close();
