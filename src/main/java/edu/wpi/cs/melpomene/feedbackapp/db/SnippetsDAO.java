@@ -117,13 +117,14 @@ public class SnippetsDAO {
     }
     
     public int deleteStaleSnippets(int nDays) throws Exception {
-        try {
-        	LocalDate today = LocalDate.now();
-        	LocalDate compareDate = today.minusDays(nDays);
-        	String staleDate = compareDate.toString();
+        try {        	
+        	long currentTime = System.currentTimeMillis();
+        	long day = 1000 * 60 * 60 * 24;
+        	Timestamp timestamp = new Timestamp(currentTime - (day * nDays));
+        	String time = timestamp.toString();
         	// test this
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetTimestamp < ?;");
-            ps.setString(1, staleDate);
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetTimestamp <= ?;");
+            ps.setString(1, time);
             int numAffected = ps.executeUpdate();
             ps.close();
             
