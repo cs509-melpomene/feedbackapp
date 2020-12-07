@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.melpomene.feedbackapp.TestContext;
+import edu.wpi.cs.melpomene.feedbackapp.db.DatabaseUtilHelper;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.DeleteStaleSnippetsRequest;
 import edu.wpi.cs.melpomene.feedbackapp.http.DeleteStaleSnippetsResponse;
@@ -42,6 +43,8 @@ public class DeleteStaleSnippetsTest extends LambdaTest{
     	Context ctx = createContext();
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
+    	DatabaseUtilHelper.updateTimestamp(csResponse.snippetID, 2);
+    	
     	DeleteStaleSnippets handler = new DeleteStaleSnippets();
         input = new DeleteStaleSnippetsRequest("deleteStale", 1);
         
