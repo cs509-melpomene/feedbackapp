@@ -49,8 +49,10 @@ public class ListAllSnippetsTest extends LambdaTest{
         ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
         ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
         
-        Assert.assertEquals(viewResponse.snippet.text, "whatever");
         Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
+        Assert.assertEquals(1, response.snippets.size());
+        String expectedSnippetStr = viewResponse.snippet.snippetID + " " + viewResponse.snippet.timestamp;
+        Assert.assertEquals(expectedSnippetStr, response.snippets.get(0));
     }
     
 }
