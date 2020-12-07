@@ -53,7 +53,7 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 		if(input.action.equals("update")) {
 			updateText(input.snippetID, input.commentID, input.text);
 			try {
-				response = new UpdateCommentResponse(dao.getComment(input.snippetID, input.commentID));
+				response = new UpdateCommentResponse(dao.getComment(input.commentID, input.snippetID));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}		
@@ -62,7 +62,7 @@ public class UpdateComment implements RequestHandler<UpdateCommentRequest, Updat
 		if(input.action.equals("delete")) {
 			Comment comment = null;
 			try {
-				comment = dao.getComment(input.snippetID, input.commentID);
+				comment = dao.getComment(input.commentID, input.snippetID);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return new UpdateCommentResponse("Comment not found", 400); 
