@@ -42,11 +42,11 @@ function deleteSnippetHTTPResponse(httpRequest, snippetID=null){
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 console.log("responseText: " + httpRequest.responseText)
-                if (snippetID = null){
+                if (snippetID == null){
                     snippetNotFound();
                 }
                 else{
-                
+                    document.getElementById(snippetID).innerHTML = "";
                 }
                 return;
             }
