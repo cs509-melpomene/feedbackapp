@@ -1,4 +1,4 @@
-import { hideLoginDiv } from './snippet.js';
+import { hideLoginDiv } from './util.js';
 import { urlParamsSnippetID } from './util.js';
 import { viewAllSnippetsHTTPRequest } from './viewAllSnippets.js';
 

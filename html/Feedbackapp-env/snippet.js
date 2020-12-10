@@ -1,3 +1,4 @@
+import { hideLoginDiv } from './util.js';
 import { deleteSnippetHTTPRequest } from './deleteSnippet.js';
 import { updateSnippetHTTPRequest } from './updateSnippet.js';
 import { createCommentHTTPRequest } from './createComment.js';
@@ -150,9 +151,4 @@ window.unlockViewerPassword = function unlockViewerPassword(){
         hideLoginDiv()
         viewSnippetHTTPResponseFinish();
     }
-}
-
-export function hideLoginDiv(){
-    var blurredDiv = document.getElementById("blurredDiv");
-    blurredDiv.hidden = true
 }
