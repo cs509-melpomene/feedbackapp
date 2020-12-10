@@ -57,7 +57,7 @@ function adjustHighlightWidth() {
 	console.log(window.innerHeight);
 	console.log(window.innerWidth);
 	let textE = document.getElementById("text")
-	let style = getComputedStyle(textE);
+	let style = window.getComputedStyle(textE);
     console.log(style.width)
     
     // set up width of text highlight element
@@ -100,7 +100,7 @@ window.changeHighlightComment = function changeHighlightComment(enableHighlight,
 	}
 
 	let newRGB = enableHighlight ? "rgb(255, 255, 0)" : "rgb(200,200,200)";
-	let style = getComputedStyle(child);
+	let style = window.getComputedStyle(child);
 	console.log("style.backgroundColor " + style.backgroundColor);
 	child.style.backgroundColor = newRGB;
 }

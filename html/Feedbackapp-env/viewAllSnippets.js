@@ -58,7 +58,7 @@ function viewAllSnippetsHTTPResponse(httpRequest){
                         </tr>
                     `;
                     let tableDelete = `
-                        <tr>
+                        <tr id="${SnippetID}">
                             <td style="border-style:none solid  none none;">${SnippetID}</td>
                             <td style="border-style:none solid  none none;">${time}</td>
                             <td><input type="button" value="Delete Snippet" style="text-align: center; width: 100%;" onclick='deleteSnippetHTTPRequest("${SnippetID}")'></td>
