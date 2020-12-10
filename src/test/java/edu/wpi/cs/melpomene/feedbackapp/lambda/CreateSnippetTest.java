@@ -43,14 +43,12 @@ public class CreateSnippetTest extends LambdaTest{
         CreateSnippetResponse response = handler.handleRequest(input, ctx);
         
         Assert.assertEquals(16, response.snippetID.length());
-        Assert.assertEquals(16, response.creatorPassword.length());
         Assert.assertEquals(16, response.viewerPassword.length());
         
         SnippetsDAO dao = new SnippetsDAO();
         try {
 			Snippet snippetFromDB = dao.getSnippet(response.snippetID);
 			Assert.assertEquals(response.getSnippetID(), snippetFromDB.snippetID);
-			Assert.assertEquals(response.getCreatorPassword(), snippetFromDB.creatorPassword);
 			Assert.assertEquals(response.getViewerPassword(), snippetFromDB.viewerPassword);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

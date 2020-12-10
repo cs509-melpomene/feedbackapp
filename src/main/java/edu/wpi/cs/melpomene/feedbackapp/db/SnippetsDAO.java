@@ -1,9 +1,11 @@
 package edu.wpi.cs.melpomene.feedbackapp.db;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.cs.melpomene.feedbackapp.model.Comment;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 /**
@@ -40,6 +42,15 @@ public class SnippetsDAO {
             }
             resultSet.close();
             ps.close();
+            
+            if (snippet == null) {
+            	return snippet;
+            }
+            
+            CommentsDAO daoComment = new CommentsDAO();
+            ArrayList<Comment> comments = daoComment.getComments(snippetID);
+            snippet.comments = comments;
+            
             return snippet;
         } catch (Exception e) {
         	e.printStackTrace();
@@ -57,7 +68,7 @@ public class SnippetsDAO {
             
             return (numAffected == 1);
         } catch (Exception e) {
-            throw new Exception("Failed to update report: " + e.getMessage());
+            throw new Exception("Failed to update code: " + e.getMessage());
         }
     }
     
@@ -71,12 +82,28 @@ public class SnippetsDAO {
             
             return (numAffected == 1);
         } catch (Exception e) {
-            throw new Exception("Failed to update report: " + e.getMessage());
+            throw new Exception("Failed to update info: " + e.getMessage());
         }
     }
     
+    public boolean updateLanguage(String snippetID, String language, String field) throws Exception {
+        try {
+        	PreparedStatement ps = conn.prepareStatement("UPDATE " + snippetTable + " SET " + field + " = ? WHERE snippetID = ?;");
+        	ps.setString(1,  language);
+        	ps.setString(2,  snippetID);
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return (numAffected == 1);
+        } catch (Exception e) {
+            throw new Exception("Failed to update info: " + e.getMessage());
+        }
+    }
+    
+    
     public boolean deleteSnippet(String snippetID) throws Exception {
         try {
+        	
             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetID = ?;");
             ps.setString(1,  snippetID);
             int numAffected = ps.executeUpdate();
@@ -85,10 +112,29 @@ public class SnippetsDAO {
             return (numAffected == 1);
 
         } catch (Exception e) {
-            throw new Exception("Failed to delete constant: " + e.getMessage());
+            throw new Exception("Failed to delete snippet: " + e.getMessage());
         }
     }
     
+    public int deleteStaleSnippets(int nDays) throws Exception {
+        try {        	
+        	long currentTime = System.currentTimeMillis();
+        	long day = 1000 * 60 * 60 * 24;
+        	Timestamp timestamp = new Timestamp(currentTime - (day * nDays));
+        	String time = timestamp.toString();
+        	// test this
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + snippetTable + " WHERE snippetTimestamp <= ?;");
+            ps.setString(1, time);
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return numAffected;
+
+        } catch (Exception e) {
+            throw new Exception("Failed to delete snippets: " + e.getMessage());
+        }
+    }
+
     public boolean addSnippet(Snippet snippet) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + snippetTable + " WHERE snippetID = ?;");
@@ -102,10 +148,10 @@ public class SnippetsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, creatorPassword, snippetTimestamp) values(?, '', '', '', ?, ?, '1990-09-01');");
+            ps = conn.prepareStatement("INSERT INTO " + snippetTable + " (snippetID, text, info, codeLanguage, viewerPassword, snippetTimestamp) values(?, '', '', '', ?, ?);");
             ps.setString(1,  snippet.snippetID);
-            ps.setString(3,  snippet.creatorPassword);
             ps.setString(2,  snippet.viewerPassword);
+            ps.setString(3,  snippet.timestamp);
             ps.execute();
             return true;
         } catch (Exception e) {
@@ -133,16 +179,35 @@ public class SnippetsDAO {
         }
     }
     
+    public ArrayList<String> listAllSnippets() throws Exception {
+        try {
+        	Statement statement = conn.createStatement();
+            String query = "SELECT snippetID, snippetTimestamp FROM " + snippetTable + ";";
+            ResultSet resultSet = statement.executeQuery(query);
+            
+            ArrayList<String> snippets = new ArrayList<String>();
+            while (resultSet.next()) {
+            	String temp = resultSet.getNString(1) + " " + resultSet.getString(2);
+            	snippets.add(temp);
+            }
+            resultSet.close();
+            statement.close();
+            return snippets;
+
+        } catch (Exception e) {
+            throw new Exception("Failed in listing snippets: " + e.getMessage());
+        }
+    }
+    
     private Snippet generateSnippet(ResultSet resultSet) throws Exception {
     	String snippetID  = resultSet.getString("snippetID");
-    	String creatorPassword  = resultSet.getString("creatorPassword");
     	String viewerPassword  = resultSet.getString("viewerPassword");
     	String text = resultSet.getString("text");
     	String info = resultSet.getString("info");
     	String codeLanguage = resultSet.getString("codeLanguage");
     	String snippetTimestamp = resultSet.getString("snippetTimestamp");
-    	ArrayList<String> commentIDs = new ArrayList<>();
-        Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword, text, info, codeLanguage, snippetTimestamp, commentIDs);
+    	ArrayList<Comment> comments = new ArrayList<>();
+        Snippet snippet = new Snippet(snippetID, viewerPassword, text, info, codeLanguage, snippetTimestamp, comments);
 		return snippet;
     }
 }

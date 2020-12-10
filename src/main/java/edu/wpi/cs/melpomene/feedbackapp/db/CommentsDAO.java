@@ -49,11 +49,31 @@ public class CommentsDAO {
         }
     }
     
-    public boolean updateText(String snippetID, String code, String field) throws Exception {
+    public ArrayList<Comment> getComments(String snippetID) throws Exception {
         try {
-        	PreparedStatement ps = conn.prepareStatement("UPDATE " + commentTable + " SET " + field + " = ? WHERE snippetID = ?;");
-        	ps.setString(1,  code);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + commentTable + " WHERE snippetID = ?;");
+            ps.setString(1,  snippetID);
+            ResultSet resultSet = ps.executeQuery();
+            
+            ArrayList<Comment> comments = new ArrayList<Comment>();
+            while (resultSet.next()) {
+            	comments.add(generateComment(resultSet));
+            }
+            resultSet.close();
+            ps.close();
+            return comments;
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in getting comment: " + e.getMessage());
+        }
+    }
+    
+    public boolean updateText(String snippetID, String commentID, String text) throws Exception {
+        try {
+        	PreparedStatement ps = conn.prepareStatement("UPDATE " + commentTable + " SET text = ? WHERE snippetID = ? AND commentID = ?;");
+        	ps.setString(1,  text);
         	ps.setString(2,  snippetID);
+        	ps.setString(3,  commentID);
             int numAffected = ps.executeUpdate();
             ps.close();
             
@@ -63,14 +83,15 @@ public class CommentsDAO {
         }
     }
         
-    public boolean deleteComment(String snippetID) throws Exception {
+    public ArrayList<Comment> deleteComment(String snippetID, String commentID) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + commentTable + " WHERE snippetID = ?;");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + commentTable + " WHERE snippetID = ? AND commentID = ?;");
             ps.setString(1,  snippetID);
+            ps.setString(2,  commentID);
             int numAffected = ps.executeUpdate();
             ps.close();
             
-            return (numAffected == 1);
+            return getComments(snippetID);
 
         } catch (Exception e) {
             throw new Exception("Failed to delete comment: " + e.getMessage());
@@ -90,11 +111,12 @@ public class CommentsDAO {
                 return false;
             }
         	
-            ps = conn.prepareStatement("INSERT INTO " + commentTable + " (commentID, timestamp, text, startLine, endLine, snippetID) values(?, '1990-09-01', '', ?, ?, ?);");
+            ps = conn.prepareStatement("INSERT INTO " + commentTable + " (commentID, timestamp, text, startLine, endLine, snippetID) values(?, ?, '', ?, ?, ?);");
             ps.setString(1, comment.commentID);
-            ps.setInt(2, comment.startLine);
-            ps.setInt(3, comment.endLine);
-            ps.setString(4, comment.snippetID);
+            ps.setInt(3, comment.startLine);
+            ps.setInt(4, comment.endLine);
+            ps.setString(5, comment.snippetID);
+            ps.setString(2, comment.timestamp);
             ps.execute();
             return true;
         } catch (Exception e) {

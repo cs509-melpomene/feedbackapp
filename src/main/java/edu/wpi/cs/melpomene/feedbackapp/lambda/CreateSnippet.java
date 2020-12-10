@@ -1,6 +1,7 @@
 package edu.wpi.cs.melpomene.feedbackapp.lambda;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.Random;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -54,15 +55,15 @@ public class CreateSnippet implements RequestHandler<Object, CreateSnippetRespon
         CreateSnippetResponse response = null;
         try {
            String snippetID = createUniqueID();
-           String creatorPassword = createID();
            String viewerPassword = createID();
-           Snippet snippet = new Snippet(snippetID, creatorPassword, viewerPassword);
+           Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+           Snippet snippet = new Snippet(snippetID, viewerPassword, timestamp.toString());
            SnippetsDAO dao = new SnippetsDAO();
            Snippet snippetFromDB = dao.getSnippet(snippetID);
            if (snippetFromDB == null) {
         	   dao.addSnippet(snippet);
-        	   response = new CreateSnippetResponse(snippetID, creatorPassword, viewerPassword);
-        	   context.getLogger().log(String.format("CreateSnippetResponse Success: snippetID: %s, creatorPassword: %s, viewerPassword: %s\n", response.getSnippetID(), response.getCreatorPassword(), response.getViewerPassword()));
+        	   response = new CreateSnippetResponse(snippetID, viewerPassword);
+        	   context.getLogger().log(String.format("CreateSnippetResponse Success: snippetID: %s, viewerPassword: %s\n", response.getSnippetID(), response.getViewerPassword()));
            }
        } catch (Exception e) {
 	       context.getLogger().log(String.format("CreateSnippetResponse Failure: %s", e.getMessage()));

@@ -1,6 +1,7 @@
 package edu.wpi.cs.melpomene.feedbackapp.lambda;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.Random;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -58,13 +59,14 @@ public class CreateComment implements RequestHandler<CreateCommentRequest, Creat
         CreateCommentResponse response = null;
         try {
            String commentID = createUniqueID(input.snippetID);
-           Comment comment = new Comment(commentID, input.snippetID, input.startLine, input.endLine);
+           Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+           Comment comment = new Comment(commentID, input.snippetID, input.startLine, input.endLine, timestamp.toString());
            CommentsDAO dao = new CommentsDAO();
            Comment commentFromDB = dao.getComment(commentID, input.snippetID);
            if (commentFromDB == null) {
         	   dao.addComment(comment);
-        	   response = new CreateCommentResponse(commentID);
-        	   context.getLogger().log(String.format("CreateCommentResponse Success: snippetID: %s, commentID: %s, startLine: %i, endLine: %i\n", response.getSnippetID(), response.getCommentID(), response.getStartLine(), response.getEndLine()));
+        	   response = new CreateCommentResponse(input.snippetID, commentID, input.startLine, input.endLine);
+        	   context.getLogger().log(String.format("CreateCommentResponse Success: snippetID: %s, commentID: %s, startLine: %d, endLine: %d\n", response.getSnippetID(), response.getCommentID(), response.getStartLine(), response.getEndLine()));
            }
        } catch (Exception e) {
 	       context.getLogger().log(String.format("CreateCommentResponse Failure: %s", e.getMessage()));

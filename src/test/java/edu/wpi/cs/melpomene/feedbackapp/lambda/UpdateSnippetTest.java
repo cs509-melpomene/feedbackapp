@@ -39,7 +39,7 @@ public class UpdateSnippetTest extends LambdaTest{
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
         UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "update", "whatever", "");
+        input = new UpdateSnippetRequest(csResponse.snippetID, "update", "whatever", null, null);
         
         UpdateSnippetResponse response = handler.handleRequest(input, ctx);
         
@@ -59,7 +59,7 @@ public class UpdateSnippetTest extends LambdaTest{
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
         UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "update", null, "whatever");
+        input = new UpdateSnippetRequest(csResponse.snippetID, "update", null, "whatever", null);
         
         UpdateSnippetResponse response = handler.handleRequest(input, ctx);
         
@@ -73,13 +73,33 @@ public class UpdateSnippetTest extends LambdaTest{
     }
     
     @Test
+    public void testUpdateLanguageLambdaPositive() {
+    	CreateSnippet csHandler = new CreateSnippet();
+    	Context ctx = createContext();
+    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
+
+        UpdateSnippet handler = new UpdateSnippet();
+        input = new UpdateSnippetRequest(csResponse.snippetID, "update", null, null, "C");
+        
+        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
+        
+        ViewSnippet snippet = new ViewSnippet();
+        ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
+        ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
+        
+        Assert.assertEquals("C", viewResponse.snippet.codingLanguage);
+        Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
+        
+    }
+    
+    @Test
     public void testDeleteSnippetLambdaPositive() {
     	CreateSnippet csHandler = new CreateSnippet();
     	Context ctx = createContext();
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
         UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "delete", "", "");
+        input = new UpdateSnippetRequest(csResponse.snippetID, "delete", null, null, null);
         
         UpdateSnippetResponse response = handler.handleRequest(input, ctx);
      

@@ -7,11 +7,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.melpomene.feedbackapp.TestContext;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentRequest;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.http.UpdateCommentRequest;
+import edu.wpi.cs.melpomene.feedbackapp.http.UpdateCommentResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.UpdateSnippetRequest;
 import edu.wpi.cs.melpomene.feedbackapp.http.UpdateSnippetResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetRequest;
 import edu.wpi.cs.melpomene.feedbackapp.http.ViewSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.model.Comment;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -21,8 +26,6 @@ import com.amazonaws.services.lambda.runtime.Context;
  */
 public class UpdateCommentTest extends LambdaTest{
 
-    private static UpdateSnippetRequest input;
-
     private Context createContext() {
         TestContext ctx = new TestContext();
 
@@ -31,60 +34,67 @@ public class UpdateCommentTest extends LambdaTest{
 
         return ctx;
     }     
-    
+
     @Test
-    public void testUpdateCodeLambdaPositive() {
+    public void testUpdateTextLambdaPositive() {
+    	// create snippet
     	CreateSnippet csHandler = new CreateSnippet();
     	Context ctx = createContext();
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
-
-        UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "update", "whatever", "");
+    	
+    	CreateCommentRequest ccRequest = new CreateCommentRequest(csResponse.snippetID, 3, 5);
+    	CreateComment ccHandler = new CreateComment();
+    	CreateCommentResponse ccResponse = ccHandler.handleRequest(ccRequest, ctx);
+    	
+        UpdateComment handler = new UpdateComment();
+        UpdateCommentRequest input = new UpdateCommentRequest(csResponse.snippetID, ccResponse.commentID, "update", "whatever");
         
-        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
+        UpdateCommentResponse response = handler.handleRequest(input, ctx);
         
         ViewSnippet snippet = new ViewSnippet();
-        ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
+        ViewSnippetRequest request = new ViewSnippetRequest(ccResponse.snippetID);
         ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
         
-        Assert.assertEquals(viewResponse.snippet.text, "whatever");
-        Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
+        System.out.println(response.comment);
+        System.out.println(ccResponse.commentID);   
+        System.out.println(viewResponse.snippet.comments);  
+        
+        boolean isFound = false;
+        for(Comment comment : viewResponse.snippet.comments) {
+        	if(comment.commentID.equals(response.comment.commentID)) {
+        		isFound = true;
+        		Assert.assertEquals(comment.text, "whatever");
+        		break;
+        	}
+        }
+        
+        Assert.assertTrue(isFound);
+//        Assert.assertEquals(viewResponse.snippet.text, "whatever");
+//        Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
         
     }
     
     @Test
-    public void testUpdateInfoLambdaPositive() {
+    public void testDeleteCommentLambdaPositive() {
+    	//create snippet
     	CreateSnippet csHandler = new CreateSnippet();
     	Context ctx = createContext();
     	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
+    	
+    	CreateCommentRequest ccRequest = new CreateCommentRequest(csResponse.snippetID, 3, 5);
+    	CreateComment ccHandler = new CreateComment();
+    	CreateCommentResponse ccResponse = ccHandler.handleRequest(ccRequest, ctx);
 
-        UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "update", null, "whatever");
+        UpdateComment handler = new UpdateComment();
+        UpdateCommentRequest input = new UpdateCommentRequest(ccResponse.snippetID, ccResponse.commentID, "delete", "");
         
-        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
+        UpdateCommentResponse response = handler.handleRequest(input, ctx);
         
-        ViewSnippet snippet = new ViewSnippet();
-        ViewSnippetRequest request = new ViewSnippetRequest(csResponse.snippetID);
-        ViewSnippetResponse viewResponse = snippet.handleRequest(request, ctx);
+//        System.out.println("====================\n" + response.comment.commentID);
+//        System.out.println("====================\n" + ccResponse.commentID);        
         
-        Assert.assertEquals(viewResponse.snippet.info, "whatever");
-        Assert.assertEquals(viewResponse.snippet.snippetID, csResponse.snippetID);
-        
-    }
-    
-    @Test
-    public void testDeleteSnippetLambdaPositive() {
-    	CreateSnippet csHandler = new CreateSnippet();
-    	Context ctx = createContext();
-    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
-
-        UpdateSnippet handler = new UpdateSnippet();
-        input = new UpdateSnippetRequest(csResponse.snippetID, "delete", "", "");
-        
-        UpdateSnippetResponse response = handler.handleRequest(input, ctx);
-     
-        Assert.assertEquals(response.snippet.snippetID, csResponse.snippetID);
-        Assert.assertEquals(response.error, "Snippet deleted successfully");
+        Assert.assertNull(response.comment);
+        Assert.assertEquals(response.error, "Comment deleted successfully");
         
     }
 }

@@ -5,7 +5,6 @@ CREATE TABLE Snippet(
     info VARCHAR(1000),
     codeLanguage VARCHAR(10),
     viewerPassword VARCHAR(30),
-    creatorPassword VARCHAR(30),
     snippetTimestamp DATETIME
 );
 
@@ -16,5 +15,5 @@ CREATE TABLE SnippetComment(
 	startLine INT,
 	endLine INT,
 	snippetID VARCHAR(30),
-    CONSTRAINT fk_snippetID FOREIGN KEY (snippetID) REFERENCES SnippetDB.Snippet(snippetID) ON DELETE CASCADE
+    CONSTRAINT fk_snippetID FOREIGN KEY (snippetID) REFERENCES Snippet(snippetID) ON DELETE CASCADE
 );

@@ -6,37 +6,34 @@ import java.util.List;
 public class Snippet {
 
 	public final String snippetID;
-	public final String creatorPassword;
 	public final String viewerPassword;
 	public final String text;
 	public final String info;
 	public final String codingLanguage;
-	public final ArrayList<String> commentIDs;
+	public ArrayList<Comment> comments;
 	public final String timestamp;
 	
-	public Snippet(String snippetID, String creatorPassword, String viewerPassword) {
+	public Snippet(String snippetID, String viewerPassword, String timestamp) {
 		this.snippetID = snippetID;
-		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
 		this.text = "";
 		this.info = "";
 		this.codingLanguage = "";
-		this.commentIDs = new ArrayList<String>();
-		this.timestamp = "";	
+		this.comments = new ArrayList<Comment>();
+		this.timestamp = timestamp;	
 	}
 	
-	public Snippet(String snippetID, String creatorPassword, String viewerPassword, String text, String info, String codingLanguage, String timestamp, ArrayList<String> commentIDs) {
+	public Snippet(String snippetID, String viewerPassword, String text, String info, String codingLanguage, String timestamp, ArrayList<Comment> comments) {
 		this.snippetID = snippetID;
-		this.creatorPassword = creatorPassword;
 		this.viewerPassword = viewerPassword;
 		this.text = text;
 		this.info = info;
 		this.codingLanguage = codingLanguage;
-		this.commentIDs = commentIDs;
+		this.comments = comments;
 		this.timestamp = timestamp;	
 	}
 	
-	public void addCommentID(String commentID) {
-		commentIDs.add(commentID);
+	public void addCommentID(Comment comment) {
+		comments.add(comment);
 	}
 }

@@ -1,14 +1,21 @@
 package edu.wpi.cs.melpomene.feedbackapp.lambda;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.melpomene.feedbackapp.TestContext;
+import edu.wpi.cs.melpomene.feedbackapp.db.CommentsDAO;
 import edu.wpi.cs.melpomene.feedbackapp.db.SnippetsDAO;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentRequest;
+import edu.wpi.cs.melpomene.feedbackapp.http.CreateCommentResponse;
 import edu.wpi.cs.melpomene.feedbackapp.http.CreateSnippetResponse;
+import edu.wpi.cs.melpomene.feedbackapp.http.UpdateCommentRequest;
+import edu.wpi.cs.melpomene.feedbackapp.http.UpdateCommentResponse;
+import edu.wpi.cs.melpomene.feedbackapp.model.Comment;
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -18,7 +25,7 @@ import com.amazonaws.services.lambda.runtime.Context;
  */
 public class CreateCommentTest extends LambdaTest{
 
-    private static Object input;
+    private static CreateCommentRequest input;
 
     @BeforeClass
     public static void createInput() throws IOException {
@@ -36,27 +43,25 @@ public class CreateCommentTest extends LambdaTest{
     }
 
     @Test
-    public void testCreateSnippetLambda() {
-        CreateSnippet handler = new CreateSnippet();
-        Context ctx = createContext();
+    public void testCreateCommentLambda() {
+    	CreateSnippet csHandler = new CreateSnippet();
+    	Context ctx = createContext();
+    	CreateSnippetResponse csResponse = csHandler.handleRequest(null, ctx);
 
-        CreateSnippetResponse response = handler.handleRequest(input, ctx);
+    	CreateCommentRequest ccRequest = new CreateCommentRequest(csResponse.snippetID, 3, 5);
+    	CreateComment ccHandler = new CreateComment();
+    	CreateCommentResponse ccResponse = ccHandler.handleRequest(ccRequest, ctx);
         
-        Assert.assertEquals(16, response.snippetID.length());
-        Assert.assertEquals(16, response.creatorPassword.length());
-        Assert.assertEquals(16, response.viewerPassword.length());
+        Assert.assertEquals(16, ccResponse.commentID.length());
         
-        SnippetsDAO dao = new SnippetsDAO();
+        CommentsDAO dao = new CommentsDAO();
         try {
-			Snippet snippetFromDB = dao.getSnippet(response.snippetID);
-			Assert.assertEquals(response.getSnippetID(), snippetFromDB.snippetID);
-			Assert.assertEquals(response.getCreatorPassword(), snippetFromDB.creatorPassword);
-			Assert.assertEquals(response.getViewerPassword(), snippetFromDB.viewerPassword);
+			Comment commentFromDB = dao.getComment(ccResponse.commentID, ccResponse.snippetID);
+			Assert.assertEquals(ccResponse.getSnippetID(), commentFromDB.snippetID);
+			Assert.assertEquals(ccResponse.getCommentID(), commentFromDB.commentID);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Assert.fail();
 		}
-        
     }
 }

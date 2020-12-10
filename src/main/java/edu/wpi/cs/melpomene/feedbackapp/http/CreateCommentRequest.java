@@ -19,8 +19,8 @@ public class CreateCommentRequest {
 
 	public CreateCommentRequest() {
 		this.snippetID = "";
-		this.startLine = 0;
-		this.endLine = 0;
+		this.startLine = -1;
+		this.endLine = -1;
 	}
 	
 	public CreateCommentRequest(String snippetID, int startLine, int endLine) {

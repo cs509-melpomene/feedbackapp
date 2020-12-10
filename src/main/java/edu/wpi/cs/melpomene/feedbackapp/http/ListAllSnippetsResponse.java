@@ -1,9 +1,11 @@
 package edu.wpi.cs.melpomene.feedbackapp.http;
 
+import java.util.ArrayList;
+
 import edu.wpi.cs.melpomene.feedbackapp.model.Snippet;
 
-public class UpdateSnippetResponse {
-	public final Snippet snippet;
+public class ListAllSnippetsResponse {
+	public final ArrayList<String> snippets;
 	public final String error;
 	public final int httpCode;
 	
@@ -11,14 +13,14 @@ public class UpdateSnippetResponse {
 	 * Create success response.
 	 * @param snippet
 	 */
-	public UpdateSnippetResponse (Snippet snippet) {
-		this.snippet = snippet;
+	public ListAllSnippetsResponse () {
+		this.snippets = null;
 		this.error = "";
 		this.httpCode = 200;
 	}
 	
-	public UpdateSnippetResponse (Snippet snippet, String error) {
-		this.snippet = snippet;
+	public ListAllSnippetsResponse (ArrayList<String> snippets, String error, int code) {
+		this.snippets = snippets;
 		this.error = error;
 		this.httpCode = 200;
 	}
@@ -27,8 +29,8 @@ public class UpdateSnippetResponse {
 	 * Create failure response.
 	 * @param error
 	 */
-	public UpdateSnippetResponse (String error, int code) {
-		this.snippet = null;
+	public ListAllSnippetsResponse (String error, int code) {
+		this.snippets = null;
 		this.error = error;
 		this.httpCode = code;
 	}
@@ -38,6 +40,7 @@ public class UpdateSnippetResponse {
 	}
 	
 	public String toString() {
-		return "Response(" + snippet + ")";
+		return "Response(" + httpCode + ")";
 	}
 }
+
