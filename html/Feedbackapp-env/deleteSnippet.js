@@ -1,3 +1,4 @@
+import { hideLoginDiv } from './util.js';
 import { urlParamsSnippetID } from './util.js';
 import { viewAllSnippetsHTTPRequest } from './viewAllSnippets.js';
 
@@ -20,15 +21,20 @@ export function snippetNotFound(){
     let commentSidebarDiv = document.getElementById("commentSidebar");
     let snippetInfoSidePanelDiv = document.getElementById("snippetInfoSidePanel");
     commentSidebarDiv.innerHTML = "";
-    snippetInfoSidePanelDiv.innerHTML = "";
+    
+    snippetInfoSidePanelDiv.innerHTML = `
+        <a href="/">Home</a>
+    `;
+
     document.getElementById("codeNumbersSidePanel").innerHTML = "";
-    let snippetNotFoundHTML = `
+    let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
+    snippetTextPanelDiv.innerHTML = `
         <div class="snippetNotFoundText">
                 Snippet ID ${urlParamsSnippetID} not found!
         </div>
     `;
-    let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
-    snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
+
+    hideLoginDiv();
 }
 
 function deleteSnippetHTTPResponse(httpRequest, snippetID=null){
@@ -36,11 +42,11 @@ function deleteSnippetHTTPResponse(httpRequest, snippetID=null){
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 console.log("responseText: " + httpRequest.responseText)
-                if (snippetID = null){
+                if (snippetID == null){
                     snippetNotFound();
                 }
                 else{
-                    location.reload();
+                    document.getElementById(snippetID).innerHTML = "";
                 }
                 return;
             }
