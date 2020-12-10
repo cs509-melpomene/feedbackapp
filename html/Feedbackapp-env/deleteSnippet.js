@@ -1,6 +1,5 @@
 import { hideLoginDiv } from './util.js';
 import { urlParamsSnippetID } from './util.js';
-import { viewAllSnippetsHTTPRequest } from './viewAllSnippets.js';
 
 export function deleteSnippetHTTPRequest(snippetID=null){
     let httpRequest = new XMLHttpRequest();
@@ -46,7 +45,7 @@ function deleteSnippetHTTPResponse(httpRequest, snippetID=null){
                     snippetNotFound();
                 }
                 else{
-                    document.getElementById(snippetID).innerHTML = "";
+                    location.reload();
                 }
                 return;
             }
