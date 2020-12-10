@@ -3,16 +3,19 @@ import {
     updateNumbers
 } from './util.js';
 import { snippetNotFound } from './deleteSnippet.js';
+import { updateCommentHTTPRequest } from './createComment.js';
 
-export function viewSnippetHTTPRequest(httpRequest) {
+//import { hljs } from './highlight/highlight.pack.js';
+
+export function viewSnippetHTTPRequest(requirePassword=false) {
     let httpRequest1 = new XMLHttpRequest();
     httpRequest1.open('GET', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
     httpRequest1.setRequestHeader('Content-Type', 'application/json');
     httpRequest1.send();
-    httpRequest1.onreadystatechange = viewSnippetHTTPResponse(httpRequest1);
+    httpRequest1.onreadystatechange = viewSnippetHTTPResponse(httpRequest1, requirePassword);
 }
 
-function viewSnippetHTTPResponse(httpRequest) {
+function viewSnippetHTTPResponse(httpRequest, requirePassword) {
     return function(){
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
@@ -23,15 +26,10 @@ function viewSnippetHTTPResponse(httpRequest) {
                     return;
                 }
                 
-                document.getElementById("text").value = obj['snippet']['text'];
-                document.getElementById("info").value = obj['snippet']['info'];
-                document.getElementById("timestampDiv").innerHTML = obj['snippet']['timestamp'];
-                document.getElementById("Planguage").value = obj['snippet']['codingLanguage'];
-                
-                updateNumbers(obj['snippet']['text']);
-
-                let comments = obj['snippet']['comments']
-                repopulateCommentsDiv(comments)
+                window.globalSnippet = obj
+                if (!requirePassword) {
+                    viewSnippetHTTPResponseFinish();
+                }
                 console.log("success")
             } else {
                 console.log("status: " + httpRequest.status)
@@ -43,8 +41,23 @@ function viewSnippetHTTPResponse(httpRequest) {
     }
 }
 
+export function viewSnippetHTTPResponseFinish(){
+    document.getElementById("text").innerHTML = window.globalSnippet['snippet']['text'];
+    hljs.highlightBlock(document.getElementById("text"));
+    document.getElementById("info").value = window.globalSnippet['snippet']['info'];
+    document.getElementById("timestampDiv").innerHTML = window.globalSnippet['snippet']['timestamp'];
+    document.getElementById("codeLanguage").value = window.globalSnippet['snippet']['codingLanguage'];
+    document.getElementById("viewerPasswordInput").value = window.globalSnippet['snippet']['viewerPassword'];
+
+    updateNumbers(window.globalSnippet['snippet']['text']);
+
+    let comments = window.globalSnippet['snippet']['comments']
+    repopulateCommentsDiv(comments)
+}
+
 function repopulateCommentsDiv(comments){
     let commentsDiv = document.getElementById("comments");
+    commentsDiv.innerHTML = "";
     for(let i = 0; i < comments.length; i++){
         let comment = comments[i];
         commentsDiv.innerHTML += generateCommentString(comment['commentID'], comment['timestamp'], comment['startLine'], comment['endLine'], comment['text']); 
@@ -94,7 +107,7 @@ function clickedCommentFunc(child, commentUniqueID, originalRegionStart, origina
 
 		let highlightDiv = document.getElementById("highlight");
 		let highlightDivTop = parseFloat(highlightDiv.style.top);
-		let highlightDivHeight = 24.3;
+		let highlightDivHeight = 24;
         
         originalHighlightDivHeight = highlightDivHeight * lines
 		highlightDiv.style.height = originalHighlightDivHeight
@@ -116,7 +129,7 @@ function addOnClickToComments() {
 		let regionStart = getRegionValue(child, "regionStart");
 		let regionEnd = getRegionValue(child, "regionEnd");
 
-		child.onclick = clickedCommentFunc(child, commentUniqueID, regionStart,regionEnd)
+        child.onclick = clickedCommentFunc(child, commentUniqueID, regionStart,regionEnd)
 	});
 }
 
@@ -131,11 +144,26 @@ function generateCommentString(uniqueID, timestamp, startRegion, endRegion, text
 			<div class="commentFormColumnInput regionStart">${startRegion}</div>
 			<div class="commentFormColumnLabel">End Region:</div>
 			<div class="commentFormColumnInput regionEnd">${endRegion}</div>
-			<div class="commentText">${text}</div>
+            <div class="commentText">${text}</div>
+            <input type="button" onclick="deleteCommentClick('${uniqueID}')" value="delete"/>
 		</div>
 	`
 	console.log("new comment: " + commentStr);
 	return commentStr;
+}
+
+export function deleteCommentClick(uniqueID){
+    console.log("clicked delete comment button: " + uniqueID)
+    updateCommentHTTPRequest(uniqueID, false)
+}
+
+export function resetCurrentComment() {
+    window.commentEnabled = false
+    window.originalHighlightDivTop = 0;
+    window.originalHighlightDivHeight = 0;
+    window.currentCommentUniqueID = "";
+    window.currentChild = null;
+    setHighlightDivTop();
 }
 
 // set highlight div top relative to scroll bar

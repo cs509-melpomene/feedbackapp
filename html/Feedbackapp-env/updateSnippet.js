@@ -10,22 +10,28 @@ export function updateSnippetHTTPRequest(divID) {
     httpRequest.open('POST', `https://pg407hi45l.execute-api.us-east-2.amazonaws.com/beta/snippet/${urlParamsSnippetID}`, true);
     httpRequest.setRequestHeader('Content-Type', 'application/json');
     let bodyOrg = document.getElementById(divID).value;
-    let body = { "action": "update" };
-    body[divID] = bodyOrg;
 
+    let body = { "action": "update" };
     // set text to null if we are updating the snippet info
     if (divID != "text") {
         body["text"] = null;
     }
+    else {
+        bodyOrg = document.getElementById(divID).innerText;
+
+        // update line numbers only if we updated the code text
+        updateNumbers(bodyOrg);
+        // document.getElementById(divID).innerText = bodyOrg; removes focus??? but needed so that newlines match up???
+    }
+
+    if (divID != "info") {
+        body["info"] = null;
+    }
+    body[divID] = bodyOrg;
 
     console.log(body);
     httpRequest.send(JSON.stringify(body));
     httpRequest.onreadystatechange = updateSnippetHTTPResponse(httpRequest);
-
-    // update line numbers only if we updated the code text
-    if (divID == "text") {
-        updateNumbers(bodyOrg);
-    }
 }
 
 function updateSnippetHTTPResponse(httpRequest) {

@@ -9,7 +9,7 @@
 </head>
 <body>
    <div class = "center">
-      <form id="form" method="POST" action="createSnippet.php?snippetID=">
+      <form id="form" method="POST" action="snippet.php?snippetID=">
           <input type="hidden" name="isCreator" value="true" style = "font-size:20px">
          <input type="button" onclick="myFunction()" value="Create Snippet" style = "font-size:20px">
       </form> 

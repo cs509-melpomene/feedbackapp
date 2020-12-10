@@ -9,5 +9,10 @@ export function updateNumbers(text){
     for (let i = 1; i <= numOfNumbers; i++){
         numbersStr += i + "\n"
     }
-    document.getElementById("numbers").value = numbersStr;
+    document.getElementById("numbers").innerHTML = numbersStr;
+}
+
+export function hideLoginDiv(){
+    var blurredDiv = document.getElementById("blurredDiv");
+    blurredDiv.hidden = true
 }
