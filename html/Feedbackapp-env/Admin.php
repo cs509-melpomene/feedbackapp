@@ -15,7 +15,7 @@
                 <h5 style="text-align: center;">Delete snippets more than <i>n</i> years old</h5>
             </div>
             <div class ="row" style="padding: 10px;">
-                <input type="text" id="numberDays" value="n" style="text-align: center;width: 60%;"><label>&nbsp;&nbsp;&nbsp;Days Old</label>
+                <input type="text" id="numberDays" value="n" style="text-align: center;width: 60%;" oninput="nDaysChange()" ><label>&nbsp;&nbsp;&nbsp;Days Old</label>
                 <table style="border-style:solid;width: 100%; margin-top: 5px;" id="ShowTable">
                   <tr style="border-style:solid;">
                     <th style="border-style:solid;">Snippet ID</th>
