@@ -1,4 +1,3 @@
-import { hideLoginDiv } from './snippet.js';
 import { urlParamsSnippetID } from './util.js';
 import { viewAllSnippetsHTTPRequest } from './viewAllSnippets.js';
 
@@ -21,20 +20,15 @@ export function snippetNotFound(){
     let commentSidebarDiv = document.getElementById("commentSidebar");
     let snippetInfoSidePanelDiv = document.getElementById("snippetInfoSidePanel");
     commentSidebarDiv.innerHTML = "";
-    
-    snippetInfoSidePanelDiv.innerHTML = `
-        <a href="/">Home</a>
-    `;
-
+    snippetInfoSidePanelDiv.innerHTML = "";
     document.getElementById("codeNumbersSidePanel").innerHTML = "";
-    let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
-    snippetTextPanelDiv.innerHTML = `
+    let snippetNotFoundHTML = `
         <div class="snippetNotFoundText">
                 Snippet ID ${urlParamsSnippetID} not found!
         </div>
     `;
-
-    hideLoginDiv();
+    let snippetTextPanelDiv = document.getElementById("snippetTextPanel");
+    snippetTextPanelDiv.innerHTML = snippetNotFoundHTML;
 }
 
 function deleteSnippetHTTPResponse(httpRequest, snippetID=null){
@@ -46,7 +40,7 @@ function deleteSnippetHTTPResponse(httpRequest, snippetID=null){
                     snippetNotFound();
                 }
                 else{
-                
+                    location.reload();
                 }
                 return;
             }
