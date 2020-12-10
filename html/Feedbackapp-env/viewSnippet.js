@@ -178,7 +178,7 @@ export function setHighlightDivTop() {
 	let highlightDivTop = parseFloat(highlightDiv.style.top);
 
     // set highlight div top and height to correct value
-    let style = getComputedStyle(textE);
+    let style = window.getComputedStyle(textE);
     let textEHeight = parseFloat(style.height);
     console.log("textEHeight " + textEHeight);
 
