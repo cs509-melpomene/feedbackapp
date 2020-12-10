@@ -35,8 +35,7 @@ public class DeleteStaleSnippetsTest extends LambdaTest{
         return ctx;
     }     
    
-    // How to create a test for n days old when you're creating a test in the moment?
-    // should I set nDays = 0?
+
     @Test
     public void testDeleteStaleSnippetsLambdaPositive() {
     	CreateSnippet csHandler = new CreateSnippet();
